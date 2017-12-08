@@ -1,0 +1,114 @@
+body 
+{
+    background-image: url(../images/fond-site.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-size: 17px;
+	padding-top : 30px;
+}
+
+#logo
+{
+	width:30px;
+    height:30px;
+}
+
+@-webkit-keyframes rotating
+{
+	from 
+	{
+		/*-webkit-transform:translateX(0px) rotateY(0deg);*/
+		-webkit-transform:rotateY(0deg);
+	}
+	to 
+	{
+		/*-webkit-transform:translateX(150px)rotateY(360deg);*/
+		-webkit-transform:rotateY(360deg);
+	}
+}
+
+.rotating
+{
+	-webkit-animation: rotating 2s linear infinite;
+}
+#En-tete
+{
+	
+	background-color:#222;   
+    font-size: 70px;
+    color: white;
+	margin: auto;
+    text-align: center;
+    text-shadow: 0px 1px 5px black;
+}
+
+#connexion
+{
+    background-color: #222;
+    background-position: center;
+    transition:.5s;
+    text-align: center;
+	color : white;
+	padding-top : 0.1%;
+	padding-bottom : 2%;
+    margin-top: 100px;
+    margin-left:auto;
+    margin-right:auto;
+    width:40%;
+	border-radius: 10px;
+    box-shadow: 0px 2px 20px black;
+}
+
+.navbar-inverse 
+{
+	
+	border-radius : 0px;
+	border-style : none;
+}
+
+.form-control
+{
+	width:80%;
+	margin: auto;
+}
+
+.btn-primary
+{
+	border-radius: 10px;
+}
+
+.admin
+{
+    max-width:85%;
+    margin:2rem auto;
+}
+
+/*---------------------------------MENU--------------------------------------*/
+.tab-links
+{
+    display:flex;
+    text-align: center;
+}
+
+.tab-links__item::after
+{
+    position:absolute;
+    z-index:-1;
+    transition:.2s ease-in-out;
+    transform:translate3d(0,100%,0) translate3d(0,-3px,0);
+}
+
+.tab-links__item.is-active::after
+{
+    transform:translate3d(0,0,0);
+}
+
+.tab-content__item
+{
+    display:none;
+}
+
+.tab-content__item.is-active
+{
+    display:block;
+}
