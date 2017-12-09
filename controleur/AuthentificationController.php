@@ -19,66 +19,78 @@ class AuthentificationController extends BaseControleur
 			$verification_login = Utilisateur::getByLogin($login);
 			if ($verification_login != null)
 			{ //login ok
-				$verification_mdp = $verification_login->getMdp();
-				$sel='yolo42'; //A mettre en place plus tard (concaténation dans sha1)
-				$mdp_crypte = sha1($mdp);
-				$id = $verification_login->getId();
-				if ($verification_mdp == $mdp_crypte)
-				{ //mdp OK
-					$statut = $verification_login->getStatut();
-					$this->setSessionParam('estAutenthifie', 'true');
-					$this->setSessionParam('statut', intval($statut));
-					$this->setSessionParam('id', intval($id));
-					$this->redirect('index.php'); //redirection vers la page autorisée
+				$compte_bloque = $verification_login->getBloque();
+				if ($compte_bloque != false)
+				{
+					$verification_mdp = $verification_login->getMdp();
+					$sel='yolo42'; //A mettre en place plus tard (concaténation dans sha1)
+					$mdp_crypte = sha1($mdp);
+					$id = $verification_login->getId();
+					if ($verification_mdp == $mdp_crypte)
+					{ //mdp OK
+						$statut = $verification_login->getStatut();
+						$this->setSessionParam('estAutenthifie', 'true');
+						$this->setSessionParam('statut', intval($statut));
+						$this->setSessionParam('id', intval($id));
+						$this->redirect('index.php'); //redirection vers la page autorisée
+					}
+					else
+					{ //Erreur mdp	
+						// On inscrit la date dans historique_connection					
+						$date_tentative = date("Y-m-d"); //faille si on change l'heure de l'ordi
+						$recup_histo = HistoConnection::getByUtilisateur($id);
+						$nb_tentative = $verification_login->getTentative_connection();
+						if ($recup_histo != null)
+						{		
+								$recup_date = $recup_histo->getDateTentative();
+								if ($recup_date==$date_tentative)								
+								{  //On augmente de 1 le nombre de tentative	
+									 $nb_tentative += 1;
+									 $verification_login->setTentative_connection($nb_tentative);
+									 $verification_login->save();
+								}
+								else
+								{
+									$enregistrer_histo = new HistoConnection();
+									$enregistrer_histo->setUtilisateur($verification_login);
+									$enregistrer_histo->setDateTentative($date_tentative);
+									$enregistrer_histo->save();
+									$nb_tentative = 1;
+									$verification_login->setTentative_connection($nb_tentative);
+									$verification_login->save();
+								}
+						}
+						else
+						{
+							$enregistrer_histo = new HistoConnection();
+							$enregistrer_histo->setUtilisateur($verification_login);
+							$enregistrer_histo->setDateTentative($date_tentative);
+							$enregistrer_histo->save();
+							$nb_tentative = 1;
+							$verification_login->setTentative_connection($nb_tentative);
+							$verification_login->save();
+						}				
+						// Si le nombre de tentative de la journée = 3 alors informe que le compte
+						// sera bloqué si 4 tentatives dans la journée
+						if ($nb_tentative == 3)
+						{
+							$this->redirect('index.php?erreur=16');
+						}
+						// Si le nombre de tentative de la journée = 4 alors bloqué
+						else if ($nb_tentative >= 4)
+						{
+							$this->redirect('index.php?erreur=17');
+						}
+						else
+						{
+							$this->redirect('index.php?erreur=1'); //login + mdp pour sécurité
+						}
+					}
 				}
 				else
-				{ //Erreur mdp	
-					// On inscrit la date dans historique_connection					
-					$date_tentative = date("Y-m-d"); //faille si on change l'heure de l'ordi
-					$recup_histo = HistoConnection::getByUtilisateur($id);
-					$nb_tentative = $verification_login->getTentative_connection();
-					if ($recup_histo != null)
-					{		
-							$recup_date = $recup_histo->getDateTentative();
-							if ($recup_date==$date_tentative)								
-							{  //On augmente de 1 le nombre de tentative	
-								 $nb_tentative += 1;
-								 $verification_login->setTentative_connection($nb_tentative);
-								 $verification_login->save();
-							}
-							else
-							{
-								$enregistrer_histo = new HistoConnection();
-								$enregistrer_histo->setUtilisateur($verification_login);
-								$enregistrer_histo->setDateTentative($date_tentative);
-								$enregistrer_histo->save();
-								$nb_tentative = 1;
-								$verification_login->setTentative_connection($nb_tentative);
-								$verification_login->save();
-							}
-					}
-					else
-					{
-						$enregistrer_histo = new HistoConnection();
-						$enregistrer_histo->setUtilisateur($verification_login);
-						$enregistrer_histo->setDateTentative($date_tentative);
-						$enregistrer_histo->save();
-						$nb_tentative = 1;
-						$verification_login->setTentative_connection($nb_tentative);
-						$verification_login->save();
-					}				
-					// Si le nombre de tentative de la journée = 3 alors informe que le compte
-					// sera bloqué si 4 tentatives dans la journée
-					if ($nb_tentative == 3)
-					{
-						$this->redirect('index.php?erreur=16');
-					}
-					// Si le nombre de tentative de la journée = 4 alors bloqué
-					else
-					{
-						$this->redirect('index.php?erreur=1'); //login + mdp pour sécurité
-					}
-				}	
+				{//compte_bloque
+					$this->redirect('index.php?erreur=17');
+				}
 			} 
 			else 
 			{ //Erreur login

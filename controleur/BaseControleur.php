@@ -111,9 +111,12 @@ class BaseControleur
 		}
 		else if	($this->getGetParam('erreur') == 16)
 		{
-			$this->erreurMessage = 'Attention vous vous êtes déjà trompé(e) 3 fois aujourd\'hui. A la 4eme vous serez bloqué et devrez contacter l\'administrateur.';
+			$this->erreurMessage = 'Vous vous êtes déjà trompé(e) 3 fois aujourd\'hui. A la 4eme vous serez bloqué et devrez contacter l\'administrateur.';
 		}
-		
+		else if	($this->getGetParam('erreur') == 17)
+		{
+			$this->erreurMessage = 'Votre compte est bloqué. Veuillez contacter l\'administrateur.';
+		}		
     }
 
     public function redirect($lien)	//redirection

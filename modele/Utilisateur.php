@@ -2,9 +2,9 @@
 class Utilisateur
 {
 	// Design Pattern CRUD
-    protected static $sqlCreate = "INSERT INTO utilisateur (id, nom, prenom, login, mdp, tentative_connection, id_statut, id_service, code_mdp_oublie, confirme_code, date_expiration_code) VALUES (:id, :nom, :prenom, :login, :mdp, :email, :tentative_connection, :id_statut, :id_service, :code, :confirme, :dateExpiration)";
+    protected static $sqlCreate = "INSERT INTO utilisateur (id, nom, prenom, login, mdp, tentative_connection, id_statut, id_service, code_mdp_oublie, confirme_code, date_expiration_code, bloque) VALUES (:id, :nom, :prenom, :login, :mdp, :email, :tentative_connection, :id_statut, :id_service, :code, :confirme, :dateExpiration, :bloque)";
     protected static $sqlRead = "SELECT * FROM utilisateur";
-    protected static $sqlUpdate = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, login = :login, mdp = :mdp, tentative_connection = :tentative_connection, id_statut = :id_statut, id_service = :id_service, code_mdp_oublie = :code, confirme_code = :confirme, date_expiration_code = :dateExpiration WHERE id = :id";
+    protected static $sqlUpdate = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, login = :login, mdp = :mdp, tentative_connection = :tentative_connection, id_statut = :id_statut, id_service = :id_service, code_mdp_oublie = :code, confirme_code = :confirme, date_expiration_code = :dateExpiration, bloque = :bloque WHERE id = :id";
     protected static $sqlDelete = "DELETE FROM utilisateur";
 
     /**
@@ -61,6 +61,11 @@ class Utilisateur
      * @var date
      */
 	 private $dateExpiration;
+	 
+	 /**
+     * @var boolean
+     */
+	 private $bloque;
 	 
 
     /**
@@ -240,6 +245,22 @@ class Utilisateur
     }
 	
 	/**
+     * @return boolean
+     */
+	public function getBloque()
+    {
+		return $this->bloque;
+    }
+
+    /**
+     * @param string $dateExpiration
+     */
+    public function setBloque($bloque)
+    {
+        $this->bloque = $bloque;
+    }
+	
+	/**
      * @return Utilisateur[]
      */
     public static function getAllListe()
@@ -261,6 +282,7 @@ class Utilisateur
 			$obj->setCode($item['code_mdp_oublie']);
 			$obj->setConfirme($item['confirme_code']);
 			$obj->setDateExpiration($item['date_expiration_code']);
+			$obj->setBloque($item['bloque']);
             $tab[] = $obj;
         }
 
@@ -296,6 +318,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -329,6 +352,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -363,6 +387,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab[0]; //info de l'utilisateur
@@ -397,6 +422,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -430,6 +456,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -463,6 +490,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab;
@@ -509,6 +537,7 @@ class Utilisateur
 				$obj->setCode($item['code_mdp_oublie']);
 				$obj->setConfirme($item['confirme_code']);
 				$obj->setDateExpiration($item['date_expiration_code']);
+				$obj->setBloque($item['bloque']);
 				$tab[] = $obj;
             }
             return $tab;
@@ -544,7 +573,8 @@ class Utilisateur
 				':id_service' => $this->getService()->getId(),
 				':code' => $this->getCode(),
 				':confirme' => $this->getConfirme(),
-				':dateExpiration' => $this->getDateExpiration()
+				':dateExpiration' => $this->getDateExpiration(),
+				':bloque'=> $this->getBloque()
 				);
 		}
 		else
@@ -561,7 +591,8 @@ class Utilisateur
 				':id_service' => null,
 				':code' => $this->getCode(),
 				':confirme' => $this->getConfirme(),
-				':dateExpiration' => $this->getDateExpiration()
+				':dateExpiration' => $this->getDateExpiration(),
+				':bloque'=> $this->getBloque()
 				);
 		}
         return $connexionInstance->executer($sql,$parametre);
