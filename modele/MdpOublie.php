@@ -2,10 +2,10 @@
 class MdpOublie
 {
 	// Design Pattern CRUD
-    protected static $sqlCreate = "INSERT INTO mdp_oublie (id_oublie, mail_oublie, code_oublie, confirme_oublie) VALUES (:id, :mail, :code, :confirme)";
-    protected static $sqlRead = "SELECT * FROM mdp_oublie";
-    protected static $sqlUpdate = "UPDATE mdp_oublie SET mail_oublie = :mail, code_oublie = :code, confirme_oublie = :confirme WHERE id_oublie = :id";
-    protected static $sqlDelete = "DELETE FROM mdp_oublie";
+    protected static $sqlCreate = "INSERT INTO utilisateur (id, login, code_mdp_oublie, confirme_code, date_expiration_code) VALUES (:id, :login, :code, :confirme, :dateExpiration)";
+    protected static $sqlRead = "SELECT * FROM utilisateur";
+    protected static $sqlUpdate = "UPDATE utilisateur SET login = :login, code_mdp_oublie = :code, confirme_code = :confirme, date_expiration_code= :dateExpiration WHERE id = :id";
+    protected static $sqlDelete = "DELETE FROM utilisateur";
 
     /**
      * @var integer
@@ -15,7 +15,7 @@ class MdpOublie
     /**
      * @var string
      */
-    private $mail;
+    private $login;
 	
 	 /**
      * @var string
@@ -26,6 +26,11 @@ class MdpOublie
      * @var integer
      */
 	 private $confirme;
+	 
+	 /**
+     * @var date
+     */
+	 private $dateExpiration;
 	 
     /**
      * @return int
@@ -46,17 +51,17 @@ class MdpOublie
     /**
      * @return string
      */
-    public function getMail()
+    public function getLogin()
     {
-        return $this->mail;
+        return $this->login;
     }
 
     /**
-     * @param string $mail
+     * @param string $login
      */
-    public function setMail($mail)
+    public function setLogin($login)
     {
-        $this->mail = $mail;
+        $this->login = $login;
     }
 	
 	/**
@@ -84,13 +89,28 @@ class MdpOublie
     }
 
     /**
-     * @param string $statut
+     * @param string $confirme
      */
     public function setConfirme($confirme)
     {
         $this->confirme = $confirme;
     }
 	
+	/**
+     * @return string
+     */
+	public function getDateExpiration()
+    {
+		return $this->dateExpiration;
+    }
+
+    /**
+     * @param string $dateExpiration
+     */
+    public function setDateExpiration($dateExpiration)
+    {
+        $this->dateExpiration = $dateExpiration;
+    }
 
 	/**
      * @return Utilisateur[]
@@ -103,10 +123,11 @@ class MdpOublie
         $tab = array();
         foreach ($liste as $item) {
             $obj = new MdpOublie();
-            $obj->setId($item['id_oublie']);
-            $obj->setMail($item['mail_oublie']);
-            $obj->setCode($item['code_oublie']);
-			$obj->setConfirme($item['confirme_oublie']);			
+            $obj->setId($item['id']);
+            $obj->setLogin($item['login']);
+            $obj->setCode($item['code']);
+			$obj->setConfirme($item['confirme']);
+			$obj->setdateExpiration($item['dateExpiration']);				
             $tab[] = $obj;
         }
 
@@ -115,13 +136,13 @@ class MdpOublie
 
     /**
      * @param int $id
-     * @return MdpOublie
+     * @return Utilisateur
      */
     public static function getById($id)
     {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
-            self::$sqlRead . ' WHERE id_oublie = :id',
+            self::$sqlRead . ' WHERE id = :id',
             array(
                 ':id' => $id
             )

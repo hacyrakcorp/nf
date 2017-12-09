@@ -2,9 +2,9 @@
 class Utilisateur
 {
 	// Design Pattern CRUD
-    protected static $sqlCreate = "INSERT INTO utilisateur (id, nom, prenom, login, mdp, email, tentative_connection, id_statut, id_service ) VALUES (:id, :nom, :prenom, :login, :mdp, :email, :tentative_connection, :id_statut, :id_service)";
+    protected static $sqlCreate = "INSERT INTO utilisateur (id, nom, prenom, login, mdp, tentative_connection, id_statut, id_service, code_mdp_oublie, confirme_code, date_expiration_code) VALUES (:id, :nom, :prenom, :login, :mdp, :email, :tentative_connection, :id_statut, :id_service, :code, :confirme, :dateExpiration)";
     protected static $sqlRead = "SELECT * FROM utilisateur";
-    protected static $sqlUpdate = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, login = :login, mdp = :mdp, email = :email, tentative_connection = :tentative_connection, id_statut = :id_statut, id_service = :id_service WHERE id = :id";
+    protected static $sqlUpdate = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, login = :login, mdp = :mdp, tentative_connection = :tentative_connection, id_statut = :id_statut, id_service = :id_service, code_mdp_oublie = :code, confirme_code = :confirme, date_expiration_code = :dateExpiration WHERE id = :id";
     protected static $sqlDelete = "DELETE FROM utilisateur";
 
     /**
@@ -47,6 +47,21 @@ class Utilisateur
      */
     private $id_service;
 	
+	/**
+     * @var string
+     */
+	 private $code;
+	
+	 /**
+     * @var integer
+     */
+	 private $confirme;
+	 
+	 /**
+     * @var date
+     */
+	 private $dateExpiration;
+	 
 
     /**
      * @return int
@@ -127,22 +142,6 @@ class Utilisateur
     {
         $this->mdp = $mdp;
     }
-
-	/**
-     * @return string
-     */
-	public function getEmail()
-    {
-		return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
 	
 	/**
      * @return int
@@ -193,6 +192,54 @@ class Utilisateur
     }
 	
 	/**
+     * @return string
+     */
+	public function getCode()
+    {
+		return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+	/**
+     * @return string
+     */
+	public function getConfirme()
+    {
+		return $this->confirme;
+    }
+
+    /**
+     * @param string $confirme
+     */
+    public function setConfirme($confirme)
+    {
+        $this->confirme = $confirme;
+    }
+	
+	/**
+     * @return string
+     */
+	public function getDateExpiration()
+    {
+		return $this->dateExpiration;
+    }
+
+    /**
+     * @param string $dateExpiration
+     */
+    public function setDateExpiration($dateExpiration)
+    {
+        $this->dateExpiration = $dateExpiration;
+    }
+	
+	/**
      * @return Utilisateur[]
      */
     public static function getAllListe()
@@ -208,10 +255,12 @@ class Utilisateur
 			$obj->setPrenom($item['prenom']);
             $obj->setLogin($item['login']);
             $obj->setMdp($item['mdp']);
-			$obj->setEmail($item['email']);
 			$obj->setTentative_connection($item['tentative_connection']);
 			$obj->setStatut(Statut::getById($item['id_statut']));			
             $obj->setService(Service::getById($item['id_service']));
+			$obj->setCode($item['code_mdp_oublie']);
+			$obj->setConfirme($item['confirme_code']);
+			$obj->setDateExpiration($item['date_expiration_code']);
             $tab[] = $obj;
         }
 
@@ -241,10 +290,12 @@ class Utilisateur
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -272,10 +323,12 @@ class Utilisateur
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -298,16 +351,18 @@ class Utilisateur
         if (count($liste) > 0) {
             $tab = array();
             foreach ($liste as $item) {
-				 $obj = new Utilisateur();
+				$obj = new Utilisateur();
 				$obj->setId($item['id']);
 				$obj->setNom($item['nom']);
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab[0]; //info de l'utilisateur
@@ -316,29 +371,32 @@ class Utilisateur
         }
     }
 	
-	public static function getByMail($login)
+	public static function getByLoginCode($login, $code)
     {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
-            self::$sqlRead . ' WHERE email = :email',
+            self::$sqlRead . ' WHERE login = :login AND code_mdp_oublie = :code',
             array(
-                ':email' => $email
+                ':login' => $login,
+				':code' => $code
             )
         );
-
+		
         if (count($liste) > 0) {
             $tab = array();
             foreach ($liste as $item) {
-				 $obj = new Utilisateur();
+				$obj = new Utilisateur();
 				$obj->setId($item['id']);
 				$obj->setNom($item['nom']);
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -366,10 +424,12 @@ class Utilisateur
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab[0];
@@ -397,10 +457,12 @@ class Utilisateur
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab;
@@ -441,10 +503,12 @@ class Utilisateur
 				$obj->setPrenom($item['prenom']);
 				$obj->setLogin($item['login']);
 				$obj->setMdp($item['mdp']);
-				$obj->setEmail($item['email']);
 				$obj->setTentative_connection($item['tentative_connection']);
 				$obj->setStatut(Statut::getById($item['id_statut']));			
 				$obj->setService(Service::getById($item['id_service']));
+				$obj->setCode($item['code_mdp_oublie']);
+				$obj->setConfirme($item['confirme_code']);
+				$obj->setDateExpiration($item['date_expiration_code']);
 				$tab[] = $obj;
             }
             return $tab;
@@ -475,10 +539,12 @@ class Utilisateur
 				':prenom' => $this->getPrenom(),
                 ':login' => $this->getLogin(),
                 ':mdp' => $this->getMdp(),
-				':email' => $this->getEmail(),
 				':tentative_connection' => $this->getTentative_connection(),
 				':id_statut' => $this->getStatut()->getID(),
-				':id_service' => $this->getService()->getId()
+				':id_service' => $this->getService()->getId(),
+				':code' => $this->getCode(),
+				':confirme' => $this->getConfirme(),
+				':dateExpiration' => $this->getDateExpiration()
 				);
 		}
 		else
@@ -492,7 +558,10 @@ class Utilisateur
 				':email' => $this->getEmail(),
 				':tentative_connection' => $this->getTentative_connection(),
 				':id_statut' => $this->getStatut->getID(),
-				':id_service' => null
+				':id_service' => null,
+				':code' => $this->getCode(),
+				':confirme' => $this->getConfirme(),
+				':dateExpiration' => $this->getDateExpiration()
 				);
 		}
         return $connexionInstance->executer($sql,$parametre);

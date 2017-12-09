@@ -113,33 +113,24 @@ class AuthentificationController extends BaseControleur
 			$this->setSessionParam('recuperation_mail',$mail);
 			if (filter_var($mail, FILTER_VALIDATE_EMAIL)) 
 			{ //Vérifie si mail est valide = XXXXXXX@xxx.xx
-				$verification_mail = Utilisateur::getByMail($mail);
-				if ($verification_mail != False)
+				$gestionMdp = Utilisateur::getByLogin($mail);
+				if ($gestionMdp != False)
 				{ //mail présent dans la table utilisateur
-						$code_verification = UtilitaireControleur::chaineAleatoire(10); //Code de vérification généré aléatoirement
-						$gestionMdp = MdpOublie::getByMail($mail); //Recupere un objet MdpOublie
-						if($gestionMdp != null) 
-						{ //mail présent dans la table mdp_oublie				
-							$gestionMdp->setCode($code_verification);
-							$update = $gestionMdp->save(); //modifie dans la table mdp_oublie
-						}
-						else
-						{ //mail non présent dans la table mp_oublie
-							$nouvelleDemande = new MdpOublie();
-							$nouvelleDemande->setMail($mail);
-							$nouvelleDemande->setCode($code_verification);
-							$nouvelleDemande->setConfirme(0);
-							$create = $nouvelleDemande->save(); //ajoute dans la table mdp_oublie
-						}
-						
-						$sujet_mail = "ExaDART : modification du mot de passe"; //Sujet du mail
+						$date_du_jour = date("Y-m-d");
+						$date_expiration = date('Y-m-d', strtotime($date_du_jour) + (24 * 3600 * 2)); 
+						$code_verification = UtilitaireControleur::chaineAleatoire(10); //Code de vérification généré aléatoirement			
+						$gestionMdp->setDateExpiration($date_expiration);
+						$gestionMdp->setCode($code_verification);
+						$update = $gestionMdp->save(); //modifie dans la table utilisateur
+						//Structure du mail d'envoi du code
+						$sujet_mail = "Note de frais CFAI84 : modification du mot de passe"; //Sujet du mail
 						$message_mail = "
 						<html>
 							<head>
 							</head>
 							<body>
 								Bonjour, <br>
-								Une demande pour réinitialiser le mot de passe de votre compte ExaDART à été effectuée.<br> 
+								Une demande pour réinitialiser le mot de passe de votre compte NF-CFAI84 à été effectuée.<br> 
 								Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.<br>
 								Pour définir un nouveau mot de passe, voici votre code de vérification : <br>
 								<center><b>".$code_verification."</b><center>
@@ -148,7 +139,6 @@ class AuthentificationController extends BaseControleur
 								Ceci est un e-mail automatique, merci de ne pas répondre à cette adresse.
 							</body>
 						</html>";	//Message au format HTML.
-						
 						$mailEnvoye = UtilitaireControleur::envoyerMail($this->getPostParam('recuperation_mail'), $sujet_mail, $message_mail);
 						if($mailEnvoye==True)
 						{ //envoi du mail OK
@@ -189,11 +179,11 @@ class AuthentificationController extends BaseControleur
 		{ //champ code rempli
 			$mail = $this->getSessionParam('recuperation_mail');
 			$code_entre = $this->getPostParam('code_verif');			
-			$requete_verification = MdpOublie::getByMailCode($mail, $code_entre);//Recupere un objet MdpOublie			
+			$requete_verification = Utilisateur::getByLoginCode($mail, $code_entre);//Recupere un objet Utilisateur			
 			if ($requete_verification!=null)
 			{ //Code OK
 				$requete_verification->setConfirme(1); //Confirme l'entrée du code
-				$save = $requete_verification->save();
+				$requete_verification->save();
 				$this->redirect('index.php?page=motDePasseOublieMdp');
 			}
 			else
@@ -222,7 +212,7 @@ class AuthentificationController extends BaseControleur
 		$mail = $this->getSessionParam('recuperation_mail');
 		if (!empty($mdp) && !empty($mdp_confirme))
 		{ //Sécurité pour être sûr qu'un code de vérification a été rentrer
-			$MdpOublie = MdpOublie::getByMail($mail); //Récupère un objet MdpOublie
+			$MdpOublie = Utilisateur::getByLogin($mail); //Récupère un objet Utilisateur
 			$verification_confirme = $MdpOublie->getConfirme();
 			if(intval($verification_confirme)==1)
 			{ //Code de vérification OK
@@ -232,10 +222,9 @@ class AuthentificationController extends BaseControleur
 					{ //les 2 mdp correspondent
 						$sel='yolo42'; //A mettre en place plus tard (concaténation dans sha1)
 						$mdp = sha1($mdp); //Pour le hachage du mot de passe
-						$utilisateur = Utilisateur::getByMail($mail); //Recupere objet utilisateur
+						$utilisateur = Utilisateur::getByLogin($mail); //Recupere objet utilisateur
 						$utilisateur->SetMdp($mdp);
-						$save = $utilisateur->save(); //modifie le mdp
-						$MdpOublie->delete(); //Supprime la demande de la table
+						$utilisateur->save(); //modifie le mdp
 						$this->redirect('index.php?info=1');
 					} 
 					else
