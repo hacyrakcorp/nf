@@ -8,17 +8,25 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo $this->pathWeb('css/style.css'); ?>" />
 		<script src="web/js/jquery-3.2.1.min.js" type="text/javascript"> </script>
 	</head>
-	<body>		
+	<body>
+		<?php if ($this->getSessionParam('estAutenthifie') == 'false')
+				{?>
+				<header>
+					<h1 id="En-tete">NF-CFAI84</h1>
+				</header>
+		<?php 	}?>
 		<br>
+		<div id="position_body">
         <?php if($this->erreurMessage != null): ?>
-			<div class="alert col-lg-offset-1 col-lg-2 alert-danger">
-				<strong>Attention ! </strong><?php echo $this->erreurMessage; ?>
+			<div class="alert col-lg-offset-1 col-lg-2 alert-danger alert-dismissible" role="alert">
+				<!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>!-->
+					<strong>Attention ! </strong><?php echo $this->erreurMessage; ?>
 			</div>
-		   <!-- <div class="erreur"><?php //echo $this->erreurMessage; ?></div>
-		   !-->
         <?php endif ?>
 		<?php if($this->infoMessage != null): ?>
-			<div class="alert col-lg-2 alert-info">
+			<div class="alert col-lg-2 alert-dismissable alert-info">
 			<strong>Infos ! </strong><?php echo $this->infoMessage; ?>
 			</div>
 		<?php endif ?>

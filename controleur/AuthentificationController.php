@@ -20,15 +20,16 @@ class AuthentificationController extends BaseControleur
 			if ($verification_login != null)
 			{ //login ok
 				$compte_bloque = $verification_login->getBloque();
-				if ($compte_bloque != false)
-				{
+				if (intval($compte_bloque) == 0)
+				{//Le compte n'est pas bloqué
 					$verification_mdp = $verification_login->getMdp();
 					$sel='yolo42'; //A mettre en place plus tard (concaténation dans sha1)
 					$mdp_crypte = sha1($mdp);
 					$id = $verification_login->getId();
 					if ($verification_mdp == $mdp_crypte)
 					{ //mdp OK
-						$statut = $verification_login->getStatut();
+						$statut = $verification_login->getStatut(); //Objet Statut
+						$statut = $statut->getId(); //Recupere ID du statut pour redirection
 						$this->setSessionParam('estAutenthifie', 'true');
 						$this->setSessionParam('statut', intval($statut));
 						$this->setSessionParam('id', intval($id));

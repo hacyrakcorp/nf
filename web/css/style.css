@@ -4,7 +4,11 @@ body
 	background-repeat: no-repeat;
     background-attachment: fixed;
     font-size: 17px;
-	padding-top : 30px;
+}
+
+#position_body
+{
+	margin-top : 30px;
 }
 
 #logo
@@ -31,9 +35,9 @@ body
 {
 	-webkit-animation: rotating 2s linear infinite;
 }
+
 #En-tete
 {
-	
 	background-color:#222;   
     font-size: 70px;
     color: white;

@@ -50,93 +50,24 @@ class MainController extends BaseControleur
         }
         else
         { // Connecté
-            if($this->getGetParam('page') === null)
+			if ($this->getGetParam('page') === 'deconnexion')
+			{
+				$authentificationController = new AuthentificationController();
+				$authentificationController->logout();
+			}
+            else if($this->getGetParam('page') === null)
             { // Page d'accueil en fonction du statut
                 if(intval($this->getSessionParam('statut')) === 1)
                 {  //L'utilisateur est administrateur
 					$administrateurControleur = new AdministrateurControleur();
 					$administrateurControleur->accueil();
                 } 
+				if(intval($this->getSessionParam('statut')) === 2)
+                {  //L'utilisateur est déclarant salarié
+					$administrateurControleur = new DeclarantControleur();
+					$administrateurControleur->accueil();
+                } 
             }
-			if ($this->getGetParam('page') === 'traitementJury')
-			{ //Page enregistrer jury (ajouter ou modifier)
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->enregistrerJury();
-			}
-			else if ($this->getGetParam('page') === 'traitementCandidat')
-			{ //Page enregistrer candidat (ajouter ou modifier)
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->enregistrerCandidat();
-			}
-			else if ($this->getGetParam('page') === 'supprimerJury')
-			{ //Page supprimer jury
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerJury();
-			}
-			else if ($this->getGetParam('page') === 'supprimerCandidat')
-			{ //Page supprimer candidat
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerCandidat();
-			}			
-			else if ($this->getGetParam('page') === 'reset')
-			{ //Page ré-initialise
-				$this->redirect('index.php');					
-			}
-			else if ($this->getGetParam('page') === 'traitementTableau')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerSelection();
-			}
-			else if ($this->getGetParam('page') === 'filtrerTableau')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->filtrerOption();
-			}
-			else if ($this->getGetParam('page') === 'deconnexion')
-			{
-				$authentificationController = new AuthentificationController();
-				$authentificationController->logout();
-			}
-			else if ($this->getGetParam('page') === 'chargercsv')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->chargercsv();
-			}
-			else if ($this->getGetParam('page') === 'traitementSessions')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->enregistrerSession();
-			}
-			else if ($this->getGetParam('page') === 'supprimerSessions')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerSelectionSession();
-			}
-			else if ($this->getGetParam('page') === 'traitementBinome')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->enregistrerBinome();
-			}
-			else if ($this->getGetParam('page') === 'supprimerBinome')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerBinome();
-			}
-			else if ($this->getGetParam('page') === 'traitementGroupe')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->enregistrerGroupeCandidat();
-			}
-			else if ($this->getGetParam('page') === 'supprimerGroupe')
-			{
-				$administrateurControleur = new AdministrateurControleur();
-				$administrateurControleur->supprimerGroupe();
-			}
-			else if ($this->getGetParam('page') === 'traitementEpreuve')
-			{
-				$JuryControleur = new JuryControleur();
-				$JuryControleur->chargerSession();
-			}
 			
         }
     }
