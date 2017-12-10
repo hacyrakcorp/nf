@@ -6,7 +6,7 @@
 class BaseControleur
 {
     protected $erreurMessage;
-	protected $infoMessage;
+    protected $infoMessage;
     protected $pathVue;
 
     public function __construct()
@@ -38,13 +38,9 @@ class BaseControleur
 		{
 			$this->infoMessage = 'Session enregistrée';
 		}
-		else if($this->getGetParam('info') == 7)
+		else if ($this->getGetParam('info') == 7)
 		{
-			$this->infoMessage = 'Binome enregistré';
-		}
-		else if($this->getGetParam('info') == 8)
-		{
-			$this->infoMessage = 'Candidat enregistré';
+			$this->infoMessage = 'Un code vous a déjà été renseigner aujourd\'hui. Utilisez le ici.';
 		}
 		
 		

@@ -6,7 +6,8 @@
 		<link rel="icon" type="image/png" href="<?php echo $this->pathWeb('images/logo_Ndf.png'); ?>" />
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" >
 		<link rel="stylesheet" type="text/css" href="<?php echo $this->pathWeb('css/style.css'); ?>" />
-		<script src="web/js/jquery-3.2.1.min.js" type="text/javascript"> </script>
+		<script src="<?php echo $this->pathWeb('js/jquery-3.2.1.min.js'); ?>" type="text/javascript"> </script>
+                <script src="<?php echo $this->pathWeb('bootstrap/js/bootstrap.min.js'); ?>" type="text/javascript"> </script>
 	</head>
 	<body>
 		<?php if ($this->getSessionParam('estAutenthifie') == 'false')

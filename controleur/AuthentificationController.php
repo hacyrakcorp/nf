@@ -129,38 +129,48 @@ class AuthentificationController extends BaseControleur
 				$gestionMdp = Utilisateur::getByLogin($mail);
 				if ($gestionMdp != False)
 				{ //mail présent dans la table utilisateur
+						$date_ancien_code = $gestionMdp->getDateExpiration();
 						$date_du_jour = date("Y-m-d");
-						$date_expiration = date('Y-m-d', strtotime($date_du_jour) + (24 * 3600 * 2)); 
-						$code_verification = UtilitaireControleur::chaineAleatoire(10); //Code de vérification généré aléatoirement			
-						$gestionMdp->setDateExpiration($date_expiration);
-						$gestionMdp->setCode($code_verification);
-						$update = $gestionMdp->save(); //modifie dans la table utilisateur
-						//Structure du mail d'envoi du code
-						$sujet_mail = "Note de frais CFAI84 : modification du mot de passe"; //Sujet du mail
-						$message_mail = "
-						<html>
-							<head>
-							</head>
-							<body>
-								Bonjour, <br>
-								Une demande pour réinitialiser le mot de passe de votre compte NF-CFAI84 à été effectuée.<br> 
-								Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.<br>
-								Pour définir un nouveau mot de passe, voici votre code de vérification : <br>
-								<center><b>".$code_verification."</b><center>
-								<br>
-								<br>
-								Ceci est un e-mail automatique, merci de ne pas répondre à cette adresse.
-							</body>
-						</html>";	//Message au format HTML.
-						$mailEnvoye = UtilitaireControleur::envoyerMail($this->getPostParam('recuperation_mail'), $sujet_mail, $message_mail);
-						if($mailEnvoye==True)
-						{ //envoi du mail OK
-							$this->redirect('index.php?page=motDePasseOublieCode');
+						if ($date_ancien_code < $date_du_jour OR $date_ancien_code == null)
+						{ //Si la date expiration est null ou si elle est inférieure à celle du journée
+							// On renvoi un code 
+							$date_expiration = date('Y-m-d', strtotime($date_du_jour) + (24 * 3600 * 2));
+							$code_verification = UtilitaireControleur::chaineAleatoire(10); //Code de vérification généré aléatoirement			
+							$gestionMdp->setDateExpiration($date_expiration);
+							$gestionMdp->setCode($code_verification);
+							$update = $gestionMdp->save(); //modifie dans la table utilisateur
+							//Structure du mail d'envoi du code
+							$sujet_mail = "Note de frais CFAI84 : modification du mot de passe"; //Sujet du mail
+							$message_mail = "
+							<html>
+								<head>
+								</head>
+								<body>
+									Bonjour, <br>
+									Une demande pour réinitialiser le mot de passe de votre compte NF-CFAI84 à été effectuée.<br> 
+									Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.<br>
+									Pour définir un nouveau mot de passe, voici votre code de vérification : <br>
+									<center><b>".$code_verification."</b><center>
+									<br>
+									<Strong> Attention ! </strong>Ce code ne sera valable qu'une journée.
+									<br>
+									Ceci est un e-mail automatique, merci de ne pas répondre à cette adresse.
+								</body>
+							</html>";	//Message au format HTML.
+							$mailEnvoye = UtilitaireControleur::envoyerMail($this->getPostParam('recuperation_mail'), $sujet_mail, $message_mail);
+							if($mailEnvoye==True)
+							{ //envoi du mail OK
+								$this->redirect('index.php?page=motDePasseOublieCode');
+							}
+							else
+							{ //mail pas envoyer
+								$this->redirect('index.php?page=motDePasseOublie&erreur=5');
+							}
 						}
 						else
-						{ //mail pas envoyer
-							$this->redirect('index.php?page=motDePasseOublie&erreur=5');
-						}
+						{ //Le code à une date de validité correcte
+							$this->redirect('index.php?page=motDePasseOublieCode&info=7');
+						}	
 				}
 				else
 				{ //mail INCONNU de la table utilisateur

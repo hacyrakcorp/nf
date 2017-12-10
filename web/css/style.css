@@ -1,7 +1,7 @@
 body 
 {
     background-image: url(../images/fond-site.jpg);
-	background-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     font-size: 17px;
 }
@@ -74,6 +74,12 @@ body
 {
 	width:80%;
 	margin: auto;
+}
+
+.form-inline
+{
+        width:80%;
+        margin: auto;
 }
 
 .btn-primary

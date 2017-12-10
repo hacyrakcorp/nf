@@ -71,20 +71,5 @@ class MainController extends BaseControleur
 			
         }
     }
-
-    /*public function accueilJury()
-    {
-        include $this->pathVue.'header.php';
-        include $this->pathVue.'accueilJury.php';
-        include $this->pathVue.'footer.php';
-    }*/
-
-    public function accueilCandidat()
-    {
-        include $this->pathVue.'header.php';
-        include $this->pathVue.'accueilCandidat.php';
-        include $this->pathVue.'footer.php';
-    }
-	
 }
 ?>
