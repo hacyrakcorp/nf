@@ -1,10 +1,22 @@
 ---------------------------TRIGGER pour le blocage du compte utilisateur---------------------------
-DELIMITER|
-DROP IF EXISTS before_update_blocage|
+DELIMITER |
+DROP IF EXISTS before_update_blocage |
 CREATE TRIGGER `before_update_blocage` BEFORE UPDATE ON `utilisateur`
  FOR EACH ROW BEGIN
     IF NEW.tentative_connection = 4
       THEN
         SET NEW.bloque = 1;
     END IF;
-END|
+END |
+
+----------------------------TRIGGER pour mettre le blocage du compte d'utilisateur à faux ---------------------
+
+DELIMITER |
+DROP IF EXISTS before_insert_blocage |
+CREATE TRIGGER `before_insert_blocage` BEFORE UPDATE ON `utilisateur`
+ FOR EACH ROW BEGIN
+    IF (NEW.bloque IS NULL)
+      THEN
+        SET NEW.bloque = 0;
+    END IF;
+END |

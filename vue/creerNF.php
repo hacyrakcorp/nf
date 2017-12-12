@@ -1,6 +1,6 @@
-<form method='post' name='creer_nf' action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=creer_nf" >
+<form method='post' name='enregistrer_nf' action="<?php echo $this->getServerParam('PHP_SELF'); ?>?page=enregistrer_nf" >
     <h3>MISSION DU MOIS</h3>
-    <label for='mois_nf'>Mois et année : </label>
-    <input type='month' id = 'mois_nf' name='mois_nf' class='form-inline'>
-    <button type='button' class='btn-primary' value='Valider'>Valider</button>
+    <input type='hidden' id = 'Id_NF' name='Id_NF' value=''>
+    <input type='month' id = 'mois_annee_NF' name='mois_annee_NF' class='form-inline'>
+    <button type='submit' class='btn-primary' value='Valider'>Valider</button>
 </form>

@@ -26,49 +26,53 @@ class MainController extends BaseControleur
                 $authentificationController = new AuthentificationController();
                 $authentificationController->traitementMotDePasseOublieEnvoyerCode(); // Envoi de l'email
             }
-			else if($this->getGetParam('page') === 'motDePasseOublieCode')
+            else if($this->getGetParam('page') === 'motDePasseOublieCode')
             { //Page mot de passe oublié code de vérification
                 $authentificationController = new AuthentificationController();
                 $authentificationController->motDePasseOublieCode(); // Affichage du formulaire
             }
-			else if($this->getGetParam('page') === 'traitementMotDePasseOublieVerifierCode')
+            else if($this->getGetParam('page') === 'traitementMotDePasseOublieVerifierCode')
             { //Page mot de passe oublié code de vérification
                 $authentificationController = new AuthentificationController();
                 $authentificationController->traitementMotDePasseOublieVerifierCode(); // Vérifie code
             }
-			else if ($this->getGetParam('page') === 'motDePasseOublieMdp')
-			{ //Page mot de passe oublié changement MDP
-				$authentificationController = new AuthentificationController();
+            else if ($this->getGetParam('page') === 'motDePasseOublieMdp')
+            { //Page mot de passe oublié changement MDP
+                $authentificationController = new AuthentificationController();
                 $authentificationController->motDePasseOublieMdp(); // Affichage du formulaire
-			}
-			else if ($this->getGetParam('page') === 'traitementMotDePasseOublieModifierMdp')
-			{ //Page mot de passe oublié changement MDP
-				$authentificationController = new AuthentificationController();
+            }
+            else if ($this->getGetParam('page') === 'traitementMotDePasseOublieModifierMdp')
+            { //Page mot de passe oublié changement MDP
+                $authentificationController = new AuthentificationController();
                 $authentificationController->traitementMotDePasseOublieModifierMdp(); // Modifie MDP
-			}
+            }
 			
         }
         else
         { // Connecté
-			if ($this->getGetParam('page') === 'deconnexion')
-			{
-				$authentificationController = new AuthentificationController();
-				$authentificationController->logout();
-			}
+            if ($this->getGetParam('page') === 'deconnexion')
+            {
+                $authentificationController = new AuthentificationController();
+                $authentificationController->logout();
+            }
             else if($this->getGetParam('page') === null)
             { // Page d'accueil en fonction du statut
                 if(intval($this->getSessionParam('statut')) === 1)
                 {  //L'utilisateur est administrateur
-					$administrateurControleur = new AdministrateurControleur();
-					$administrateurControleur->accueil();
+                    $administrateurControleur = new AdministrateurControleur();
+                    $administrateurControleur->accueil();
                 } 
-				if(intval($this->getSessionParam('statut')) === 2)
+                else if(intval($this->getSessionParam('statut')) === 2)
                 {  //L'utilisateur est déclarant salarié
-					$administrateurControleur = new DeclarantControleur();
-					$administrateurControleur->accueil();
+                    $declarantControleur = new DeclarantControleur();
+                    $declarantControleur->accueil();
                 } 
             }
-			
+            else if($this->getGetParam('page') === 'enregistrer_nf')
+            { //Enregistrement d'une fiche de frais
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->enregistrerNF();
+            }		
         }
     }
 }
