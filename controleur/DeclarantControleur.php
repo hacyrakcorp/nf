@@ -7,8 +7,29 @@ class DeclarantControleur extends BaseControleur {
         include $this->pathVue . 'accueilDeclarant.php';
         include $this->pathVue . 'footer.php';
     }
+    
+    //Recupere toute les notes de frais d'un utilisateur
+    public function recupereNF(){
+        $utilisateur = Utilisateur::getById($this->getSessionParam('id'));
+        $id_utilisateur = $utilisateur->getId();
+        $verificationNF = NoteDeFrais::getByUtilisateurAll($id_utilisateur);
+        $len = 0;
+        $lenTab = count($verificationNF);
+        $table = array();
+        while ($len < $lenTab) {
+            $ligne = $verificationNF[$len];
+            //$donnees = (array)$ligne;
+            //var_dump($donnees);
+           // $id = $donnees['1'];
+            //$mois_annee = $donnees['NoteDeFraismois_annee'];
+           // $etat = $donnees['3'];
+            $len++;
+        }
+       // return $table;
+    }
 
-    public function enregistrerNF() { //permet d'enregistrer une note de frais dans la base
+    //permet d'enregistrer une note de frais dans la base
+    public function enregistrerNF() { 
         $id = $this->getPostParam('Id_NF');
         $moisAnnee = $this->getPostParam('mois_annee_NF');
         $utilisateur = Utilisateur::getById($this->getSessionParam('id'));
@@ -28,7 +49,6 @@ class DeclarantControleur extends BaseControleur {
                         $erreur = true;
                     }
                 }
-
                 if ($erreur == true) { //Si booléen à vrai alors pas save sinon save
                     $this->redirect('index.php?erreur=18#Creer');
                 } else {//Il n'y a aucun enregistrement pour cet utilisateur
@@ -67,5 +87,4 @@ class DeclarantControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2#Creer');
         }
     }
-
 }

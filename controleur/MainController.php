@@ -72,7 +72,7 @@ class MainController extends BaseControleur
             { //Enregistrement d'une fiche de frais
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->enregistrerNF();
-            }		
+            }	
         }
     }
 }

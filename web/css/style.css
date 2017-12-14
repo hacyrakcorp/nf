@@ -8,40 +8,15 @@ body
 
 #position_body
 {
-	margin-top : 30px;
-}
-
-#logo
-{
-	width:30px;
-    height:30px;
-}
-
-@-webkit-keyframes rotating
-{
-	from 
-	{
-		/*-webkit-transform:translateX(0px) rotateY(0deg);*/
-		-webkit-transform:rotateY(0deg);
-	}
-	to 
-	{
-		/*-webkit-transform:translateX(150px)rotateY(360deg);*/
-		-webkit-transform:rotateY(360deg);
-	}
-}
-
-.rotating
-{
-	-webkit-animation: rotating 2s linear infinite;
+    margin-top : 30px;
 }
 
 #En-tete
 {
-	background-color:#222;   
+    background-color:#222;   
     font-size: 70px;
     color: white;
-	margin: auto;
+    margin: auto;
     text-align: center;
     text-shadow: 0px 1px 5px black;
 }
@@ -52,45 +27,82 @@ body
     background-position: center;
     transition:.5s;
     text-align: center;
-	color : white;
-	padding-top : 0.1%;
-	padding-bottom : 2%;
+    color : white;
+    padding-top : 0.1%;
+    padding-bottom : 2%;
     margin-top: 100px;
     margin-left:auto;
     margin-right:auto;
     width:40%;
-	border-radius: 10px;
+    border-radius: 10px;
     box-shadow: 0px 2px 20px black;
 }
 
 .navbar-inverse 
 {
-	
-	border-radius : 0px;
-	border-style : none;
+
+    border-radius : 0px;
+    border-style : none;
 }
 
 .form-control
 {
-	width:80%;
-	margin: auto;
+    width:80%;
+    margin: auto;
 }
 
 .form-inline
 {
-        width:80%;
-        margin: auto;
+    width:80%;
+    margin: auto;
 }
 
 .btn-primary
 {
-	border-radius: 10px;
+    border-radius: 10px;
 }
 
 .admin
 {
     max-width:85%;
     margin:2rem auto;
+}
+
+.responsive-table-line
+{
+    margin:0px auto;
+    max-width:700px;
+}
+
+.w-auto 
+{ /*Tableau*/
+    width: auto;
+}
+
+#logo
+{
+    width:30px;
+    height:30px;
+}
+
+/*-----------------------------LOGO QUI TOURNE--------------------------------*/
+@-webkit-keyframes rotating
+{
+    from 
+    {
+        /*-webkit-transform:translateX(0px) rotateY(0deg);*/
+        -webkit-transform:rotateY(0deg);
+    }
+    to 
+    {
+        /*-webkit-transform:translateX(150px)rotateY(360deg);*/
+        -webkit-transform:rotateY(360deg);
+    }
+}
+
+.rotating
+{
+    -webkit-animation: rotating 2s linear infinite;
 }
 
 /*---------------------------------MENU--------------------------------------*/
@@ -121,4 +133,43 @@ body
 .tab-content__item.is-active
 {
     display:block;
+}
+
+/*--------------------------TABLEAU RESPONSIVE-------------------------------*/
+@media (max-width: 500px) {
+    .responsive-table-line td:before { content: attr(data-title); }
+    .responsive-table-line table, 
+    .responsive-table-line thead, 
+    .responsive-table-line tbody, 
+    .responsive-table-line th, 
+    .responsive-table-line td, 
+    .responsive-table-line tr { 
+        display: block; 
+    }
+
+    .responsive-table-line thead tr { 
+        display:none;
+    }
+    .responsive-table-line td { 
+        position: relative;
+        border: 0px solid transparent;
+        padding-left: 50% !important; 
+        white-space: normal;
+        text-align:right; 
+    }
+
+    .responsive-table-line td:before { 
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 45%; 
+        padding-right: 15px; 
+        height:100%;
+        white-space: nowrap;
+        text-overflow: ellipsis !important;
+        overflow:hidden !important;
+        text-align:left;
+        background-color:#f8f8f8;
+        padding:2px;
+    }
 }

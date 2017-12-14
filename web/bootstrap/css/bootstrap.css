@@ -4179,8 +4179,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
 }
-.
--collapse {
+.-collapse {
   padding-right: 15px;
   padding-left: 15px;
   overflow-x: visible;
