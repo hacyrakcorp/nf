@@ -36,7 +36,7 @@ class BaseControleur
 		}
 		else if($this->getGetParam('info') == 6)
 		{
-			$this->infoMessage = 'Session enregistrée';
+			$this->infoMessage = 'Fiche de frais enregistrée';
 		}
 		else if ($this->getGetParam('info') == 7)
 		{
@@ -112,7 +112,15 @@ class BaseControleur
 		else if	($this->getGetParam('erreur') == 17)
 		{
 			$this->erreurMessage = 'Votre compte est bloqué. Veuillez contacter l\'administrateur.';
-		}		
+		}
+                else if ($this->getGetParam('erreur') == 18)
+                {
+                    $this->erreurMessage = 'Une fiche de frais existe. Veuillez la compléter';
+                }
+                else if ($this->getGetParam('erreur') == 19)
+                {
+                    $this->erreurMessage = 'Impossible d\'enregistrer une date avenir.';
+                }
     }
 
     public function redirect($lien)	//redirection

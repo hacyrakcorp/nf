@@ -151,12 +151,34 @@ class NoteDeFrais {
         $this->net_a_payer = $net_a_payer;
     }
 
-    public function setId_utilisateur(Utilisateur $id_utilisateur) {
+    public function setId_utilisateur($id_utilisateur) {
         $this->id_utilisateur = $id_utilisateur;
     }
 
-    public function setId_etat(Statut $id_etat) {
+    public function setId_etat($id_etat) {
         $this->id_etat = $id_etat;
+    }
+    
+    public static function getAllListe() {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(self::$sqlRead);
+
+        $tab = array();
+        foreach ($liste as $item) {
+            $obj = new NoteDeFrais();
+            $obj->setId($item['id']);
+            $obj->setMois_annee($item['mois_annee']);
+            $obj->setNb_justificatif($item['nb_justificatif']);
+            $obj->setPrix_km($item['prix_km']);
+            $obj->setMode_reglement($item['mode_reglement']);
+            $obj->setBanque($item['banque']);
+            $obj->setAvance($item['avance']);
+            $obj->setNet_a_payer($item['$net_a_payer']);
+            $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
+            $obj->setId_etat(Etat::getById($item['id_etat']));
+            $tab[] = $obj;
+        }
+        return $tab;
     }
 
     public static function getById($id) {
@@ -184,6 +206,36 @@ class NoteDeFrais {
                 $tab[] = $obj;
             }
             return $tab[0];
+        } else {
+            return null;
+        }
+    }
+    
+    public static function getByUtilisateurAll($id_utilisateur) {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE id_utilisateur = :id_utilisateur', array(
+            ':id_utilisateur' => $id_utilisateur
+                )
+        );
+
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new NoteDeFrais();
+                $obj->setId($item['id']);
+                $obj->setMois_annee($item['mois_annee']);
+                $obj->setNb_justificatif($item['nb_justificatif']);
+                $obj->setPrix_km($item['prix_km']);
+                $obj->setMode_reglement($item['mode_reglement']);
+                $obj->setBanque($item['banque']);
+                $obj->setAvance($item['avance']);
+                $obj->setNet_a_payer($item['net_a_payer']);
+                $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
+                $obj->setId_etat(Etat::getById($item['id_etat']));
+                $tab[] = $obj;
+            }
+            return $tab;
         } else {
             return null;
         }

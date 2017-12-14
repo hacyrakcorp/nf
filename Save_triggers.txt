@@ -1,6 +1,6 @@
----------------------------TRIGGER pour le blocage du compte utilisateur---------------------------
+﻿---------------------------TRIGGER pour le blocage du compte utilisateur---------------------------
 DELIMITER |
-DROP IF EXISTS before_update_blocage |
+DROP TRIGGER IF EXISTS before_update_blocage |
 CREATE TRIGGER `before_update_blocage` BEFORE UPDATE ON `utilisateur`
  FOR EACH ROW BEGIN
     IF NEW.tentative_connection = 4
@@ -12,11 +12,22 @@ END |
 ----------------------------TRIGGER pour mettre le blocage du compte d'utilisateur à faux ---------------------
 
 DELIMITER |
-DROP IF EXISTS before_insert_blocage |
+DROP TRIGGER IF EXISTS before_insert_blocage |
 CREATE TRIGGER `before_insert_blocage` BEFORE UPDATE ON `utilisateur`
  FOR EACH ROW BEGIN
     IF (NEW.bloque IS NULL)
       THEN
         SET NEW.bloque = 0;
+    END IF;
+END |
+
+----------------------------TRIGGER pour supprimer ligne si fiche de frais sur une date future ---------------------
+DELIMITER |
+DROP TRIGGER IF EXISTS `before_insert_nf` |
+CREATE TRIGGER `before_insert_nf` BEFORE INSERT ON `note_frais`
+ FOR EACH ROW BEGIN
+    IF (STR_TO_DATE(NEW.mois_annee,'%Y-%m') > sysdate())
+      THEN
+        signal sqlstate '45000' set message_text = 'Impossible d\'enregistrer une date avenir.';   
     END IF;
 END |
