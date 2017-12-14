@@ -18,14 +18,16 @@ class DeclarantControleur extends BaseControleur {
         $table = array();
         while ($len < $lenTab) {
             $ligne = $verificationNF[$len];
-            //$donnees = (array)$ligne;
-            //var_dump($donnees);
-           // $id = $donnees['1'];
-            //$mois_annee = $donnees['NoteDeFraismois_annee'];
-           // $etat = $donnees['3'];
+            $id = $ligne->getId();
+            $mois_annee = $ligne->getMois_annee();
+            $etat = $ligne->getId_etat();
+            var_dump($etat);
+            //$libelle_etat = je n'arrive pas à récupérer 
+            // * le libellé de l'etat ici;
+            $table[$len] = [$id, $mois_annee, $etat];
             $len++;
         }
-       // return $table;
+        return $table;
     }
 
     //permet d'enregistrer une note de frais dans la base

@@ -67,4 +67,31 @@ class Etat {
             return null;
         }
     }
+    
+    public static function getByLibelle($libelle)
+    {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+            self::$sqlRead.' WHERE libelle = :libelle',
+            array(
+                ':libelle' => $libelle
+            )
+        );
+        if(count($liste) > 0)
+        {
+            $tab = array();
+            foreach ($liste as $item)
+            {
+                $obj = new Service();
+                $obj->setId($item['id']);
+                $obj->setLibelle($item['libelle']);
+                $tab[] = $obj;
+            }
+            return $tab[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
