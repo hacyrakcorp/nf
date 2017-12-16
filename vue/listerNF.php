@@ -11,8 +11,8 @@
                 </tr>
             </thead> 
             <tbody>
-                <?php
-                $listeNF = DeclarantControleur::recupereNF();
+                <?php   
+                $listeNF = DeclarantControleur::recupereNFAll();
                 $lenTab = count($listeNF);
                 $len = 0;
                 while ($len < $lenTab) {
@@ -22,54 +22,65 @@
                     $etat = $donnees['2'];
                     $len++;
                 ?>
-                    <tr>
+                
+                    <tr> 
                         <td data-title="Note de frais">
                             <?php echo $mois_annee; ?></td>
-                        <td data-title="Etat"> </td>		
+                        <td data-title="Etat"> 
+                            <?php echo $etat; ?></td></td>
                         <td> 
+                            <?php if ($etat != "soumise")
+                            { ?>
                             <p data-placement="rigth" data-toggle="tooltip" 
                                title="Soumettre" style="display:inline-block;">
-                                <button class="btn btn-success btn-xs" 
-                                        data-title="Soumettre" data-toggle="modal" 
-                                        data-target="#soumettre" >
+                                <button name = 'Soumettre' 
+                                        class="btn btn-success btn-xs"
+                                        value = '<?php echo $id; ?>'> 
+                            <!-- data-title="Soumettre" data-toggle="modal" 
+                                data-target="#soumettre" !-->
                                     <span class="glyphicon glyphicon-ok">
                                     </span>
                                 </button>
                             </p>
+                            <?php
+                            }
+                            ?>
                             <p data-placement="rigth" data-toggle="tooltip" 
-                               title="Modifier" style="display:inline-block;">
-                                <button class="btn btn-primary btn-xs" 
-                                        data-title="Modifier" data-toggle="modal" 
-                                        data-target="#modifier" >
+                               title="Modifier la date" 
+                               style="display:inline-block;">
+                                <button name = 'Modifier' 
+                                        class="btn btn-primary btn-xs" 
+                                        value ='<?php echo $id; ?>'
+                                        >
                                     <span class="glyphicon glyphicon-pencil">
                                     </span>
                                 </button>
                             </p>
                             <p data-placement="rigth" data-toggle="tooltip" 
-                               title="Ajouter" style="display:inline-block;">
-                                <button class="btn btn-warning btn-xs" 
-                                        data-title="Ajouter" data-toggle="modal" 
-                                        data-target="#ajouter" >
+                               title="Ajouter des lignes" 
+                               style="display:inline-block;">
+                                <button name='Ajouter' 
+                                        class="btn btn-warning btn-xs" 
+                                        value='<?php echo $id; ?>'
+                                         >
                                     <span class="glyphicon glyphicon-plus">  
                                     </span>
                                 </button>
                             </p>
                             <p data-placement="rigth" data-toggle="tooltip" 
                                title="Supprimer" style="display:inline-block;">
-                                <button class="btn btn-danger btn-xs" 
-                                        data-title="Supprimer" data-toggle="modal" 
-                                        data-target="#supprimer" >
+                                <button name='Supprimer' 
+                                        class="btn btn-danger btn-xs" 
+                                        value='<?php echo $id; ?>'
+                                        >
                                     <span class="glyphicon glyphicon-trash">  
                                     </span>
                                 </button>
                             </p>
-
                         </td>
                     </tr>
                     <?php
-                }
-                ?>	
-                
+                }?>	
             </tbody>
         </table>
     </div>

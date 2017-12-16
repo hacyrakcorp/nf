@@ -158,7 +158,7 @@ class NoteDeFrais {
     public function setId_etat($id_etat) {
         $this->id_etat = $id_etat;
     }
-    
+
     public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(self::$sqlRead);
@@ -210,7 +210,7 @@ class NoteDeFrais {
             return null;
         }
     }
-    
+
     public static function getByUtilisateurAll($id_utilisateur) {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
@@ -252,33 +252,31 @@ class NoteDeFrais {
         $connexionInstance = Connexion::getInstance();
 
         if ($this->getId_Etat() != null) {
-        $parametre = array(
-            ':id' => $this->getId(),
-            ':mois_annee' => $this->getMois_annee(),
-            ':nb_justificatif' => $this->getNb_justificatif(),
-            ':prix_km' => $this->getPrix_km(),
-            ':mode_reglement' => $this->getMode_reglement(),
-            ':banque' => $this->getBanque(),
-            ':avance' => $this->getAvance(),
-            ':net_a_payer' => $this->getNet_a_payer(),
-            ':id_utilisateur' => $this->getId_utilisateur()->getId(),
-            ':id_etat' => $this->getId_etat()->getId()
-        );
-        }
-        else
-        {
             $parametre = array(
-            ':id' => $this->getId(),
-            ':mois_annee' => $this->getMois_annee(),
-            ':nb_justificatif' => $this->getNb_justificatif(),
-            ':prix_km' => $this->getPrix_km(),
-            ':mode_reglement' => $this->getMode_reglement(),
-            ':banque' => $this->getBanque(),
-            ':avance' => $this->getAvance(),
-            ':net_a_payer' => $this->getNet_a_payer(),
-            ':id_utilisateur' => $this->getId_utilisateur()->getId(),
-            ':id_etat' => null
-        );
+                ':id' => $this->getId(),
+                ':mois_annee' => $this->getMois_annee(),
+                ':nb_justificatif' => $this->getNb_justificatif(),
+                ':prix_km' => $this->getPrix_km(),
+                ':mode_reglement' => $this->getMode_reglement(),
+                ':banque' => $this->getBanque(),
+                ':avance' => $this->getAvance(),
+                ':net_a_payer' => $this->getNet_a_payer(),
+                ':id_utilisateur' => $this->getId_utilisateur()->getId(),
+                ':id_etat' => $this->getId_etat()->getId()
+            );
+        } else {
+            $parametre = array(
+                ':id' => $this->getId(),
+                ':mois_annee' => $this->getMois_annee(),
+                ':nb_justificatif' => $this->getNb_justificatif(),
+                ':prix_km' => $this->getPrix_km(),
+                ':mode_reglement' => $this->getMode_reglement(),
+                ':banque' => $this->getBanque(),
+                ':avance' => $this->getAvance(),
+                ':net_a_payer' => $this->getNet_a_payer(),
+                ':id_utilisateur' => $this->getId_utilisateur()->getId(),
+                ':id_etat' => null
+            );
         }
         return $connexionInstance->executer($sql, $parametre);
     }

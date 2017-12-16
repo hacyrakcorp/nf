@@ -38,6 +38,12 @@ body
     box-shadow: 0px 2px 20px black;
 }
 
+#mois_annee_NF
+{
+    width : 150px;
+    margin: auto;
+}
+
 .navbar-inverse 
 {
 
@@ -72,7 +78,7 @@ body
 {
     margin:0px auto;
     max-width:500px;
-    height: 300px;
+    max-height: 300px;
     overflow-y: scroll;
 }
 

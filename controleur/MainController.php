@@ -72,7 +72,12 @@ class MainController extends BaseControleur
             { //Enregistrement d'une fiche de frais
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->enregistrerNF();
-            }	
+            }
+            else if ($this->getGetParam('page') === 'lister_nf')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->gestionNF();
+            }
         }
     }
 }
