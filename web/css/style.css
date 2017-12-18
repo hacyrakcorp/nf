@@ -181,3 +181,19 @@ body
         padding:2px;
     }
 }
+
+
+
+.icon-input-btn{
+    display: inline-block;
+    position: relative;
+}
+.icon-input-btn input[type="submit"]{
+    padding-left: 2em;
+}
+.icon-input-btn .glyphicon{
+    display: inline-block;
+    position: absolute;
+    left: 0.65em;
+    top: 30%;
+}

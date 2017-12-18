@@ -147,6 +147,8 @@ class DeclarantControleur extends BaseControleur {
         $id = $this->getPostParam('id');
         $noteDeFrais = NoteDeFrais::getById($id);
         if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
+            
+            
         } else if ($this->getPostParam('Soumettre') != null) {//Bouton soumettre cliquer
             $id = $this->getPostParam('Soumettre');
             $noteDeFrais = NoteDeFrais::getById($id);
