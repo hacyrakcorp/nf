@@ -145,35 +145,12 @@ class DeclarantControleur extends BaseControleur {
                         $this->redirect('index.php?erreur=10#Lister');
                     }
                 }
-                /* if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
+                /* else if ($this->getPostParam('Ajouter') != null) {
+                 * //Bouton ajouter cliquer
+                 }*/
 
 
-                  } else if ($this->getPostParam('Soumettre') != null) {//Bouton soumettre cliquer
-                  $id = $this->getPostParam('Soumettre');
-                  $noteDeFrais = NoteDeFrais::getById($id);
-                  if (!empty($id)) {
-                  $etat = new Etat();
-                  $etat_soumis = $etat->getByLibelle('soumise');
-                  $noteDeFrais->setId_etat($etat_soumis);
-                  $noteDeFrais->save();
-                  $this->redirect('index.php?info=4#Lister');
-                  } else {
-                  $this->redirect('index.php?erreur=10#Lister');
-                  }
-                  } else if ($this->getPostParam('Modifier') != null) {//Bouton modifier cliquer
-                  $id_NF = $this->getPostParam('Modifier');
-                  $this->setSessionParam('id_NF', $id_NF);
-                  $this->redirect('index.php#Creer');
-                  } else if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
-                  $id = $this->getPostParam('Supprimer');
-                  $noteDeFrais = NoteDeFrais::getById($id);
-                  if (!empty($id)) {
-                  $noteDeFrais->delete();
-                  $this->redirect('index.php?info=3#Lister');
-                  } else {
-                  $this->redirect('index.php?erreur=9#Lister');
-                  }
-                  } */
+                  
             }
         }
 }      
