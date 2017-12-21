@@ -40,7 +40,7 @@ class DeclarantControleur extends BaseControleur {
         $NF = NoteDeFrais::getById($this->getSessionParam('id_NF'));
         $id = $NF->getId();
         $mois_annee = $NF->getMois_annee();
-        $table = [$id, $mois_annee];   
+        $table = [$id, $mois_annee];
         return $table;
     }
 
@@ -49,46 +49,24 @@ class DeclarantControleur extends BaseControleur {
         $id = $this->getPostParam('Id_NF');
         $moisAnnee = $this->getPostParam('mois_annee_NF');
         $utilisateur = Utilisateur::getById($this->getSessionParam('id'));
-
         if (!empty($moisAnnee)) { //le champs mois_année est rempli
-            if (empty($this->getSessionParam('id_NF'))) { //création NF
-                $enregistrerNF = NoteDeFrais::getById($id);
-                // Verification que 1 NF/utilisateur/mois
-                $id_utilisateur = $utilisateur->getId();
-                $verificationNF = NoteDeFrais::getByUtilisateurAll($id_utilisateur);
-                if ($verificationNF != null) {//Il existe des NF pour cet utilisateur
-                    $erreur = false;
-                    foreach ($verificationNF as $item) {//Parcours le tableau
-                        $verificationDateNF = $item->getMois_annee();
-                        if ($verificationDateNF == $moisAnnee) {//La date existe déjà
-                            $erreur = true;
-                        }
+            $enregistrerNF = NoteDeFrais::getById($id);
+            // Verification que 1 NF/utilisateur/mois
+            $id_utilisateur = $utilisateur->getId();
+            $verificationNF = NoteDeFrais::getByUtilisateurAll($id_utilisateur);
+            if ($verificationNF != null) {//Il existe des NF pour cet utilisateur
+                $erreur = false;
+                foreach ($verificationNF as $item) {//Parcours le tableau
+                    $verificationDateNF = $item->getMois_annee();
+                    if ($verificationDateNF == $moisAnnee) {//La date existe déjà
+                        $erreur = true;
                     }
-                    if ($erreur == true) { //Si booléen à vrai alors pas save sinon save
-                        $this->redirect('index.php?erreur=18#Creer');
-                    } else {//Il n'y a aucun enregistrement pour cet utilisateur
-                        $etat = new Etat();
-                        $id_etat = $etat->getByLibelle("brouillon"); //Etat = brouillon
-                        if ($enregistrerNF != null) { //Modification d'une note de frais
-                            $enregistrerNF->setMois_annee($moisAnnee);
-                            $enregistrerNF->setId_utilisateur($utilisateur);
-                            $enregistrerNF->setId_etat($id_etat);
-                        } else { //Ajout d'une note de frais
-                            $enregistrerNF = new NoteDeFrais();
-                            $enregistrerNF->setMois_annee($moisAnnee);
-                            $enregistrerNF->setId_utilisateur($utilisateur);
-                            $enregistrerNF->setId_etat($id_etat);
-                        }
-                        $result = $enregistrerNF->save();
-                        if ($result === false) {//Date supérieur à date du jour
-                            $this->redirect('index.php?erreur=19#Creer');
-                        } else {//Fiche Créer
-                            $this->redirect('index.php?info=6#Creer');
-                        }
-                    }
-                } else {//Il n'y a pas de fiche de frais
+                }
+                if ($erreur == true) { //Si booléen à vrai alors pas save sinon save
+                    $this->redirect('index.php?erreur=18#Creer');
+                } else {//Il n'y a aucun enregistrement pour cet utilisateur
                     $etat = new Etat();
-                    $id_etat = $etat->getById(1); //Etat = brouillon
+                    $id_etat = $etat->getByLibelle("brouillon"); //Etat = brouillon
                     if ($enregistrerNF != null) { //Modification d'une note de frais
                         $enregistrerNF->setMois_annee($moisAnnee);
                         $enregistrerNF->setId_utilisateur($utilisateur);
@@ -99,89 +77,103 @@ class DeclarantControleur extends BaseControleur {
                         $enregistrerNF->setId_utilisateur($utilisateur);
                         $enregistrerNF->setId_etat($id_etat);
                     }
-                    $enregistrerNF->save();
+                    $result = $enregistrerNF->save();
                     if ($result === false) {//Date supérieur à date du jour
                         $this->redirect('index.php?erreur=19#Creer');
                     } else {//Fiche Créer
                         $this->redirect('index.php?info=6#Creer');
                     }
                 }
-            } else { //modif NF
-                $id_NF = $this->getSessionParam('id_NF');
-                $enregistrerNF = NoteDeFrais::getById($id_NF);
-                // Verification que 1 NF/utilisateur/mois
-                $id_utilisateur = $utilisateur->getId();
-                $verificationNF = NoteDeFrais::getByUtilisateurAll($id_utilisateur);
-                if ($verificationNF != null) {//Il existe des NF pour cet utilisateur
-                    $erreur = false;
-                    foreach ($verificationNF as $item) {//Parcours le tableau
-                        $verificationDateNF = $item->getMois_annee();
-                        if ($verificationDateNF == $moisAnnee) {//La date existe déjà
-                            $erreur = true;
-                        }
-                    }
-                    if ($erreur == true) { //Si booléen à vrai alors pas save sinon save
-                        $this->redirect('index.php?erreur=18#Creer');
-                    } else {//Modif de la date
-                        if ($enregistrerNF != null) { //Modif d'une note de frais
-                            $enregistrerNF->setMois_annee($moisAnnee);
-                            $enregistrerNF->setId_utilisateur($utilisateur);
-                        }
-                        $result = $enregistrerNF->save();
-                        if ($result === false) {//Date supérieur à date du jour
-                            $this->setSessionParam('id_NF', null);
-                            $this->redirect('index.php?erreur=19#Creer');
-                        } else {//Fiche Modifier
-                            $this->setSessionParam('id_NF', null);
-                            $this->redirect('index.php?info=2#Creer');
-                        }
-                    }
-                }
+            } else { //Remplir tout les champs
+                $this->redirect('index.php?erreur=2#Creer');
             }
-        } else { //Remplir tout les champs
-            $this->redirect('index.php?erreur=2#Creer');
         }
     }
 
-    public function gestionNF() {
-        if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
-            $id = $this->getPostParam('Supprimer');
-            $noteDeFrais = NoteDeFrais::getById($id);
-            if (!empty($id)) {
-                $noteDeFrais->delete();
-                $this->redirect('index.php?info=3#Lister');
-            } else {
-                $this->redirect('index.php?erreur=9#Lister');
+        public function gestionNF() {
+            if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
+                $id = $this->getPostParam('Supprimer');
+                $noteDeFrais = NoteDeFrais::getById($id);
+                if (!empty($id)) {
+                    $noteDeFrais->delete();
+                    $this->redirect('index.php?info=3#Lister');
+                } else {
+                    $this->redirect('index.php?erreur=9#Lister');
+                }
+            } else if ($this->getPostParam('Soumettre') != null) {
+                $id = $this->getPostParam('Soumettre');
+                $noteDeFrais = NoteDeFrais::getById($id);
+                if (!empty($id)) {
+                    $etat = new Etat();
+                    $etat_soumis = $etat->getByLibelle('soumise');
+                    $noteDeFrais->setId_etat($etat_soumis);
+                    $noteDeFrais->save();
+                    $this->redirect('index.php?info=4#Lister');
+                } else {
+                    $this->redirect('index.php?erreur=10#Lister');
+                }
+            } else if ($this->getPostParam('Modifier') != null) {
+                $id = $this->getPostParam('Modifier');
+                $moisAnnee = $this->getPostParam('date_NF');
+                $noteDeFrais = NoteDeFrais::getById($id);
+                $utilisateur = Utilisateur::getById($this->getSessionParam('id'));
+                if (!empty($id)) {
+                    $id_utilisateur = $utilisateur->getId();
+                    $verificationNF = NoteDeFrais::getByUtilisateurAll($id_utilisateur);
+                    if ($verificationNF != null) {//Il existe des NF pour cet utilisateur
+                        $erreur = false; //La Fiche Frais n'existe pas
+                        foreach ($verificationNF as $item) {//Parcours le tableau
+                            $verificationDateNF = $item->getMois_annee();
+                            if ($verificationDateNF == $moisAnnee) {
+                                $erreur = true; //La date existe déjà
+                            }
+                        }
+                        if ($erreur == true) { //Si booléen à vrai alors pas save sinon save
+                            $this->redirect('index.php?erreur=18#Lister');
+                        } else {//Modif de la date
+                            if ($noteDeFrais != null) { //Modif d'une note de frais
+                                $noteDeFrais->setMois_annee($moisAnnee);
+                            }
+                            $result = $noteDeFrais->save();
+                            if ($result === false) {//Date supérieur à date du jour
+                                $this->redirect('index.php?erreur=19#Lister');
+                            } else {//Fiche Modifier
+                                $this->redirect('index.php?info=2#Lister');
+                            }
+                        }
+                    } else {
+                        $this->redirect('index.php?erreur=10#Lister');
+                    }
+                }
+                /* if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
+
+
+                  } else if ($this->getPostParam('Soumettre') != null) {//Bouton soumettre cliquer
+                  $id = $this->getPostParam('Soumettre');
+                  $noteDeFrais = NoteDeFrais::getById($id);
+                  if (!empty($id)) {
+                  $etat = new Etat();
+                  $etat_soumis = $etat->getByLibelle('soumise');
+                  $noteDeFrais->setId_etat($etat_soumis);
+                  $noteDeFrais->save();
+                  $this->redirect('index.php?info=4#Lister');
+                  } else {
+                  $this->redirect('index.php?erreur=10#Lister');
+                  }
+                  } else if ($this->getPostParam('Modifier') != null) {//Bouton modifier cliquer
+                  $id_NF = $this->getPostParam('Modifier');
+                  $this->setSessionParam('id_NF', $id_NF);
+                  $this->redirect('index.php#Creer');
+                  } else if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
+                  $id = $this->getPostParam('Supprimer');
+                  $noteDeFrais = NoteDeFrais::getById($id);
+                  if (!empty($id)) {
+                  $noteDeFrais->delete();
+                  $this->redirect('index.php?info=3#Lister');
+                  } else {
+                  $this->redirect('index.php?erreur=9#Lister');
+                  }
+                  } */
             }
         }
-        /*if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
-            
-            
-        } else if ($this->getPostParam('Soumettre') != null) {//Bouton soumettre cliquer
-            $id = $this->getPostParam('Soumettre');
-            $noteDeFrais = NoteDeFrais::getById($id);
-            if (!empty($id)) {
-                $etat = new Etat();
-                $etat_soumis = $etat->getByLibelle('soumise');
-                $noteDeFrais->setId_etat($etat_soumis);
-                $noteDeFrais->save();
-                $this->redirect('index.php?info=4#Lister');
-            } else {
-                $this->redirect('index.php?erreur=10#Lister');
-            }
-        } else if ($this->getPostParam('Modifier') != null) {//Bouton modifier cliquer
-            $id_NF = $this->getPostParam('Modifier');
-            $this->setSessionParam('id_NF', $id_NF);
-            $this->redirect('index.php#Creer');
-        } else if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
-            $id = $this->getPostParam('Supprimer');
-            $noteDeFrais = NoteDeFrais::getById($id);
-            if (!empty($id)) {
-                $noteDeFrais->delete();
-                $this->redirect('index.php?info=3#Lister');
-            } else {
-                $this->redirect('index.php?erreur=9#Lister');
-            }
-        }*/
-    }
-}
+}      

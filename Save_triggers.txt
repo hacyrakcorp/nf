@@ -31,3 +31,14 @@ CREATE TRIGGER `before_insert_nf` BEFORE INSERT ON `note_frais`
         signal sqlstate '45000' set message_text = 'Impossible d\'enregistrer une date avenir.';   
     END IF;
 END |
+
+----------------------------TRIGGER pour supprimer ligne si fiche de frais sur une date future ---------------------
+DELIMITER |
+DROP TRIGGER IF EXISTS `before_update_nf` |
+CREATE TRIGGER `before_update_nf` BEFORE UPDATE ON `note_frais`
+ FOR EACH ROW BEGIN
+    IF (STR_TO_DATE(NEW.mois_annee,'%Y-%m') > sysdate())
+      THEN
+        signal sqlstate '45000' set message_text = 'Impossible d\'enregistrer une date avenir.';   
+    END IF;
+END |
