@@ -144,9 +144,17 @@ class DeclarantControleur extends BaseControleur {
     }
 
     public function gestionNF() {
-        $id = $this->getPostParam('id');
-        $noteDeFrais = NoteDeFrais::getById($id);
-        if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
+        if ($this->getPostParam('Supprimer') != null) {//Bouton supprimer cliquer
+            $id = $this->getPostParam('Supprimer');
+            $noteDeFrais = NoteDeFrais::getById($id);
+            if (!empty($id)) {
+                $noteDeFrais->delete();
+                $this->redirect('index.php?info=3#Lister');
+            } else {
+                $this->redirect('index.php?erreur=9#Lister');
+            }
+        }
+        /*if ($this->getPostParam('Ajouter') != null) {//Bouton ajouter cliquer
             
             
         } else if ($this->getPostParam('Soumettre') != null) {//Bouton soumettre cliquer
@@ -174,7 +182,6 @@ class DeclarantControleur extends BaseControleur {
             } else {
                 $this->redirect('index.php?erreur=9#Lister');
             }
-        }
+        }*/
     }
-
 }
