@@ -15,11 +15,11 @@ class BaseControleur {
 
         //Liste des information
         if ($this->getGetParam('info') == 1) {
-            $this->infoMessage = 'Le mot de passe à bien été modifié';
+            $this->infoMessage = 'Le mot de passe à bien été modifié.';
         } else if ($this->getGetParam('info') == 2) {
-            $this->infoMessage = 'La fiche de frais est modifier';
+            $this->infoMessage = 'La fiche de frais est crée.';
         } else if ($this->getGetParam('info') == 3) {
-            $this->infoMessage = 'Note de frais supprimé';
+            $this->infoMessage = 'La fiche de frais est modifiée.';
         } else if ($this->getGetParam('info') == 4) {
             $this->infoMessage = 'La note de frais est soumise à la comptabilité';
         } else if ($this->getGetParam('info') == 5) {
@@ -33,29 +33,35 @@ class BaseControleur {
 
         //Liste des erreurs
         if ($this->getGetParam('erreur') == 1) {
-            $this->erreurMessage = 'Identifiants incorrects';
+            $this->erreurMessage = 'Identifiants incorrects.';
         } else if ($this->getGetParam('erreur') == 2) {
-            $this->erreurMessage = 'Veuillez remplir tous les champs';
+            $this->erreurMessage = 'Veuillez remplir tous les champs.';
         } else if ($this->getGetParam('erreur') == 3) {
-            $this->erreurMessage = 'Adresse mail non valide (XXXXXXX@xxx.xx)';
+            $this->erreurMessage = 'Adresse mail non valide (XXXXXXX@xxx.xx).';
         } else if ($this->getGetParam('erreur') == 4) {
-            $this->erreurMessage = 'Adresse mail inconnue';
+            $this->erreurMessage = 'Adresse mail inconnue.';
         } else if ($this->getGetParam('erreur') == 5) {
-            $this->erreurMessage = 'Le mail n\'a pas pu être envoyé. Réessayer';
+            $this->erreurMessage = 'Le mail n\'a pas pu être envoyé. Réessayer.';
         } else if ($this->getGetParam('erreur') == 6) {
-            $this->erreurMessage = 'Le code de vérification est incorrect';
+            $this->erreurMessage = 'Le code de vérification est incorrect.';
         } else if ($this->getGetParam('erreur') == 7) {
-            $this->erreurMessage = 'Valider d\'abord votre demande avec le code de vérification qui vous a été envoyé par mail';
+            $this->erreurMessage = 'Valider d\'abord votre demande '
+                    . 'avec le code de vérification qui '
+                    . 'vous a été envoyé par mail.';
         } else if ($this->getGetParam('erreur') == 8) {
-            $this->erreurMessage = 'Les mots de passe sont différents';
+            $this->erreurMessage = 'Les mots de passe sont différents.';
         } else if ($this->getGetParam('erreur') == 9) {
-            $this->erreurMessage = 'Erreur de suppression de la note de frais';
+            //$this->erreurMessage = 'Erreur de suppression de la note de frais';
+            $this->erreurMessage = 'Une fiche de frais existe. '
+                    . 'Veuillez la compléter.';
         } else if ($this->getGetParam('erreur') == 10) {
-            $this->erreurMessage = 'La fiche de frais n\'as pas pu être soumise';
+           // $this->erreurMessage = 'La fiche de frais n\'as pas pu être soumise';
+            $this->erreurMessage = 'Impossible d\'enregistrer une date avenir.';
         } else if ($this->getGetParam('erreur') == 11) {
-            $this->erreurMessage = 'Ceci n\'est pas un fichier csv';
+            $this->erreurMessage = 'Erreur de suppression de la note de frais.';
         } else if ($this->getGetParam('erreur') == 12) {
-            $this->erreurMessage = 'Le chargement du fichier csv a échoué';
+            $this->erreurMessage = 'La fiche de frais n\'as pas pu être soumise.';
+            //$this->erreurMessage = 'Le chargement du fichier csv a échoué';
         } else if ($this->getGetParam('erreur') == 13) {
             $this->erreurMessage = 'Veuillez sélectionner des sessions à supprimer';
         } else if ($this->getGetParam('erreur') == 14) {
@@ -66,10 +72,6 @@ class BaseControleur {
             $this->erreurMessage = 'Vous vous êtes déjà trompé(e) 3 fois aujourd\'hui. A la 4eme vous serez bloqué et devrez contacter l\'administrateur.';
         } else if ($this->getGetParam('erreur') == 17) {
             $this->erreurMessage = 'Votre compte est bloqué. Veuillez contacter l\'administrateur.';
-        } else if ($this->getGetParam('erreur') == 18) {
-            $this->erreurMessage = 'Une fiche de frais existe. Veuillez la compléter';
-        } else if ($this->getGetParam('erreur') == 19) {
-            $this->erreurMessage = 'Impossible d\'enregistrer une date avenir.';
         }
     }
 

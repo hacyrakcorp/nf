@@ -200,7 +200,7 @@ class NoteDeFrais {
                 $obj->setMode_reglement($item['mode_reglement']);
                 $obj->setBanque($item['banque']);
                 $obj->setAvance($item['avance']);
-                $obj->setNet_a_payer($item['$net_a_payer']);
+                $obj->setNet_a_payer($item['net_a_payer']);
                 $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
                 $obj->setId_etat(Etat::getById($item['id_etat']));
                 $tab[] = $obj;
@@ -214,7 +214,7 @@ class NoteDeFrais {
     public static function getByUtilisateurAll($id_utilisateur) {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
-                self::$sqlRead . ' WHERE id_utilisateur = :id_utilisateur', array(
+                self::$sqlRead . ' WHERE id_utilisateur = :id_utilisateur ORDER BY mois_annee DESC', array(
             ':id_utilisateur' => $id_utilisateur
                 )
         );
@@ -275,7 +275,7 @@ class NoteDeFrais {
                 ':avance' => $this->getAvance(),
                 ':net_a_payer' => $this->getNet_a_payer(),
                 ':id_utilisateur' => $this->getId_utilisateur()->getId(),
-                ':id_etat' => null
+                ':id_etat' => $this->getId_etat()->getId()
             );
         }
         return $connexionInstance->executer($sql, $parametre);

@@ -12,6 +12,8 @@
  * @author Cécile
  */
 class Etat {
+    const BROUILLON_ID = 1;
+    const SOUMIS_ID = 2;
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO etat (id, libelle) "
             . "VALUES (:id, :libelle)";

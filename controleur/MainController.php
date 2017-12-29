@@ -78,6 +78,63 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->gestionNF();
             }
+            else if ($this->getGetParam('page') === 'accueilDeclarant')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->accueil();
+            }
+            
+            
+            else if ($this->getGetParam('page') === 'modifierNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->modifierNF();
+            }
+            else if ($this->getGetParam('page') === 'modifierNFAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->modifierNFAction();
+            }
+            else if ($this->getGetParam('page') === 'creerNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->creerNF();
+            }
+            else if ($this->getGetParam('page') === 'creerNFAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->creerNFAction();
+            }
+            else if ($this->getGetParam('page') === 'listerNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->listerNF();
+            }
+            else if ($this->getGetParam('page') === 'suppressionNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->suppressionNF();
+            }
+            else if ($this->getGetParam('page') === 'suppressionNFAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->suppressionNFAction();
+            }
+            else if ($this->getGetParam('page') === 'soumettreNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->soumettreNF();
+            }
+            else if ($this->getGetParam('page') === 'soumettreNFAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->soumettreNFAction();
+            }
+            else if ($this->getGetParam('page') === 'voirNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->voirNF();
+            }
         }
     }
 }

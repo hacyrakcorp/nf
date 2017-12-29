@@ -9,22 +9,15 @@
             </tr>
         </thead> 
         <tbody>
-            <?php
-            $listeNF = DeclarantControleur::recupereNFAll();
-            $lenTab = count($listeNF);
-            $len = 0;
-            while ($len < $lenTab) {
-                $donnees = $listeNF[$len];
-                $id = $donnees['0'];
-                $mois_annee = $donnees['1'];
-                $etat = $donnees['2'];
-                $len++;
+            <?php            
+            foreach($tabNF as $nf)
+            { /* @var $nf NoteDeFrais */
                 ?>
                 <tr> 
                     <td data-title="Note de frais">
                         <?php
-                        echo $mois_annee;
-                        if ($etat != "soumise") {
+                        echo $nf->getMois_annee();
+                        if ($nf->getId_etat()->getId() != Etat::SOUMIS_ID) {
                             ?>
                             <p data-placement="right" data-toggle="tooltip" 
                                title="Modifier la date" 
@@ -32,13 +25,13 @@
                                 <button type="button" 
                                         name = 'Modifier' 
                                         class="btn btn-primary btn-xs" 
-                                        value ='<?php echo $id; ?>'
+                                        value ='<?php echo $nf->getId(); ?>'
                                         data-title="Modifier" 
                                         data-toggle="modal" 
                                         data-target="#fen_modal"
                                         onClick="getValeur('modifierNF',
-                                                        '<?php echo $id; ?>',
-                                                        '<?php echo $mois_annee; ?>')">
+                                                        '<?php echo $nf->getId(); ?>',
+                                                        '<?php echo $nf->getMois_annee(); ?>')">
                                     <span class="glyphicon glyphicon-pencil">
                                     </span>
                                 </button>
@@ -47,9 +40,9 @@
                     </td>
 
                     <td data-title="Etat"> 
-                        <?php echo $etat; ?></td>
+                        <?php echo $nf->getId_etat()->getLibelle(); ?></td>
                     <td> 
-                        <?php if ($etat != "soumise") { ?>
+                       <?php if ($nf->getId_etat()->getId() != Etat::SOUMIS_ID) { ?>
                             <p data-placement="right" data-toggle="tooltip" 
                                title="Soumettre" 
                                style="display:inline-block;">
@@ -59,8 +52,8 @@
                                         data-toggle="modal" 
                                         data-target="#fen_modal"
                                         onClick="getValeur('soumettreNF',
-                                                        '<?php echo $id; ?>',
-                                                        '<?php echo $mois_annee; ?>')">
+                                                        '<?php echo $nf->getId(); ?>',
+                                                        '<?php echo $nf->getMois_annee(); ?>')">
                                     <span class="glyphicon glyphicon-ok">
                                     </span>
                                 </button>
@@ -74,8 +67,8 @@
                                         data-toggle="modal" 
                                         data-target="#fen_modal"
                                         onClick="getValeur('ajoutNF',
-                                                        '<?php echo $id; ?>',
-                                                        '<?php echo $mois_annee; ?>')">
+                                                        '<?php echo $nf->getId(); ?>',
+                                                        '<?php echo $nf->getMois_annee(); ?>')">
                                     <span class="glyphicon glyphicon-plus">  
                                     </span>
                                 </button>
@@ -92,9 +85,9 @@
                                         data-target="#fen_modal"
                                         onClick="getValeur(
                                                         'suppressionNF',
-                                                        '<?php echo $id; ?>',
-                                                        '<?php echo $mois_annee; ?>')"
-                                        >
+                                                        '<?php echo $nf->getId(); ?>',
+                                                        '<?php echo $nf->getMois_annee(); ?>')">
+                                        
                                     <span class="glyphicon glyphicon-trash">  
                                     </span>
                                 </button>
@@ -111,9 +104,9 @@
                                         data-target="#fen_modal"
                                         onClick="getValeur(
                                                         'voirNF',
-                                                        '<?php echo $id; ?>',
-                                                        '<?php echo $mois_annee; ?>')"
-                                        >
+                                                        '<?php echo $nf->getId(); ?>',
+                                                        '<?php echo $nf->getMois_annee(); ?>')">
+                                        
                                     <span class="glyphicon glyphicon-eye-open">  
                                     </span>
                                 </button>
@@ -128,71 +121,6 @@
         </tbody>
     </table>
 </div>
-
-<div class="responsive-table-line">
-    <table class="table table-bordered table-condensed table-body-center 
-           table-striped w-width" >
-        <thead> 
-            <tr>
-                <th>Date</th>
-                <th>Objet</th>
-                <th>Lieu</th>
-                <th>Montant</th>
-                <th></th>
-            </tr>
-        </thead> 
-        <tbody>
-            <?php
-            $listeNF = DeclarantControleur::recupereLigneAll();
-            $lenTab = count($listeNF);
-            $len = 0;
-            while ($len < $lenTab) {
-                $donnees = $listeNF[$len];
-                $id = $donnees['0'];
-                $date = $donnees['1'];
-                $object = $donnees['2'];
-                $lieu = $donnees['3'];
-                $montant = $donnees['4'];
-                $len++;
-                ?>
-                <tr> 
-                    <td data-title="Date">
-                        <?php echo $date;
-                        ?>
-                    </td>
-                    <td data-title="object">
-                        <?php echo $object;
-                        ?>
-                    </td>
-                    <td data-title="lieu">
-                        <?php echo $lieu;
-                        ?>
-                    </td>
-                    <td data-title="montant">
-                        <?php echo $montant;
-                        ?>
-                    </td>
-                    <td>
-                        <p data-placement="right" data-toggle="tooltip" 
-                           title="Modifier la ligne" 
-                           style="display:inline-block;">
-                            <button type="button" 
-                                    name = 'ModifierLigne' 
-                                    class="btn btn-primary btn-xs" 
-                                    >
-                                <span class="glyphicon glyphicon-pencil">
-                                </span>
-                            </button>
-                        </p>
-                    </td>
-                    <?php
-                }
-                ?>
-        </tbody>
-    </table>
-</div>
-
-
 
 <!--Fenetre Modal!-->
 <div class="modal fade" id="fen_modal" tabindex="-1" 
