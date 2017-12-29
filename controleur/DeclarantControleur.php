@@ -146,6 +146,39 @@ class DeclarantControleur extends BaseControleur {
         include $this->pathVue . 'voirNF.php';
     }
     
+    public function ajoutNF() {
+        $id = $this->getPostParam('id');
+        $tabNF = NoteDeFrais::getById($id);
+        $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
+        $tabNatureFrais = NatureFrais::getAllListe();
+        include $this->pathVue . 'ajoutNF2.php';
+    }
+    
+    public function ajoutNFAction() {
+        $date = $this->getPostParam('date');
+        $objet = $this->getPostParam('object');
+        $lieu = $this->getPostParam('lieu');
+        $id_NF = $this->getPostParam('id_NF');
+        
+        $valeur = $this->getPostParam('valeur');
+        $id_nature = $this->getPostParam('nature');
+        $stringNature = implode($id_nature);
+        $nature = NatureFrais::getById(intval($stringNature));
+        
+        $ligneFrais = new LigneNF();
+        $ligneFrais->setDate_ligne($date);
+        $ligneFrais->setObject($objet);
+        $ligneFrais->setLieu($lieu);
+        $ligneFrais->setId_note_frais($id_NF);
+        //$ligneFrais->save();
+        
+        $valeurFrais = new ValeurFrais();
+        $valeurFrais->setId_ligne_frais($ligneFrais);
+        $valeurFrais->setValeur(doubleval($valeur));
+        $valeurFrais->setId($nature);
+        //$valeurFrais->save();
+                
+    }
     
 
     /*

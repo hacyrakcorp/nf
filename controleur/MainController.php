@@ -135,6 +135,16 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->voirNF();
             }
+            else if ($this->getGetParam('page') === 'ajoutNF')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->ajoutNF();
+            }
+            else if ($this->getGetParam('page') === 'ajoutNFAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->ajoutNFAction();
+            }
         }
     }
 }

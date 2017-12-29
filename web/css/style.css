@@ -44,6 +44,23 @@ body
     margin: auto;
 }
 
+.natureFrais
+{
+    width: 150px;
+}
+
+.labelLeft
+{
+    display: block;
+    float: left; 
+    width: 150px;  
+}
+
+.labelRight
+{
+    float: right; 
+}
+
 .navbar-inverse 
 {
 
