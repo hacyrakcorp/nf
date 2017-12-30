@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Dim 10 Décembre 2017 à 20:35
+-- Généré le :  Sam 30 Décembre 2017 à 08:34
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.1.10
 
@@ -52,6 +52,14 @@ CREATE TABLE `etat` (
   `id` int(11) NOT NULL,
   `libelle` varchar(72) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `etat`
+--
+
+INSERT INTO `etat` (`id`, `libelle`) VALUES
+(1, 'brouillon'),
+(2, 'soumise');
 
 -- --------------------------------------------------------
 
@@ -149,6 +157,15 @@ CREATE TABLE `ligne_frais` (
   `id_note_frais` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `ligne_frais`
+--
+
+INSERT INTO `ligne_frais` (`id`, `date_ligne`, `object`, `lieu`, `montant`, `id_note_frais`) VALUES
+(1, '2017-12-24', 'Autoroute', 'Pertuis', '8.000', 35),
+(2, '2017-12-06', 'Repas', 'Pertuis', '25.000', 35),
+(3, '2017-12-01', 'Essence', 'Aix-en-Provence', '5.000', 44);
+
 -- --------------------------------------------------------
 
 --
@@ -158,8 +175,21 @@ CREATE TABLE `ligne_frais` (
 CREATE TABLE `nature_frais` (
   `id` int(11) NOT NULL,
   `libelle` varchar(72) DEFAULT NULL,
-  `type_valeur` varchar(72) DEFAULT NULL
+  `type_valeur` varchar(72) DEFAULT NULL,
+  `unite` varchar(72) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `nature_frais`
+--
+
+INSERT INTO `nature_frais` (`id`, `libelle`, `type_valeur`, `unite`) VALUES
+(1, 'Restaurant', 'Double', '€'),
+(2, 'Hotel', 'Double', '€'),
+(3, 'Autoroute', 'Double', '€'),
+(4, 'Parking', 'Double', '€'),
+(5, 'Divers', 'Double', '€'),
+(6, 'Kilomètre', 'Integer', 'Km');
 
 -- --------------------------------------------------------
 
@@ -177,8 +207,43 @@ CREATE TABLE `note_frais` (
   `avance` decimal(15,3) DEFAULT NULL,
   `net_a_payer` decimal(15,3) DEFAULT NULL,
   `id_utilisateur` int(11) DEFAULT NULL,
-  `id_etat` int(11) NOT NULL
+  `id_etat` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `note_frais`
+--
+
+INSERT INTO `note_frais` (`id`, `mois_annee`, `nb_justificatif`, `prix_km`, `mode_reglement`, `banque`, `avance`, `net_a_payer`, `id_utilisateur`, `id_etat`) VALUES
+(35, '2017-06', NULL, NULL, NULL, NULL, NULL, NULL, 2, 1),
+(39, '2017-08', NULL, NULL, NULL, NULL, NULL, NULL, 2, 1),
+(40, '2017-03', NULL, NULL, NULL, NULL, NULL, NULL, 2, 2),
+(42, '2016-02', NULL, NULL, NULL, NULL, NULL, NULL, 2, 1),
+(43, '2017-02', NULL, NULL, NULL, NULL, NULL, NULL, 2, 1),
+(44, '2017-07', NULL, NULL, NULL, NULL, NULL, NULL, 2, 2),
+(46, '2015-02', NULL, NULL, NULL, NULL, NULL, NULL, 2, 1);
+
+--
+-- Déclencheurs `note_frais`
+--
+DELIMITER $$
+CREATE TRIGGER `before_insert_nf` BEFORE INSERT ON `note_frais` FOR EACH ROW BEGIN
+    IF (STR_TO_DATE(NEW.mois_annee,'%Y-%m') > sysdate())
+      THEN
+        signal sqlstate '45000' set message_text = 'Impossible d'enregistrer une date avenir.';   
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_update_nf` BEFORE UPDATE ON `note_frais` FOR EACH ROW BEGIN
+    IF (STR_TO_DATE(NEW.mois_annee,'%Y-%m') > sysdate())
+      THEN
+        signal sqlstate '45000' set message_text = 'Impossible d'enregistrer une date avenir.';   
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -438,7 +503,7 @@ ALTER TABLE `code_analytique`
 -- AUTO_INCREMENT pour la table `etat`
 --
 ALTER TABLE `etat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `historique_connection`
 --
@@ -463,17 +528,17 @@ ALTER TABLE `historique_reglement`
 -- AUTO_INCREMENT pour la table `ligne_frais`
 --
 ALTER TABLE `ligne_frais`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `nature_frais`
 --
 ALTER TABLE `nature_frais`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `note_frais`
 --
 ALTER TABLE `note_frais`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- AUTO_INCREMENT pour la table `numero_ordre_mission`
 --
