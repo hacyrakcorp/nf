@@ -138,14 +138,14 @@ class DeclarantControleur extends BaseControleur {
             $this->redirect('index.php?erreur=12&page=listerNF');
         }
     }
-    
+
     public function voirNF() {
         $id = $this->getPostParam('id');
         $tabNF = NoteDeFrais::getById($id);
         $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
         include $this->pathVue . 'voirNF.php';
     }
-    
+
     public function ajoutNF() {
         $id = $this->getPostParam('id');
         $tabNF = NoteDeFrais::getById($id);
@@ -153,33 +153,47 @@ class DeclarantControleur extends BaseControleur {
         $tabNatureFrais = NatureFrais::getAllListe();
         include $this->pathVue . 'ajoutNF2.php';
     }
-    
+
     public function ajoutNFAction() {
-        $date = $this->getPostParam('date');
-        $objet = $this->getPostParam('object');
-        $lieu = $this->getPostParam('lieu');
-        $id_NF = $this->getPostParam('id_NF');
-        
-        $valeur = $this->getPostParam('valeur');
-        $id_nature = $this->getPostParam('nature');
-        $stringNature = implode($id_nature);
-        $nature = NatureFrais::getById(intval($stringNature));
-        
-        $ligneFrais = new LigneNF();
-        $ligneFrais->setDate_ligne($date);
-        $ligneFrais->setObject($objet);
-        $ligneFrais->setLieu($lieu);
-        $ligneFrais->setId_note_frais($id_NF);
-        //$ligneFrais->save();
-        
-        $valeurFrais = new ValeurFrais();
-        $valeurFrais->setId_ligne_frais($ligneFrais);
-        $valeurFrais->setValeur(doubleval($valeur));
-        $valeurFrais->setId($nature);
-        //$valeurFrais->save();
-                
+        $tab_id_nature = $this->getPostParam('nature');
+        if (!empty($tab_id_nature)) { //On vérifie qu'il y a des checkbox cochés           
+//TAF : On vérifie que pour une checkbox cochées on a une valeur dans l'input
+//Comment récupérer la valeur de l'input voulu ??
+//Le mettre dans le for des valeurs d'une ligne??
+$valeur = $this->getPostParam('valeur'); //Générique : tous les input 'valeur' voir ajoutNF2.php
+//Problème, on vérifie un seul input
+//if (!empty($valeur){
+            //On récup les données pour la ligne de frais
+            $date = $this->getPostParam('date');
+            $objet = $this->getPostParam('object');
+            $lieu = $this->getPostParam('lieu');
+            $id_NF = $this->getPostParam('id_NF');
+            if (!empty($date) and ! empty($objet) and ! empty($lieu)) {
+                $ligneFrais = new LigneNF();
+                $ligneFrais->setDate_ligne($date);
+                $ligneFrais->setObject($objet);
+                $ligneFrais->setLieu($lieu);
+                $ligneFrais->setId_note_frais($id_NF);
+                //$ligneFrais->save();
+            } else {//Remplir tout les champs
+                $this->redirect('index.php?erreur=2&page=listerNF');
+            }
+            //On récup les valeurs contenue dans une ligne
+            for ($i = 0; $i < sizeof($tab_id_nature); $i++) {
+                $id_nature = $tab_id_nature[$i];
+                $nature = NatureFrais::getById(intval($id_nature));
+                $valeurFrais = new ValeurFrais();
+                $valeurFrais->setId_ligne_frais($ligneFrais);
+                $valeurFrais->setValeur(doubleval($valeur));
+                $valeurFrais->setId($nature);
+                //$valeurFrais->save();
+//TAF:Redirection vers la modale possible pour ajouter plusieurs lignes en une fois???
+            }
+        } else {
+            echo('Cocher une valeur.');
+            exit();
+        }
     }
-    
 
     /*
       //Recupere toute les notes de frais d'un utilisateur
