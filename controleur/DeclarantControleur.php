@@ -155,12 +155,58 @@ class DeclarantControleur extends BaseControleur {
     }
 
     public function ajoutNFAction() {
+        $tabNatureChoisie = $this->getPostParam('natureChoisie');
+        //on vérifie que au moins une checkbox est coché.
+        if (!empty($tabNatureChoisie)) {
+            //On récup les données pour la ligne de frais
+            $id_NF = $this->getPostParam('id_NF');
+            $date = $this->getPostParam('date');
+            $objet = $this->getPostParam('object');
+            $lieu = $this->getPostParam('lieu');
+            // Créer une nouvelle ligne de frais
+            $ligneFrais = new LigneNF();
+            $ligneFrais->setDate_ligne($date);
+            $ligneFrais->setObject($objet);
+            $ligneFrais->setLieu($lieu);
+            $ligneFrais->setId_note_frais(NoteDeFrais::getById($id_NF));
+            $ligneFrais->save();
+                   
+            // Parcours des checkbox et des valeurs associées.
+            foreach ($tabNatureChoisie as $idNatureChoisie) { 
+                echo "Id de la nature : " . $idNatureChoisie . ", valeur de la nature : " . $this->getPostParam('valeurNature' . $idNatureChoisie) . "<br/>";
+                $valeur = $this->getPostParam('valeurNature' . $idNatureChoisie);
+                $nature = NatureFrais::getById(intval($idNatureChoisie));
+                $valeurFrais = new ValeurFrais();
+                $valeurFrais->setId_ligne_frais($ligneFrais);
+                $valeurFrais->setValeur(doubleval($valeur));
+                $valeurFrais->setId_nature_frais($nature);
+                $valeurFrais->save();
+                var_dump($valeurFrais->getId_ligne_frais()->getId());
+//Id null car ligneFrais pas setID vu avec var_dump (id à null)
+//normal car autoincrémenter
+//Il faut re-récupérer la ligne à partir de l'ID
+//Comment avoir l'ID, comment re-récupérer cette ligne ?
+                echo '<br/>';
+                var_dump($valeurFrais->getId_nature_frais()->getId());
+                echo '<br/>';
+                var_dump($valeurFrais->getValeur());
+                echo '<br/>';
+
+//TAF:Redirection vers la modale possible pour ajouter plusieurs lignes en une fois???
+            }
+        } else { // Aucune checkbox cochée
+            echo "<script>alert('Cocher au moins un frais.');</script>";
+            //TAF:Redirection vers la modale 
+        }
+        exit;
+
+        /*
         $tab_id_nature = $this->getPostParam('nature');
         if (!empty($tab_id_nature)) { //On vérifie qu'il y a des checkbox cochés           
 //TAF : On vérifie que pour une checkbox cochées on a une valeur dans l'input
 //Comment récupérer la valeur de l'input voulu ??
 //Le mettre dans le for des valeurs d'une ligne??
-$valeur = $this->getPostParam('valeur'); //Générique : tous les input 'valeur' voir ajoutNF2.php
+            $valeur = $this->getPostParam('valeur'); //Générique : tous les input 'valeur' voir ajoutNF2.php
 //Problème, on vérifie un seul input
 //if (!empty($valeur){
             //On récup les données pour la ligne de frais
@@ -192,7 +238,7 @@ $valeur = $this->getPostParam('valeur'); //Générique : tous les input 'valeur'
         } else {
             echo('Cocher une valeur.');
             exit();
-        }
+        }*/
     }
 
     /*

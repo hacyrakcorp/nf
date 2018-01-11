@@ -1,17 +1,17 @@
 <?php
 
-class NatureFrais {
+class TypeValeur {
 //put your code here
+    const DOUBLE_ID = 1;
+    const INTEGER_ID = 2;
     // Design Pattern CRUD
-    protected static $sqlCreate = "INSERT INTO nature_frais (id, libelle, "
-            . "type_valeur, unite) VALUES (:id, :libelle,"
-            . " :type_valeur, :unite)";
-    protected static $sqlRead = "SELECT * FROM nature_frais";
-    protected static $sqlUpdate = "UPDATE nature_frais "
+    protected static $sqlCreate = "INSERT INTO type_valeur (id, libelle, "
+            . ") VALUES (:id, :libelle)";
+    protected static $sqlRead = "SELECT * FROM type_valeur";
+    protected static $sqlUpdate = "UPDATE type_valeur "
             . "SET libelle = :libelle, "
-            . "type_valeur = :type_valeur, unite = :unite,"
             . " WHERE id = :id";
-    protected static $sqlDelete = "DELETE FROM nature_frais";
+    protected static $sqlDelete = "DELETE FROM type_valeur";
 
     /**
      * @var integer
@@ -23,30 +23,12 @@ class NatureFrais {
      */
     private $libelle;
 
-    /**
-     * @var TypeValeur
-     */
-    private $type_valeur;
-
-    /**
-     * @var string
-     */
-    private $unite;
-
     function getId() {
         return $this->id;
     }
 
     function getLibelle() {
         return $this->libelle;
-    }
-
-    function getType_valeur() {
-        return $this->type_valeur;
-    }
-
-    function getUnite() {
-        return $this->unite;
     }
 
     function setId($id) {
@@ -57,25 +39,15 @@ class NatureFrais {
         $this->libelle = $libelle;
     }
 
-    function setType_valeur($type_valeur) {
-        $this->type_valeur = $type_valeur;
-    }
-
-    function setUnite($unite) {
-        $this->unite = $unite;
-    }
-
     public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(self::$sqlRead);
 
         $tab = array();
         foreach ($liste as $item) {
-            $obj = new NatureFrais();
+            $obj = new TypeValeur();
             $obj->setId($item['id']);
             $obj->setLibelle($item['libelle']);
-            $obj->setType_valeur(TypeValeur::getById($item['type_valeur']));
-            $obj->setUnite($item['unite']);
             $tab[] = $obj;
         }
         return $tab;
@@ -92,11 +64,9 @@ class NatureFrais {
         if (count($liste) > 0) {
             $tab = array();
             foreach ($liste as $item) {
-                $obj = new NatureFrais();
+                $obj = new TypeValeur();
                 $obj->setId($item['id']);
                 $obj->setLibelle($item['libelle']);
-                $obj->setType_valeur(TypeValeur::getById($item['type_valeur']));
-                $obj->setUnite($item['unite']);
                 $tab[] = $obj;
             }
             return $tab[0];
@@ -115,8 +85,6 @@ class NatureFrais {
         $parametre = array(
             ':id' => $this->getId(),
             ':libelle' => $this->getLibelle(),
-            ':type_valeur' => $this->getType_valeur()->getId(),
-            ':unite' => $this->getUnite()
         );
         return $connexionInstance->executer($sql, $parametre);
     }

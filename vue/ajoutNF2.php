@@ -73,52 +73,60 @@ if ($tabLigneNF != null) { //La NF contient des lignes
     <input type="hidden" id="id_ligne" name='id_ligne' value="" />
     <legend>Général</legend>
     <label class="labelLeft" for="date">Date :</label>  
-    <input type="date" id="date" name="date"/><br />
+    <input type="date" id="date" name="date" required/><br />
     <label class="labelLeft" for="object">Objet :</label>
-    <input type="text" id="object" name="object"/><br />
+    <input type="text" id="object" name="object" required/><br />
     <label class="labelLeft" for="lieu">Lieu :</label>  
-    <input type="text" id="lieu" name="lieu"/>
+    <input type="text" id="lieu" name="lieu" required/>
     <legend>Nature du frais</legend>
     <table>
-        <?php
-        foreach ($tabNatureFrais as $nature) {
-            ?>
+        <?php foreach ($tabNatureFrais as $nature): ?>
             <tr>
                 <td class="natureFrais">
+                    <?php //chexbox = nature choisie ?>
                     <input type="checkbox" class="form-check-input"
-                           name="nature[]" 
+                           name="natureChoisie[]"
                            id="nature"
-                           value = "<?php echo $nature->getId(); ?>" />
-                           <?php echo $nature->getLibelle(); ?>  
+                           value="<?php echo $nature->getId(); ?>"
+                           onchange="javascript:degrise(<?php echo $nature->getId(); ?>)"/>
+                    <?php echo $nature->getLibelle(); ?>
                 </td>
                 <td>
-                    <label class="labelRight" for="unite">
-                        <?php echo $nature->getUnite(); ?> </label>
-                    <?php if ($nature->getType_valeur() == "Double") {
-                        ?>
-                        <input type="number" step="0.01" min="0"
-                               name="valeur"
-                               id="valeur"/><br />
-                               <?php
-                           } elseif ($nature->getType_valeur() == "Integer") {
-                               ?>
-                        <input type="number" step="1" min="0"
-                               name="valeur"
-                               id="valeur"/><br />
-                               <?php
-                           }
-                           ?>
+                    <label class="labelRight" for="unite"><?php echo $nature->getUnite(); ?></label>
+                    <?php if ($nature->getType_valeur()->getId() == TypeValeur::DOUBLE_ID): ?>
+                        <?php $step = "0.01"; ?>
+                    <?php elseif ($nature->getType_valeur()->getID() == TypeValeur::INTEGER_ID): ?>
+                        <?php $step = "1"; ?>
+                    <?php endif; ?>
+                    <?php //Un seul input => valeur de la nature ?>
+                    <?php //input => name+ id de la nature pour différencier?>
+                    <input type="number" step="<?php echo $step ?>" min="0"
+                           name="valeurNature<?php echo $nature->getId(); ?>"
+                           id="valeurNature<?php echo $nature->getId(); ?>"
+                           disabled="disabled" /><br/>
                 </td>
             </tr>
-        <?php }
-        ?>
+        <?php endforeach; ?>
     </table>
     <button type="submit" class="btn btn-success">
         Enregistrer
     </button>
+    <input type="hidden" name="fenetre_modal" value="">
 </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" 
+    <button type="button" class="btn btn-secondary"
             data-dismiss="modal">
-        Fermer</button>
+        Fermer
+    </button>
+
+<script>
+    function degrise(id_nature){
+      var valeurNature = document.getElementById('valeurNature'+id_nature);
+      valeurNature.disabled = !valeurNature.disabled;
+      valeurNature.required = true; 
+      valeurNature.value = '';
+      valeurNature.focus() = true;
+    }   
+</script>
+        
