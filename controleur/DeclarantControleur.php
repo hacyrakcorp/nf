@@ -170,28 +170,18 @@ class DeclarantControleur extends BaseControleur {
             $ligneFrais->setLieu($lieu);
             $ligneFrais->setId_note_frais(NoteDeFrais::getById($id_NF));
             $ligneFrais->save();
-                   
+            
+            $ligneRecup = LigneNF::getById($ligneFrais->dernierID());
             // Parcours des checkbox et des valeurs associées.
             foreach ($tabNatureChoisie as $idNatureChoisie) { 
                 echo "Id de la nature : " . $idNatureChoisie . ", valeur de la nature : " . $this->getPostParam('valeurNature' . $idNatureChoisie) . "<br/>";
                 $valeur = $this->getPostParam('valeurNature' . $idNatureChoisie);
                 $nature = NatureFrais::getById(intval($idNatureChoisie));
                 $valeurFrais = new ValeurFrais();
-                $valeurFrais->setId_ligne_frais($ligneFrais);
+                $valeurFrais->setId_ligne_frais($ligneRecup);
                 $valeurFrais->setValeur(doubleval($valeur));
                 $valeurFrais->setId_nature_frais($nature);
                 $valeurFrais->save();
-                var_dump($valeurFrais->getId_ligne_frais()->getId());
-//Id null car ligneFrais pas setID vu avec var_dump (id à null)
-//normal car autoincrémenter
-//Il faut re-récupérer la ligne à partir de l'ID
-//Comment avoir l'ID, comment re-récupérer cette ligne ?
-                echo '<br/>';
-                var_dump($valeurFrais->getId_nature_frais()->getId());
-                echo '<br/>';
-                var_dump($valeurFrais->getValeur());
-                echo '<br/>';
-
 //TAF:Redirection vers la modale possible pour ajouter plusieurs lignes en une fois???
             }
         } else { // Aucune checkbox cochée

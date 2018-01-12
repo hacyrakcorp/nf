@@ -167,6 +167,11 @@ class LigneNF {
             return null;
         }
     }
+    
+    public function dernierID(){
+        $connexionInstance = Connexion::getInstance();
+        return $connexionInstance->dernierID();
+    }
 
     public function save() {
         if ($this->getId() == null) { // INSERT
