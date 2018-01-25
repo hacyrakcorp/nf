@@ -1,13 +1,12 @@
-<h2>Ajouter un nouveau déclarant</h2>
+<h2>Ajouter un nouvel utilisateur</h2>
 <div>
-    <form method="post" name='creer_declarant' action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=creerDeclarantAction">
+    <form method="post" name='creer_utilisateur' action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=creerUtilisateurAction">
         <input type='hidden' id = 'Id' name='Id' value=''>
         <input type='text' id = 'Nom' name='Nom' class='myInput' placeholder='Nom'>&nbsp</br>
         <input type='text' id = 'Prenom' name='Prenom' class='myInput' placeholder='Prénom'>&nbsp</br>
         <input type='text' id = 'Mail' name='Mail' class='myInput' placeholder='Mail'>&nbsp</br>
         <input type='password' id = 'Mdp' name='Mdp' class='myInput' placeholder='Mdp'>&nbsp</br>
         <select id='Statut' name='Statut'>
-            <option></option>
             <?php
             //Récupère les statuts existant
             foreach ($listeStatut as $unStatut) {
@@ -19,7 +18,6 @@
             ?>
         </select></br>
         <select id='Service' name='Service'>
-            <option></option>
             <?php
             //Récupère les services existant
             foreach ($listeService as $unService) {
@@ -33,7 +31,7 @@
         <input type='submit' class="btn btn-primary btn-xl"  value='Enregistrer'>&nbsp
     </form>
 </div>
-<h2>Modifier les déclarants</h2>
+<h2>Modifier les utilisateurs</h2>
 <div>
     <table class="table table-bordered table-condensed table-body-center 
            table-striped w-width" >
@@ -47,32 +45,32 @@
                 <th></th>
             </tr>
 <?php
-foreach ($listeDeclarant as $declarant) {
+foreach ($listeUtilisateur as $utilisateur) {
     ?>
                 <tr> 
                     <td data-title="Nom">
                 <?php
-                echo $declarant->getNom();
+                echo $utilisateur->getNom();
                 ?>
                     </td>
                     <td data-title="Prenom">
                         <?php
-                        echo $declarant->getPrenom();
+                        echo $utilisateur->getPrenom();
                         ?>
                     </td>
                     <td data-title="Mail">
                         <?php
-                        echo $declarant->getLogin();
+                        echo $utilisateur->getLogin();
                         ?>
                     </td>
                     <td data-title="Statut">
                         <?php
-                        echo $declarant->getStatut()->getLibelle();
+                        echo $utilisateur->getStatut()->getLibelle();
                         ?>
                     </td>
                     <td data-title="Service">
                         <?php
-                        echo $declarant->getService()->getLibelle();
+                        echo $utilisateur->getService()->getLibelle();
                         ?>
                     </td>
                     <td>
@@ -82,12 +80,12 @@ foreach ($listeDeclarant as $declarant) {
                             <button type="button" 
                                     name = 'Modifier' 
                                     class="btn btn-primary btn-xs" 
-                                    value ='<?php echo $declarant->getId(); ?>'
+                                    value ='<?php echo $utilisateur->getId(); ?>'
                                     data-title="Modifier" 
                                     data-toggle="modal" 
                                     data-target="#fen_modal"
-                                    onClick="getValeur('modifierDeclarant',
-                                                            '<?php echo $declarant->getId(); ?>')">
+                                    onClick="getValeur('modifierUtilisateur',
+                                                            '<?php echo $utilisateur->getId(); ?>')">
                                 <span class="glyphicon glyphicon-pencil">
                                 </span>
                             </button>
@@ -101,8 +99,8 @@ foreach ($listeDeclarant as $declarant) {
                                     data-toggle="modal" 
                                     data-target="#fen_modal"
                                     onClick="getValeur(
-                                                            'suppressionDeclarant',
-                                                            '<?php echo $declarant->getId(); ?>')">
+                                                            'suppressionUtilisateur',
+                                                            '<?php echo $utilisateur->getId(); ?>')">
                                 <span class="glyphicon glyphicon-trash">  
                                 </span>
                             </button>
@@ -124,7 +122,7 @@ foreach ($listeDeclarant as $declarant) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="fen_modal">
-                    Déclarants
+                    Utilisateurs
                     <span id="date_NF_titre"></span>
                 </h5>
             </div>

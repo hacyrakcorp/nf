@@ -31,9 +31,29 @@ class BaseControleur {
         } else if ($this->getGetParam('info') == 8) {
             $this->infoMessage = 'La fiche de frais a été supprimée';
         } else if ($this->getGetParam('info') == 9) {
-            $this->infoMessage = 'Le déclarant a été supprimé';
+            $this->infoMessage = 'L\'utilisateur a été supprimé';
         } else if ($this->getGetParam('info') == 10) {
-            $this->infoMessage = 'Le déclarant a été ajouté';
+            $this->infoMessage = 'L\'utilisateur a été ajouté';
+        } else if ($this->getGetParam('info') == 12) {
+            $this->infoMessage = 'Le statut a été ajouté';
+        } else if ($this->getGetParam('info') == 13) {
+            $this->infoMessage = 'Le statut a été supprimé';
+        } else if ($this->getGetParam('info') == 14) {
+            $this->infoMessage = 'Le service a été ajouté';
+        } else if ($this->getGetParam('info') == 15) {
+            $this->infoMessage = 'Le service a été supprimé';
+        } else if ($this->getGetParam('info') == 16) {
+            $this->infoMessage = 'L\'état a été ajouté';
+        } else if ($this->getGetParam('info') == 17) {
+            $this->infoMessage = 'L\'état a été supprimé';
+        } else if ($this->getGetParam('info') == 18) {
+            $this->infoMessage = 'Le type de valeur a été ajouté';
+        } else if ($this->getGetParam('info') == 19) {
+            $this->infoMessage = 'Le type de valeur a été supprimé';
+        } else if ($this->getGetParam('info') == 20) {
+            $this->infoMessage = 'La nature du frais a été ajouté';
+        } else if ($this->getGetParam('info') == 21) {
+            $this->infoMessage = 'La nature du frais a été supprimé';
         }
 
 
@@ -82,6 +102,26 @@ class BaseControleur {
             $this->erreurMessage = 'Erreur de suppression du déclarant';
         } else if ($this->getGetParam('erreur') == 19) {
             $this->erreurMessage = 'Le déclarant existe déjà, vérifier le mail';
+        } else if ($this->getGetParam('erreur') == 21) {
+            $this->erreurMessage = 'Le statut existe déjà';
+        } else if ($this->getGetParam('erreur') == 22) {
+            $this->erreurMessage = 'Erreur de suppression du statut';
+        } else if ($this->getGetParam('erreur') == 23) {
+            $this->erreurMessage = 'Le service existe déjà';
+        } else if ($this->getGetParam('erreur') == 24) {
+            $this->erreurMessage = 'Erreur de suppression du service';
+        } else if ($this->getGetParam('erreur') == 25) {
+            $this->erreurMessage = 'L\'état existe déjà';
+        } else if ($this->getGetParam('erreur') == 26) {
+            $this->erreurMessage = 'Erreur de suppression de l\'état';
+        } else if ($this->getGetParam('erreur') == 27) {
+            $this->erreurMessage = 'Le type de valeur existe déjà';
+        } else if ($this->getGetParam('erreur') == 28) {
+            $this->erreurMessage = 'Erreur de suppression du type de valeur';
+        } else if ($this->getGetParam('erreur') == 29) {
+            $this->erreurMessage = 'La nature du frais existe déjà';
+        } else if ($this->getGetParam('erreur') == 30) {
+            $this->erreurMessage = 'Erreur de suppression de la nature du frais';
         }
     }
 

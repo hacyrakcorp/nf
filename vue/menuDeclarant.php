@@ -9,6 +9,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=accueilDeclarant">Accueil</a> </li>
+
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Note de frais
                             <span class="caret"></span></a>

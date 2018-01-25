@@ -1,26 +1,26 @@
 <h5>Modification</h5>
-<p> Vous allez modifier le déclarant suivant : 
-    <?php echo $declarant->getNom() . " " . $declarant->getPrenom(); ?>.
+<p> Vous allez modifier l'utilisateur suivant : 
+    <?php echo $utilisateur->getNom() . " " . $utilisateur->getPrenom(); ?>.
 </p>
-<form action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=modifierDeclarantAction" 
+<form action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=modifierUtilisateurAction" 
       method="POST">
     <input type='hidden' id = 'id' name='id' 
-           value='<?php echo $declarant->getId(); ?>'>
+           value='<?php echo $utilisateur->getId(); ?>'>
     <label>Modification : </label></br>
     <input type='text' id = 'Nom' name='Nom' class='myInput' placeholder='Nom'
-           value='<?php echo $declarant->getNom(); ?>'>&nbsp</br>
+           value='<?php echo $utilisateur->getNom(); ?>'>&nbsp</br>
     <input type='text' id = 'Prenom' name='Prenom' class='myInput' placeholder='Prénom'
-           value='<?php echo $declarant->getPrenom(); ?>'>&nbsp</br>
+           value='<?php echo $utilisateur->getPrenom(); ?>'>&nbsp</br>
     <input type='text' id = 'Mail' name='Mail' class='myInput' placeholder='Mail'
-           value='<?php echo $declarant->getLogin(); ?>'>&nbsp</br>
+           value='<?php echo $utilisateur->getLogin(); ?>'>&nbsp</br>
     <input type='password' id = 'Mdp' name='Mdp' class='myInput' placeholder='Mdp'
-           value='<?php echo $declarant->getMdp(); ?>'>&nbsp</br>
+           value='<?php echo $utilisateur->getMdp(); ?>'>&nbsp</br>
     <select id='Statut' name='Statut'>
         <?php
         //Récupère les statuts existant
         foreach ($listeStatut as $unStatut) {
             $libelleStatut = $unStatut->getLibelle();
-            if ($unStatut->getId() == $declarant->getStatut()->getId()) {
+            if ($unStatut->getId() == $utilisateur->getStatut()->getId()) {
                 ?>
                 <option value= '<?php echo $unStatut->getId(); ?>' selected><?php echo $libelleStatut; ?></option>
             <?php } else {
@@ -36,7 +36,7 @@
         //Récupère les services existant
         foreach ($listeService as $unService) {
             $libelleService = $unService->getLibelle();
-            if ($unService->getId() == $declarant->getService()->getId()) {
+            if ($unService->getId() == $utilisateur->getService()->getId()) {
                 ?>
                 <option value= '<?php echo $unService->getId(); ?>' selected><?php echo $libelleService; ?></option>
             <?php } else {
@@ -47,6 +47,7 @@
         }
         ?>
     </select>
+</div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" 
                 data-dismiss="modal">

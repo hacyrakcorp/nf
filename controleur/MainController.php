@@ -159,42 +159,141 @@ class MainController extends BaseControleur
                 $administrateurControleur = new AdministrateurControleur();
                 $administrateurControleur->accueil();
             }
-            else if ($this->getGetParam('page') === 'gestionD')
+            else if ($this->getGetParam('page') === 'gestionUtilisateur')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->gestionDeclarant();
+                $administrateurControleur->gestionUtilisateur();
             }
-            else if ($this->getGetParam('page') === 'suppressionDeclarant')
+            else if ($this->getGetParam('page') === 'suppressionUtilisateur')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->suppressionDeclarant();
+                $administrateurControleur->suppressionUtilisateur();
             }
-            else if ($this->getGetParam('page') === 'suppressionDeclarantAction')
+            else if ($this->getGetParam('page') === 'suppressionUtilisateurAction')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->suppressionDeclarantAction();
+                $administrateurControleur->suppressionUtilisateurAction();
             }
-            else if ($this->getGetParam('page') === 'creerDeclarantAction')
+            else if ($this->getGetParam('page') === 'creerUtilisateurAction')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->creerDeclarantAction();
+                $administrateurControleur->creerUtilisateurAction();
             }
-            else if ($this->getGetParam('page') === 'modifierDeclarant')
+            else if ($this->getGetParam('page') === 'modifierUtilisateur')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->modifierDeclarant();
+                $administrateurControleur->modifierUtilisateur();
             }
-            else if ($this->getGetParam('page') === 'modifierDeclarantAction')
+            else if ($this->getGetParam('page') === 'modifierUtilisateurAction')
             {
                 $administrateurControleur = new AdministrateurControleur();
-                $administrateurControleur->modifierDeclarantAction();
+                $administrateurControleur->modifierUtilisateurAction();
+            }
+            else if ($this->getGetParam('page') === 'gestionStatut')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionStatut();
+            }
+            else if ($this->getGetParam('page') === 'creerStatutAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerStatutAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionStatut')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionStatut();
+            }
+            else if ($this->getGetParam('page') === 'suppressionStatutAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionStatutAction();
+            }
+            else if ($this->getGetParam('page') === 'gestionService')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionService();
+            }
+            else if ($this->getGetParam('page') === 'creerServiceAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerServiceAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionService')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionService();
+            }
+            else if ($this->getGetParam('page') === 'suppressionServiceAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionServiceAction();
+            }
+            else if ($this->getGetParam('page') === 'gestionEtat')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionEtat();
+            }
+            else if ($this->getGetParam('page') === 'creerEtatAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerEtatAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionEtat')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionEtat();
+            }
+            else if ($this->getGetParam('page') === 'suppressionEtatAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionEtatAction();
+            }
+            else if ($this->getGetParam('page') === 'gestionTypeValeur')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionTypeValeur();
+            }
+            else if ($this->getGetParam('page') === 'creerTypeValeurAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerTypeValeurAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionTypeValeur')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionTypeValeur();
+            }
+            else if ($this->getGetParam('page') === 'suppressionTypeValeurAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionTypeValeurAction();
+            }
+            else if ($this->getGetParam('page') === 'gestionNatureFrais')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionNatureFrais();
             }
             else if ($this->getGetParam('page') === 'accueilComptable')
             {
                 $comptableControleur = new ComptableControleur();
                 $comptableControleur->accueil();
             }
-            
+            else if ($this->getGetParam('page') === 'creerNatureFraisAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerNatureFraisAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionNatureFrais')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionNatureFrais();
+            }
+            else if ($this->getGetParam('page') === 'suppressionNatureFraisAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionNatureFraisAction();
+            }
             
             
         }

@@ -1,12 +1,12 @@
 <h5>Attention !</h5>
-<p> Voulez-vous vraiment supprimer le déclarant
-    <?php echo $declarant->getNom() . " " .$declarant->getPrenom(); ?> ?
+<p> Voulez-vous vraiment supprimer la nature du frais suivant : 
+    <?php echo $nature->getLibelle(); ?> ?
 </p>
 
-<form action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=suppressionDeclarantAction" 
+<form action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=suppressionNatureFraisAction" 
       method="POST">
     <input type="hidden" id = 'id' name='id' 
-           value='<?php echo $declarant->getId(); ?>'>
+           value='<?php echo $nature->getId(); ?>'>
 </div>    
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" 

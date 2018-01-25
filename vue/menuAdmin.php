@@ -9,12 +9,16 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=accueilAdmin">Accueil</a> </li>
+                    <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionUtilisateur">Gestion des utilisateurs</a> </li>                    
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Gestion des utilisateurs
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Gestion des paramètres
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionD">Déclarants</a> </li>
-                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionC">Comptabilité</a> </li>
+                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionStatut">Statut</a> </li>
+                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionService">Service</a> </li>
+                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionEtat">Etat</a> </li>
+                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionNatureFrais">Nature des frais</a> </li>
+                            <li> <a class="tab-links__item" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=gestionTypeValeur">Type de valeurs</a> </li>
                         </ul>
                     </li>
                     
