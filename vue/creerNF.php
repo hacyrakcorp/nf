@@ -1,4 +1,4 @@
-<form method='post' name='enregistrer_nf' action="<?php echo $this->getServerParam('PHP_SELF'); ?>?page=creerNFAction" >
+<form method='post' name='enregistrer_nf' action="<?php echo $this->getServerParam('PHP_SELF'); ?>?page=creerNFAction2" >
     <h3>MISSION DU MOIS</h3>   
         <input type='month' id = 'date_NF' name='date_NF' 
                class='form-inline'> 

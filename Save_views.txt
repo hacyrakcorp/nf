@@ -1,0 +1,5 @@
+---------------------------VIEW pour le montant de la ligne de frais---------------------------
+SELECT valeur_frais.id_ligne_frais, sum(valeur_frais.valeur) as montant 
+FROM `valeur_frais`,`ligne_frais`
+WHERE valeur_frais.id_ligne_frais = ligne_frais.id
+GROUP BY valeur_frais.id_ligne_frais

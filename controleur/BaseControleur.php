@@ -28,6 +28,12 @@ class BaseControleur {
             $this->infoMessage = 'Fiche de frais enregistrée';
         } else if ($this->getGetParam('info') == 7) {
             $this->infoMessage = 'Un code vous a déjà été renseigner aujourd\'hui. Utilisez le ici.';
+        } else if ($this->getGetParam('info') == 8) {
+            $this->infoMessage = 'La fiche de frais a été supprimée';
+        } else if ($this->getGetParam('info') == 9) {
+            $this->infoMessage = 'Le déclarant a été supprimé';
+        } else if ($this->getGetParam('info') == 10) {
+            $this->infoMessage = 'Le déclarant a été ajouté';
         }
 
 
@@ -72,6 +78,10 @@ class BaseControleur {
             $this->erreurMessage = 'Vous vous êtes déjà trompé(e) 3 fois aujourd\'hui. A la 4eme vous serez bloqué et devrez contacter l\'administrateur.';
         } else if ($this->getGetParam('erreur') == 17) {
             $this->erreurMessage = 'Votre compte est bloqué. Veuillez contacter l\'administrateur.';
+        } else if ($this->getGetParam('erreur') == 18) {
+            $this->erreurMessage = 'Erreur de suppression du déclarant';
+        } else if ($this->getGetParam('erreur') == 19) {
+            $this->erreurMessage = 'Le déclarant existe déjà, vérifier le mail';
         }
     }
 

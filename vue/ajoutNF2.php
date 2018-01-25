@@ -36,7 +36,14 @@ if ($tabLigneNF != null) { //La NF contient des lignes
                         </td>
                         <td data-title="montant">
                             <?php
-                            echo $ligneNF->getMontant();
+                            foreach ($totalLigne as $ligne) {
+                                foreach ($ligne as $montant) {
+                                    if ($ligneNF->getId() == $montant['id_ligne_frais']) {
+                                        //Arrondi à 2 chiffres après la virgule
+                                        echo number_format($montant['total'], 2, ".", " ");
+                                    }
+                                }
+                            }
                             ?>
                         </td> 
                         <td>
@@ -45,9 +52,22 @@ if ($tabLigneNF != null) { //La NF contient des lignes
                                style="display:inline-block;">
                                 <button type="button" 
                                         name = 'ModifierLigne' 
-                                        class="btn btn-primary btn-xs" 
+                                        class="btn btn-primary btn-xs"
+                                        data-target="#modal"
                                         >
                                     <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                </button>
+                            </p>
+                            <p data-placement="right" data-toggle="tooltip" 
+                               title="Supprimer la ligne" 
+                               style="display:inline-block;">
+                                <button type="button" 
+                                        name = 'SupprimerLigne' 
+                                        class="btn btn-danger btn-xs" 
+                                        data-target="#modal"
+                                    >
+                                    <span class="glyphicon glyphicon-trash">
                                     </span>
                                 </button>
                             </p>
@@ -83,13 +103,13 @@ if ($tabLigneNF != null) { //La NF contient des lignes
         <?php foreach ($tabNatureFrais as $nature): ?>
             <tr>
                 <td class="natureFrais">
-                    <?php //chexbox = nature choisie ?>
+                    <?php //chexbox = nature choisie  ?>
                     <input type="checkbox" class="form-check-input"
                            name="natureChoisie[]"
                            id="nature"
                            value="<?php echo $nature->getId(); ?>"
                            onchange="javascript:degrise(<?php echo $nature->getId(); ?>)"/>
-                    <?php echo $nature->getLibelle(); ?>
+                           <?php echo $nature->getLibelle(); ?>
                 </td>
                 <td>
                     <label class="labelRight" for="unite"><?php echo $nature->getUnite(); ?></label>
@@ -120,13 +140,32 @@ if ($tabLigneNF != null) { //La NF contient des lignes
         Fermer
     </button>
 
-<script>
-    function degrise(id_nature){
-      var valeurNature = document.getElementById('valeurNature'+id_nature);
-      valeurNature.disabled = !valeurNature.disabled;
-      valeurNature.required = true; 
-      valeurNature.value = '';
-      valeurNature.focus() = true;
-    }   
-</script>
-        
+
+    <!--Fenetre Modal!-->
+    <div class="modal fade" id="modal" tabindex="-1" 
+         role="dialog" 
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fen_modal">
+                        Fiche de frais du mois de 
+                        <span id="date_NF_titre"></span>
+                    </h5>
+                </div>
+                <div class="modal-body" id = "modal_body">              
+                    <!-- Charge le contenu de la page selon le bouton cliqué !-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function degrise(id_nature) {
+            var valeurNature = document.getElementById('valeurNature' + id_nature);
+            valeurNature.disabled = !valeurNature.disabled;
+            valeurNature.required == true;
+            valeurNature.value = '';
+            valeurNature.focus() == true;
+        }
+
+    </script>

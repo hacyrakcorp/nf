@@ -11,11 +11,11 @@ class LigneNF {
 //put your code here
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO ligne_frais (id, date_ligne, "
-            . "object, lieu, montant, id_note_frais) VALUES (:id, :date_ligne,"
-            . " :object, :lieu, :montant, :id_note_frais)";
+            . "object, lieu, id_note_frais) VALUES (:id, :date_ligne,"
+            . " :object, :lieu, :id_note_frais)";
     protected static $sqlRead = "SELECT * FROM ligne_frais";
     protected static $sqlUpdate = "UPDATE ligne_frais SET date_ligne = :date_ligne, "
-            . "object = :object, lieu = :lieu, montant = :montant, "
+            . "object = :object, lieu = :lieu, "
             . "id_note_frais = :id_note_frais"
             . " WHERE id = :id";
     protected static $sqlDelete = "DELETE FROM ligne_frais";
@@ -41,11 +41,6 @@ class LigneNF {
     private $lieu;
 
     /**
-     * @var float
-     */
-    private $montant;
-
-    /**
      * @var integer
      */
     private $id_note_frais;
@@ -64,10 +59,6 @@ class LigneNF {
 
     function getLieu() {
         return $this->lieu;
-    }
-
-    function getMontant() {
-        return $this->montant;
     }
 
     function getId_note_frais() {
@@ -90,10 +81,6 @@ class LigneNF {
         $this->lieu = $lieu;
     }
 
-    function setMontant($montant) {
-        $this->montant = $montant;
-    }
-
     function setId_note_frais($id_note_frais) {
         $this->id_note_frais = $id_note_frais;
     }
@@ -109,7 +96,6 @@ class LigneNF {
             $obj->setDate_ligne($item['date_ligne']);
             $obj->setObject($item['object']);
             $obj->setLieu($item['lieu']);
-            $obj->setMontant($item['montant']);
             $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
             $tab[] = $obj;
         }
@@ -132,7 +118,6 @@ class LigneNF {
                 $obj->setDate_ligne($item['date_ligne']);
                 $obj->setObject($item['object']);
                 $obj->setLieu($item['lieu']);
-                $obj->setMontant($item['montant']);
                 $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
                 $tab[] = $obj;
             }
@@ -158,7 +143,6 @@ class LigneNF {
                 $obj->setDate_ligne($item['date_ligne']);
                 $obj->setObject($item['object']);
                 $obj->setLieu($item['lieu']);
-                $obj->setMontant($item['montant']);
                 $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
                 $tab[] = $obj;
             }
@@ -188,7 +172,6 @@ class LigneNF {
             ':date_ligne' => $this->getDate_ligne(),
             ':object' => $this->getObject(),
             ':lieu' => $this->getLieu(),
-            ':montant' => $this->getMontant(),
             ':id_note_frais' => $this->getId_note_frais()->getId()
         );
 
@@ -202,6 +185,14 @@ class LigneNF {
                     ':id' => $this->getId()
                         )
         );
+    }
+    
+    public static function totalLigne ($id) {
+        $sql = "SELECT id_ligne_frais, SUM(valeur) as total "
+                . "FROM valeur_frais "
+                . "WHERE id_ligne_frais = ". $id;   
+        $connexionInstance = Connexion::getInstance();
+        return $connexionInstance->requeter($sql);
     }
 
 }

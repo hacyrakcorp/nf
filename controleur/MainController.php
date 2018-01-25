@@ -67,6 +67,12 @@ class MainController extends BaseControleur
                     $declarantControleur = new DeclarantControleur();
                     $declarantControleur->accueil();
                 } 
+                else if(intval($this->getSessionParam('statut')) === 4)
+                {  //L'utilisateur est comptable
+                    $comptableControleur = new ComptableControleur();
+                    $comptableControleur->accueil();
+                } 
+                
             }
             else if($this->getGetParam('page') === 'enregistrer_nf')
             { //Enregistrement d'une fiche de frais
@@ -83,8 +89,6 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->accueil();
             }
-            
-            
             else if ($this->getGetParam('page') === 'modifierNF')
             {
                 $declarantControleur = new DeclarantControleur();
@@ -104,6 +108,11 @@ class MainController extends BaseControleur
             {
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->creerNFAction();
+            }
+            else if ($this->getGetParam('page') === 'creerNFAction2')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->creerNFAction2();
             }
             else if ($this->getGetParam('page') === 'listerNF')
             {
@@ -145,6 +154,49 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->ajoutNFAction();
             }
+            else if ($this->getGetParam('page') === 'accueilAdmin')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->accueil();
+            }
+            else if ($this->getGetParam('page') === 'gestionD')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->gestionDeclarant();
+            }
+            else if ($this->getGetParam('page') === 'suppressionDeclarant')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionDeclarant();
+            }
+            else if ($this->getGetParam('page') === 'suppressionDeclarantAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->suppressionDeclarantAction();
+            }
+            else if ($this->getGetParam('page') === 'creerDeclarantAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->creerDeclarantAction();
+            }
+            else if ($this->getGetParam('page') === 'modifierDeclarant')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->modifierDeclarant();
+            }
+            else if ($this->getGetParam('page') === 'modifierDeclarantAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->modifierDeclarantAction();
+            }
+            else if ($this->getGetParam('page') === 'accueilComptable')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->accueil();
+            }
+            
+            
+            
         }
     }
 }

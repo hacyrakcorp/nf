@@ -42,3 +42,17 @@ CREATE TRIGGER `before_update_nf` BEFORE UPDATE ON `note_frais`
         signal sqlstate '45000' set message_text = 'Impossible d\'enregistrer une date avenir.';   
     END IF;
 END |
+
+
+
+DELIMITER |
+DROP TRIGGER IF EXISTS before_insert_valeur|
+CREATE TRIGGER `before_insert_valeur`
+BEFORE INSERT
+ON `valeur_frais`
+FOR EACH ROW
+BEGIN
+    UPDATE ligne_frais SET ligne_frais.montant = sum(valeur_frais.valeur)
+    WHERE ligne_frais.id = valeur_frais.id_ligne_frais
+	GROUP BY ligne_frais.id
+END |
