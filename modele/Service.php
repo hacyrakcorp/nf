@@ -62,7 +62,7 @@ class Service
         {
             $obj = new Service();
             $obj->setId($item['id']);
-            $obj->setNom($item['libelle']);
+            $obj->setLibelle($item['libelle']);
             $tab[] = $obj;
         }
 

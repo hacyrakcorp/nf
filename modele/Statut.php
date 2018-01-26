@@ -1,7 +1,10 @@
 <?php
 
 class Statut {
-
+    const ADMIN_ID = 1;
+    const SALARIE_ID = 2;
+    const EXTERNE_ID = 3;
+    const COMPTABLE_ID = 4;
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO statut (id, libelle) "
             . "VALUES (:id, :libelle)";

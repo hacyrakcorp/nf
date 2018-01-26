@@ -104,6 +104,31 @@ class NatureFrais {
             return null;
         }
     }
+    
+    public static function getByLibelle($libelle) {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE libelle = :libelle', array(
+            ':libelle' => $libelle
+                )
+        );
+
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new NatureFrais();
+                $obj->setId($item['id']);
+                $obj->setLibelle($item['libelle']);
+                $obj->setType_valeur(TypeValeur::getById($item['type_valeur']));
+                $obj->setUnite($item['unite']);
+                $tab[] = $obj;
+            }
+
+            return $tab[0];
+        } else {
+            return null;
+        }
+    }
 
     public function save() {
         if ($this->getId() == null) { // INSERT

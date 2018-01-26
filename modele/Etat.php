@@ -48,6 +48,24 @@ class Etat {
         $this->libelle = $libelle;
     }
     
+    /**
+     * @return Etat[]
+     */
+    public static function getAllListe() {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(self::$sqlRead);
+
+        $tab = array();
+        foreach ($liste as $item) {
+            $obj = new Statut();
+            $obj->setId($item['id']);
+            $obj->setLibelle($item['libelle']);
+            $tab[] = $obj;
+        }
+
+        return $tab;
+    }
+    
     public static function getById($id) {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(

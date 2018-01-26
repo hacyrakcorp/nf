@@ -6,7 +6,7 @@ class Utilisateur {
     protected static $sqlCreate = "INSERT INTO utilisateur (id, nom, prenom, "
             . "login, mdp, tentative_connection, id_statut, id_service, "
             . "code_mdp_oublie, confirme_code, date_expiration_code, bloque) "
-            . "VALUES (:id, :nom, :prenom, :login, :mdp, :email, "
+            . "VALUES (:id, :nom, :prenom, :login, :mdp, "
             . ":tentative_connection, :id_statut, :id_service, :code, "
             . ":confirme, :dateExpiration, :bloque)";
     protected static $sqlRead = "SELECT * FROM utilisateur";
@@ -252,7 +252,8 @@ class Utilisateur {
      */
     public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
-        $liste = $connexionInstance->requeter(self::$sqlRead);
+        $liste = $connexionInstance->requeter(self::$sqlRead .
+                ' ORDER BY nom ASC');
 
         $tab = array();
         foreach ($liste as $item) {
@@ -410,7 +411,7 @@ class Utilisateur {
         }
     }
 
-    public static function getByService($service) {
+    public static function getByService($id_service) {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
                 self::$sqlRead . ' WHERE id_service = :id_service', array(
@@ -441,6 +442,38 @@ class Utilisateur {
             return null;
         }
     }
+    
+    public static function getByServiceAll($id_service) {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE id_service = :id_service', array(
+            ':id_service' => $id_service
+                )
+        );
+
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new Utilisateur();
+                $obj->setId($item['id']);
+                $obj->setNom($item['nom']);
+                $obj->setPrenom($item['prenom']);
+                $obj->setLogin($item['login']);
+                $obj->setMdp($item['mdp']);
+                $obj->setTentative_connection($item['tentative_connection']);
+                $obj->setStatut(Statut::getById($item['id_statut']));
+                $obj->setService(Service::getById($item['id_service']));
+                $obj->setCode($item['code_mdp_oublie']);
+                $obj->setConfirme($item['confirme_code']);
+                $obj->setDateExpiration($item['date_expiration_code']);
+                $obj->setBloque($item['bloque']);
+                $tab[] = $obj;
+            }
+            return $tab;
+        } else {
+            return null;
+        }
+    }
 
     public static function getByStatut($id_statut) {
         $connexionInstance = Connexion::getInstance();
@@ -450,6 +483,37 @@ class Utilisateur {
                 )
         );
 
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new Utilisateur();
+                $obj->setId($item['id']);
+                $obj->setNom($item['nom']);
+                $obj->setPrenom($item['prenom']);
+                $obj->setLogin($item['login']);
+                $obj->setMdp($item['mdp']);
+                $obj->setTentative_connection($item['tentative_connection']);
+                $obj->setStatut(Statut::getById($item['id_statut']));
+                $obj->setService(Service::getById($item['id_service']));
+                $obj->setCode($item['code_mdp_oublie']);
+                $obj->setConfirme($item['confirme_code']);
+                $obj->setDateExpiration($item['date_expiration_code']);
+                $obj->setBloque($item['bloque']);
+                $tab[] = $obj;
+            }
+            return $tab;
+        } else {
+            return null;
+        }
+    }
+    
+    public static function getAllDeclarant() {
+        $connexionInstance = Connexion::getInstance();
+        
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . " WHERE id_statut = " . Statut::SALARIE_ID 
+                . " OR id_statut = " .Statut::EXTERNE_ID
+        );
         if (count($liste) > 0) {
             $tab = array();
             foreach ($liste as $item) {
@@ -525,20 +589,23 @@ class Utilisateur {
         }
 
         $connexionInstance = Connexion::getInstance();
-        if ($this->getService() != null) {
+        if (empty($this->getCode())
+                AND empty($this->getConfirme())
+                AND empty($this->getDateExpiration())
+                AND empty($this->getBloque()) ){
             $parametre = array(
                 ':id' => $this->getId(),
                 ':nom' => $this->getNom(),
                 ':prenom' => $this->getPrenom(),
                 ':login' => $this->getLogin(),
                 ':mdp' => $this->getMdp(),
-                ':tentative_connection' => $this->getTentative_connection(),
+                ':tentative_connection' => null,
                 ':id_statut' => $this->getStatut()->getID(),
                 ':id_service' => $this->getService()->getId(),
-                ':code' => $this->getCode(),
-                ':confirme' => $this->getConfirme(),
-                ':dateExpiration' => $this->getDateExpiration(),
-                ':bloque' => $this->getBloque()
+                ':code' => null,
+                ':confirme' => null,
+                ':dateExpiration' => null,
+                ':bloque' => null
             );
         } else {
             $parametre = array(
@@ -549,8 +616,8 @@ class Utilisateur {
                 ':mdp' => $this->getMdp(),
                 ':email' => $this->getEmail(),
                 ':tentative_connection' => $this->getTentative_connection(),
-                ':id_statut' => $this->getStatut->getID(),
-                ':id_service' => null,
+                ':id_statut' => $this->getStatut()->getID(),
+                ':id_service' => $this->getService()->getId(),
                 ':code' => $this->getCode(),
                 ':confirme' => $this->getConfirme(),
                 ':dateExpiration' => $this->getDateExpiration(),
