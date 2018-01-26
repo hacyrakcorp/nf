@@ -11,7 +11,7 @@
             //Récupère les statuts existant
             foreach ($listeStatut as $unStatut) {
                 $libelleStatut = $unStatut->getLibelle();
-            ?>
+                ?>
                 <option value= '<?php echo $unStatut->getId(); ?>'><?php echo $libelleStatut; ?></option>
                 <?php
             }
@@ -33,6 +33,44 @@
 </div>
 <h2>Modifier les utilisateurs</h2>
 <div>
+    <p>Filtrer : </p>
+    <form method="post" name="filtrer" action ='<?php echo $this->getServerParam('PHP_SELF') ?>?page=filtrerAction'>
+        <select id='FiltrerStatut' name='FiltrerStatut'>
+            <option></option>
+            <?php
+            //Récupère les statuts existant
+            foreach ($listeStatut as $unStatut) {
+                $libelleStatut = $unStatut->getLibelle();
+                ?>
+                <option value= '<?php echo $unStatut->getId(); ?>'><?php echo $libelleStatut; ?></option>
+                <?php
+            }
+            ?>
+        </select></br>
+        <select id='FiltrerService' name='FiltrerService'>
+            <option></option>
+            <?php
+            //Récupère les services existant
+            foreach ($listeService as $unService) {
+                $libelleService = $unService->getLibelle();
+                ?>
+                <option value= '<?php echo $unService->getId(); ?>'><?php echo $libelleService; ?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <p data-placement="right" data-toggle="tooltip" 
+           title="Filtrer" 
+           style="display:inline-block;">
+            <button type="submit" 
+                    name = 'Filtrer' 
+                    class="btn btn-primary btn-xl" 
+                    value="filtre">
+                <span>Filtrer</span>
+            </button>
+        </p>
+    </form>
+    <p></p>
     <table class="table table-bordered table-condensed table-body-center 
            table-striped w-width" >
         <thead> 
@@ -44,71 +82,73 @@
                 <th>Service</th>
                 <th></th>
             </tr>
-<?php
-foreach ($listeUtilisateur as $utilisateur) {
-    ?>
-                <tr> 
-                    <td data-title="Nom">
-                <?php
-                echo $utilisateur->getNom();
-                ?>
-                    </td>
-                    <td data-title="Prenom">
-                        <?php
-                        echo $utilisateur->getPrenom();
-                        ?>
-                    </td>
-                    <td data-title="Mail">
-                        <?php
-                        echo $utilisateur->getLogin();
-                        ?>
-                    </td>
-                    <td data-title="Statut">
-                        <?php
-                        echo $utilisateur->getStatut()->getLibelle();
-                        ?>
-                    </td>
-                    <td data-title="Service">
-                        <?php
-                        echo $utilisateur->getService()->getLibelle();
-                        ?>
-                    </td>
-                    <td>
-                        <p data-placement="right" data-toggle="tooltip" 
-                           title="Modifier le déclarant" 
-                           style="display:inline-block;">
-                            <button type="button" 
-                                    name = 'Modifier' 
-                                    class="btn btn-primary btn-xs" 
-                                    value ='<?php echo $utilisateur->getId(); ?>'
-                                    data-title="Modifier" 
-                                    data-toggle="modal" 
-                                    data-target="#fen_modal"
-                                    onClick="getValeur('modifierUtilisateur',
+            <?php
+            if ($listeUtilisateur != null) {
+                foreach ($listeUtilisateur as $utilisateur) {
+                    ?>
+                    <tr> 
+                        <td data-title="Nom">
+                            <?php
+                            echo $utilisateur->getNom();
+                            ?>
+                        </td>
+                        <td data-title="Prenom">
+                            <?php
+                            echo $utilisateur->getPrenom();
+                            ?>
+                        </td>
+                        <td data-title="Mail">
+                            <?php
+                            echo $utilisateur->getLogin();
+                            ?>
+                        </td>
+                        <td data-title="Statut">
+                            <?php
+                            echo $utilisateur->getStatut()->getLibelle();
+                            ?>
+                        </td>
+                        <td data-title="Service">
+                            <?php
+                            echo $utilisateur->getService()->getLibelle();
+                            ?>
+                        </td>
+                        <td>
+                            <p data-placement="right" data-toggle="tooltip" 
+                               title="Modifier l'utilisateur" 
+                               style="display:inline-block;">
+                                <button type="button" 
+                                        name = 'Modifier' 
+                                        class="btn btn-primary btn-xs" 
+                                        value ='<?php echo $utilisateur->getId(); ?>'
+                                        data-title="Modifier" 
+                                        data-toggle="modal" 
+                                        data-target="#fen_modal"
+                                        onClick="getValeur('modifierUtilisateur',
                                                             '<?php echo $utilisateur->getId(); ?>')">
-                                <span class="glyphicon glyphicon-pencil">
-                                </span>
-                            </button>
-                        </p>
-                        <p data-placement="right" data-toggle="tooltip" 
-                           title="Supprimer" 
-                           style="display:inline-block;">
-                            <button type="button" 
-                                    class="btn btn-danger btn-xs" 
-                                    data-title="Supprimer" 
-                                    data-toggle="modal" 
-                                    data-target="#fen_modal"
-                                    onClick="getValeur(
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                </button>
+                            </p>
+                            <p data-placement="right" data-toggle="tooltip" 
+                               title="Supprimer" 
+                               style="display:inline-block;">
+                                <button type="button" 
+                                        class="btn btn-danger btn-xs" 
+                                        data-title="Supprimer" 
+                                        data-toggle="modal" 
+                                        data-target="#fen_modal"
+                                        onClick="getValeur(
                                                             'suppressionUtilisateur',
                                                             '<?php echo $utilisateur->getId(); ?>')">
-                                <span class="glyphicon glyphicon-trash">  
-                                </span>
-                            </button>
-                        </p>
-                    </td>
-    <?php
-}
-?>
+                                    <span class="glyphicon glyphicon-trash">  
+                                    </span>
+                                </button>
+                            </p>
+                        </td>
+                        <?php
+                    }
+                }
+                ?>
         </thead> 
         <tbody>
     </table>

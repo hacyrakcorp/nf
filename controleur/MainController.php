@@ -189,6 +189,11 @@ class MainController extends BaseControleur
                 $administrateurControleur = new AdministrateurControleur();
                 $administrateurControleur->modifierUtilisateurAction();
             }
+            else if ($this->getGetParam('page') === 'filtrerAction')
+            {
+                $administrateurControleur = new AdministrateurControleur();
+                $administrateurControleur->filtrerAction();
+            }
             else if ($this->getGetParam('page') === 'gestionStatut')
             {
                 $administrateurControleur = new AdministrateurControleur();

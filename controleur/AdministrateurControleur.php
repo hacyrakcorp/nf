@@ -13,6 +13,7 @@ class AdministrateurControleur extends BaseControleur {
         $listeStatut = Statut::getAllListe();
         $listeService = Service::getAllListe();
         $listeUtilisateur = Utilisateur::getAllListe();
+
         include $this->pathVue . 'header.php';
         include $this->pathVue . 'menuAdmin.php';
         include $this->pathVue . 'gestionUtilisateur.php';
@@ -28,7 +29,7 @@ class AdministrateurControleur extends BaseControleur {
         $statut = Statut::getById($idStatut);
         $idService = $this->getPostParam('Service');
         $service = Service::getById($idService);
-        if (!empty($nom) AND ! empty($prenom) 
+        if (!empty($nom) AND ! empty($prenom)
                 AND ! empty($mail) AND ! empty($mdp)
                 AND ! empty($statut) AND ! empty($service)) { //champs remplis
             //On vérifie que l'utilisateur n'existe pas
@@ -72,34 +73,32 @@ class AdministrateurControleur extends BaseControleur {
         $idService = $this->getPostParam('Service');
         $service = Service::getById($idService);
 
-        if (!empty($id) AND ! empty($nom) AND ! empty($prenom) 
+        if (!empty($id) AND ! empty($nom) AND ! empty($prenom)
                 AND ! empty($mail) AND ! empty($mdp)
                 AND ! empty($statut) AND ! empty($service)) { //champs remplis
             //On vérifie que l'utilisateur n'existe pas
             $declarant = Utilisateur::getById($id);
             $utilisateur = Utilisateur::getByLogin($mail);
-            if ($utilisateur == null OR $utilisateur->getId() == $id)
-            { 
+            if ($utilisateur == null OR $utilisateur->getId() == $id) {
                 $declarant = new Utilisateur();
                 $declarant->setId($id);
                 $declarant->setNom($nom);
                 $declarant->setPrenom($prenom);
                 $declarant->setLogin($mail);
                 //Le mode de passe est modifié
-                if ($mdp != $declarant->getMdp()){
+                if ($mdp != $declarant->getMdp()) {
                     $mdpCrypte = sha1($mdp);
                     $declarant->setMdp($mdpCrypte);
                 }
                 $declarant->setStatut($statut);
                 $declarant->setService($service);
                 $declarant->save();
-                
+
                 $this->redirect('index.php?info=10&page=gestionUtilisateur');
             } else {
                 //Erreur : l'utilisateur existe
                 $this->redirect('index.php?erreur=19&page=gestionUtilisateur');
             }
-            
         } else { //Remplir tous les champs
             $this->redirect('index.php?erreur=2&page=gestionUtilisateur');
         }
@@ -122,6 +121,33 @@ class AdministrateurControleur extends BaseControleur {
         }
     }
     
+    public function filtrerAction() {
+        if (!empty($this->getPostParam('Filtrer'))) {//clique sur filtrer
+            $idService = $this->getPostParam('FiltrerService');
+            $idStatut = $this->getPostParam('FiltrerStatut');
+            if ($idService != '' OR $idStatut != '') {
+                
+                $listeStatut = Statut::getAllListe();
+                $listeService = Service::getAllListe();
+                if ($idService == ''){
+                    $listeUtilisateur = Utilisateur::getByStatut($idStatut);
+                } else if ($idStatut == ''){
+                    $listeUtilisateur = Utilisateur::getByServiceAll($idService);
+                } else {
+                    $listeUtilisateur = Utilisateur::getByStatutService($idStatut, $idService);
+                    
+                }
+         
+                include $this->pathVue . 'header.php';
+                include $this->pathVue . 'menuAdmin.php';
+                include $this->pathVue . 'gestionUtilisateur.php';
+                include $this->pathVue . 'footer.php';
+            } else {
+                $this->redirect('index.php?page=gestionUtilisateur');
+            }
+        }
+    }
+
     public function gestionStatut() {
         $listeStatut = Statut::getAllListe();
         include $this->pathVue . 'header.php';
@@ -129,7 +155,7 @@ class AdministrateurControleur extends BaseControleur {
         include $this->pathVue . 'gestionStatut.php';
         include $this->pathVue . 'footer.php';
     }
-    
+
     public function creerStatutAction() {
         $libelle = $this->getPostParam('Libelle');
         if (!empty($libelle)) { //champs remplis
@@ -149,7 +175,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=gestionStatut');
         }
     }
-    
+
     public function suppressionStatut() {
         $id = $this->getPostParam('id');
         $statut = Statut::getById($id);
@@ -166,7 +192,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=22&page=gestionStatut');
         }
     }
-    
+
     public function gestionService() {
         $listeService = Service::getAllListe();
         include $this->pathVue . 'header.php';
@@ -174,7 +200,7 @@ class AdministrateurControleur extends BaseControleur {
         include $this->pathVue . 'gestionService.php';
         include $this->pathVue . 'footer.php';
     }
-    
+
     public function creerServiceAction() {
         $libelle = $this->getPostParam('Libelle');
         if (!empty($libelle)) { //champs remplis
@@ -194,7 +220,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=gestionService');
         }
     }
-    
+
     public function suppressionService() {
         $id = $this->getPostParam('id');
         $service = Service::getById($id);
@@ -211,7 +237,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=24&page=gestionService');
         }
     }
-    
+
     public function gestionEtat() {
         $listeEtat = Etat::getAllListe();
         include $this->pathVue . 'header.php';
@@ -219,7 +245,7 @@ class AdministrateurControleur extends BaseControleur {
         include $this->pathVue . 'gestionEtat.php';
         include $this->pathVue . 'footer.php';
     }
-    
+
     public function creerEtatAction() {
         $libelle = $this->getPostParam('Libelle');
         if (!empty($libelle)) { //champs remplis
@@ -239,7 +265,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=gestionEtat');
         }
     }
-    
+
     public function suppressionEtat() {
         $id = $this->getPostParam('id');
         $etat = Etat::getById($id);
@@ -256,7 +282,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=26&page=gestionEtat');
         }
     }
-    
+
     public function gestionTypeValeur() {
         $listeType = TypeValeur::getAllListe();
         include $this->pathVue . 'header.php';
@@ -264,7 +290,7 @@ class AdministrateurControleur extends BaseControleur {
         include $this->pathVue . 'gestionTypeValeur.php';
         include $this->pathVue . 'footer.php';
     }
-    
+
     public function creerTypeValeurAction() {
         $libelle = $this->getPostParam('Libelle');
         if (!empty($libelle)) { //champs remplis
@@ -284,7 +310,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=gestionTypeValeur');
         }
     }
-    
+
     public function suppressionTypeValeur() {
         $id = $this->getPostParam('id');
         $type = TypeValeur::getById($id);
@@ -301,7 +327,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=28&page=gestionTypeValeur');
         }
     }
-    
+
     public function gestionNatureFrais() {
         $listeType = TypeValeur::getAllListe();
         $listeNature = NatureFrais::getAllListe();
@@ -310,13 +336,13 @@ class AdministrateurControleur extends BaseControleur {
         include $this->pathVue . 'gestionNatureFrais.php';
         include $this->pathVue . 'footer.php';
     }
-    
+
     public function creerNatureFraisAction() {
         $libelle = $this->getPostParam('Libelle');
         $idType = $this->getPostParam('TypeValeur');
         $type = TypeValeur::getById($idType);
         $unite = $this->getPostParam('Unite');
-        if (!empty($libelle) AND !empty($idType) AND !empty($unite)) { //champs remplis
+        if (!empty($libelle) AND ! empty($idType) AND ! empty($unite)) { //champs remplis
             //On vérifie que le statut n'existe pas
             $verifNature = NatureFrais::getByLibelle($libelle);
             if ($verifNature == null) {
@@ -335,7 +361,7 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=gestionNatureFrais');
         }
     }
-    
+
     public function suppressionNatureFrais() {
         $id = $this->getPostParam('id');
         $nature = NatureFrais::getById($id);
@@ -352,7 +378,6 @@ class AdministrateurControleur extends BaseControleur {
             $this->redirect('index.php?erreur=30&page=gestionNatureFrais');
         }
     }
-    
 
 }
 

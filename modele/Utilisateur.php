@@ -252,7 +252,8 @@ class Utilisateur {
      */
     public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
-        $liste = $connexionInstance->requeter(self::$sqlRead);
+        $liste = $connexionInstance->requeter(self::$sqlRead .
+                ' ORDER BY nom ASC');
 
         $tab = array();
         foreach ($liste as $item) {
@@ -410,7 +411,7 @@ class Utilisateur {
         }
     }
 
-    public static function getByService($service) {
+    public static function getByService($id_service) {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(
                 self::$sqlRead . ' WHERE id_service = :id_service', array(
@@ -437,6 +438,38 @@ class Utilisateur {
                 $tab[] = $obj;
             }
             return $tab[0];
+        } else {
+            return null;
+        }
+    }
+    
+    public static function getByServiceAll($id_service) {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE id_service = :id_service', array(
+            ':id_service' => $id_service
+                )
+        );
+
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new Utilisateur();
+                $obj->setId($item['id']);
+                $obj->setNom($item['nom']);
+                $obj->setPrenom($item['prenom']);
+                $obj->setLogin($item['login']);
+                $obj->setMdp($item['mdp']);
+                $obj->setTentative_connection($item['tentative_connection']);
+                $obj->setStatut(Statut::getById($item['id_statut']));
+                $obj->setService(Service::getById($item['id_service']));
+                $obj->setCode($item['code_mdp_oublie']);
+                $obj->setConfirme($item['confirme_code']);
+                $obj->setDateExpiration($item['date_expiration_code']);
+                $obj->setBloque($item['bloque']);
+                $tab[] = $obj;
+            }
+            return $tab;
         } else {
             return null;
         }
