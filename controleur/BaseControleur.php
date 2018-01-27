@@ -54,6 +54,12 @@ class BaseControleur {
             $this->infoMessage = 'La nature du frais a été ajouté';
         } else if ($this->getGetParam('info') == 21) {
             $this->infoMessage = 'La nature du frais a été supprimé';
+        } else if ($this->getGetParam('info') == 22) {
+            $this->infoMessage = 'La ligne a été ajouté';
+        } else if ($this->getGetParam('info') == 23) {
+            $this->infoMessage = 'La ligne a été supprimé';
+        } else if ($this->getGetParam('info') == 24) {
+            $this->infoMessage = 'La ligne a été modifié';
         }
 
 
@@ -122,6 +128,12 @@ class BaseControleur {
             $this->erreurMessage = 'La nature du frais existe déjà';
         } else if ($this->getGetParam('erreur') == 30) {
             $this->erreurMessage = 'Erreur de suppression de la nature du frais';
+        } else if ($this->getGetParam('erreur') == 31) {
+            $this->erreurMessage = 'La ligne existe déjà';
+        } else if ($this->getGetParam('erreur') == 32) {
+            $this->erreurMessage = 'Erreur de suppression de la ligne de frais';
+        } else if ($this->getGetParam('erreur') == 33) {
+            $this->erreurMessage = 'Cocher au moins une valeur';
         }
     }
 

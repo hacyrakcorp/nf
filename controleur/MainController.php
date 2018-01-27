@@ -144,15 +144,40 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->voirNF();
             }
-            else if ($this->getGetParam('page') === 'ajoutNF')
+            /*else if ($this->getGetParam('page') === 'ajoutNF')
             {
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->ajoutNF();
-            }
-            else if ($this->getGetParam('page') === 'ajoutNFAction')
+            }*/
+            else if ($this->getGetParam('page') === 'ajouterLigne')
             {
                 $declarantControleur = new DeclarantControleur();
-                $declarantControleur->ajoutNFAction();
+                $declarantControleur->ajouterLigne();
+            }
+            else if ($this->getGetParam('page') === 'ajouterLigneAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->ajouterLigneAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionLigne')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->suppressionLigne();
+            }
+            else if ($this->getGetParam('page') === 'suppressionLigneAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->suppressionLigneAction();
+            }
+            else if ($this->getGetParam('page') === 'modifierLigne')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->modifierLigne();
+            }
+            else if ($this->getGetParam('page') === 'modifierLigneAction')
+            {
+                $declarantControleur = new DeclarantControleur();
+                $declarantControleur->modifierLigneAction();
             }
             else if ($this->getGetParam('page') === 'accueilAdmin')
             {
