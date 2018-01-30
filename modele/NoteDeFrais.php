@@ -73,6 +73,11 @@ class NoteDeFrais {
      * @var Utilisateur
      */
     private $id_utilisateur;
+    
+    /**
+     * @var double
+     */
+    private $total;
 
     /**
      * @var Etat
@@ -158,7 +163,16 @@ class NoteDeFrais {
     public function setId_etat($id_etat) {
         $this->id_etat = $id_etat;
     }
+    
+    function getTotal() {
+        return $this->total;
+    }
 
+    function setTotal($total) {
+        $this->total = $total;
+    }
+
+    
     public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(self::$sqlRead);
@@ -176,6 +190,7 @@ class NoteDeFrais {
             $obj->setNet_a_payer($item['$net_a_payer']);
             $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
             $obj->setId_etat(Etat::getById($item['id_etat']));
+            $obj->totalLigne($item['id']);
             $tab[] = $obj;
         }
         return $tab;
@@ -203,6 +218,7 @@ class NoteDeFrais {
                 $obj->setNet_a_payer($item['net_a_payer']);
                 $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
                 $obj->setId_etat(Etat::getById($item['id_etat']));
+                $obj->totalLigne($item['id']);
                 $tab[] = $obj;
             }
             return $tab[0];
@@ -233,6 +249,39 @@ class NoteDeFrais {
                 $obj->setNet_a_payer($item['net_a_payer']);
                 $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
                 $obj->setId_etat(Etat::getById($item['id_etat']));
+                $obj->totalLigne($item['id']);
+                $tab[] = $obj;
+            }
+            return $tab;
+        } else {
+            return null;
+        }
+    }
+    
+    public static function getByEtat($id_etat) {
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE id_etat = :id_etat '
+                . 'ORDER BY mois_annee DESC', array(
+            ':id_etat' => $id_etat
+                )
+        );
+
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new NoteDeFrais();
+                $obj->setId($item['id']);
+                $obj->setMois_annee($item['mois_annee']);
+                $obj->setNb_justificatif($item['nb_justificatif']);
+                $obj->setPrix_km($item['prix_km']);
+                $obj->setMode_reglement($item['mode_reglement']);
+                $obj->setBanque($item['banque']);
+                $obj->setAvance($item['avance']);
+                $obj->setNet_a_payer($item['net_a_payer']);
+                $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
+                $obj->setId_etat(Etat::getById($item['id_etat']));
+                $obj->totalLigne($item['id']);
                 $tab[] = $obj;
             }
             return $tab;
@@ -290,4 +339,29 @@ class NoteDeFrais {
         );
     }
 
+    public function dernierId() {
+        $connexionInstance = Connexion::getInstance();
+        return $connexionInstance->dernierID();
+    }
+    
+    public function totalLigne ($id) {
+        $sql = "SELECT ROUND(SUM(vf.valeur), 2) + "
+                . "IFNULL((SELECT SUM(vf2.valeur * IFNULL(p2.tarif_km,0.52)) "
+                . "FROM valeur_frais vf2 "
+                . "INNER JOIN ligne_frais lf2 ON vf2.id_ligne_frais = lf2.id "
+                . "INNER JOIN note_frais nf2 ON lf2.id_note_frais = nf2.id "
+                . "LEFT OUTER JOIN preference p2 ON nf2.mois_annee = p2.mois_annee "
+                . "WHERE "
+                . "nf2.id = ".$id." AND "
+                . "vf2.id_nature_frais = ".NatureFrais::ID_KM."), 0) AS total
+                FROM valeur_frais vf 
+                INNER JOIN ligne_frais lf ON vf.id_ligne_frais = lf.id 
+                INNER JOIN note_frais nf ON lf.id_note_frais = nf.id 
+                WHERE 
+                nf.id = ".$id." AND 
+                vf.id_nature_frais <> ".NatureFrais::ID_KM;
+        $connexionInstance = Connexion::getInstance();
+        $resultat = $connexionInstance->requeter($sql);
+        $this->total = $resultat[0]['total'];
+    }
 }

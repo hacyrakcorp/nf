@@ -66,7 +66,7 @@ class DeclarantControleur extends BaseControleur {
         }
     }
     
-    public function creerNFAction2() {
+    public function creerNFAction2() { //Création
         $champsDate = $this->getPostParam('date_NF');
         if (!empty($champsDate)) { //le champs mois_année est rempli
             $etatBrouillon = Etat::getById(Etat::BROUILLON_ID);
@@ -91,6 +91,15 @@ class DeclarantControleur extends BaseControleur {
                     $noteDeFrais->setMois_annee($champsDate);
                     $result = $noteDeFrais->save();
                     
+                    //recup la dernière note de frais
+                    $derniereNF = NoteDeFrais::getById($noteDeFrais->dernierId());
+                    $datetime = date("Y-m-d H:i:s");
+                    //Gestion de l'historique des NF
+                    $histo = new HistoNF();
+                    $histo->setDate_note_frais($datetime);
+                    $histo->setId_note_frais($derniereNF);
+                    $histo->save();
+                   
                     if ($result === false) {//Date supérieur à date du jour
                         $this->redirect('index.php?erreur=10&page=creerNF');
                     } else {//La NF est créer
@@ -198,12 +207,7 @@ class DeclarantControleur extends BaseControleur {
         $tabNF = NoteDeFrais::getById($id);
         $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
         $tabNatureFrais = NatureFrais::getAllListe();
-        if ($tabLigneNF != null) {
-            foreach ($tabLigneNF as $ligne) {
-                $idLigne = $ligne->getId();
-                $totalLigne[] = LigneNF::totalLigne(intval($idLigne));   
-            }
-        }
+        
         include $this->pathVue . 'header.php';
         include $this->pathVue . 'menuDeclarant.php';
         include $this->pathVue . 'ajouterLigne.php';

@@ -39,6 +39,11 @@ class LigneNF {
      * @var string
      */
     private $lieu;
+    
+    /**
+     * @var double
+     */
+    private $total;
 
     /**
      * @var integer
@@ -84,8 +89,16 @@ class LigneNF {
     function setId_note_frais($id_note_frais) {
         $this->id_note_frais = $id_note_frais;
     }
+    
+    function getTotal() {
+        return $this->total;
+    }
 
-    public static function getAllListe() {
+    function setTotal($total) {
+        $this->total = $total;
+    }
+
+        public static function getAllListe() {
         $connexionInstance = Connexion::getInstance();
         $liste = $connexionInstance->requeter(self::$sqlRead);
 
@@ -97,6 +110,7 @@ class LigneNF {
             $obj->setObject($item['object']);
             $obj->setLieu($item['lieu']);
             $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
+            $obj->totalLigne($item['id']);
             $tab[] = $obj;
         }
         return $tab;
@@ -119,6 +133,7 @@ class LigneNF {
                 $obj->setObject($item['object']);
                 $obj->setLieu($item['lieu']);
                 $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
+                $obj->totalLigne($item['id']);
                 $tab[] = $obj;
             }
             return $tab[0];
@@ -144,6 +159,7 @@ class LigneNF {
                 $obj->setObject($item['object']);
                 $obj->setLieu($item['lieu']);
                 $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
+                $obj->totalLigne($item['id']);
                 $tab[] = $obj;
             }
             return $tab;
@@ -187,12 +203,17 @@ class LigneNF {
         );
     }
     
-    public static function totalLigne ($id) {
-        $sql = "SELECT id_ligne_frais, SUM(valeur) as total "
-                . "FROM valeur_frais "
-                . "WHERE id_ligne_frais = ". $id;   
+    public function totalLigne ($id) {
+        $sql = "SELECT ROUND(SUM(vf.valeur), 2) + IFNULL((SELECT SUM(vf2.valeur * IFNULL(p2.tarif_km,0.52)) FROM valeur_frais vf2 INNER JOIN ligne_frais lf2 ON vf2.id_ligne_frais = lf2.id INNER JOIN note_frais nf2 ON lf2.id_note_frais = nf2.id LEFT OUTER JOIN preference p2 ON nf2.mois_annee = p2.mois_annee WHERE lf2.id = ".$id." AND vf2.id_nature_frais = ".NatureFrais::ID_KM."), 0) AS total
+                FROM valeur_frais vf 
+                INNER JOIN ligne_frais lf ON vf.id_ligne_frais = lf.id 
+                INNER JOIN note_frais nf ON lf.id_note_frais = nf.id 
+                WHERE 
+                lf.id = ".$id." AND 
+                vf.id_nature_frais <> ".NatureFrais::ID_KM;
         $connexionInstance = Connexion::getInstance();
-        return $connexionInstance->requeter($sql);
+        $resultat = $connexionInstance->requeter($sql);
+        $this->total = $resultat[0]['total'];
     }
 
 }

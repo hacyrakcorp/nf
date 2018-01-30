@@ -6,7 +6,7 @@
 </p>
 
 
-<h2>Récapitulatif de la note de frais</h2>
+<h2>Récapitulatif de la note de frais (Total <?php echo $tabNF->getTotal(); ?>)</h2>
 <?php
 if ($tabLigneNF != null) { //La NF contient des lignes
     ?>
@@ -44,14 +44,7 @@ if ($tabLigneNF != null) { //La NF contient des lignes
                         </td>
                         <td data-title="montant">
                             <?php
-                            foreach ($totalLigne as $ligne) {
-                                foreach ($ligne as $montant) {
-                                    if ($ligneNF->getId() == $montant['id_ligne_frais']) {
-                                        //Arrondi à 2 chiffres après la virgule
-                                        echo number_format($montant['total'], 2, ".", " ");
-                                    }
-                                }
-                            }
+                            echo $ligneNF->getTotal();
                             ?>
                         </td> 
                         <td>

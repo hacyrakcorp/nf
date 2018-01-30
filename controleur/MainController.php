@@ -66,6 +66,11 @@ class MainController extends BaseControleur
                 {  //L'utilisateur est déclarant salarié
                     $declarantControleur = new DeclarantControleur();
                     $declarantControleur->accueil();
+                }
+                else if(intval($this->getSessionParam('statut')) === 3)
+                {  //L'utilisateur est déclarant salarié
+                    $declarantControleur = new DeclarantControleur();
+                    $declarantControleur->accueil();
                 } 
                 else if(intval($this->getSessionParam('statut')) === 4)
                 {  //L'utilisateur est comptable
@@ -74,6 +79,9 @@ class MainController extends BaseControleur
                 } 
                 
             }
+            
+            
+    // Partie Déclarant
             else if($this->getGetParam('page') === 'enregistrer_nf')
             { //Enregistrement d'une fiche de frais
                 $declarantControleur = new DeclarantControleur();
@@ -179,6 +187,10 @@ class MainController extends BaseControleur
                 $declarantControleur = new DeclarantControleur();
                 $declarantControleur->modifierLigneAction();
             }
+            
+            
+            
+    // Partie Administrateur
             else if ($this->getGetParam('page') === 'accueilAdmin')
             {
                 $administrateurControleur = new AdministrateurControleur();
@@ -304,11 +316,7 @@ class MainController extends BaseControleur
                 $administrateurControleur = new AdministrateurControleur();
                 $administrateurControleur->gestionNatureFrais();
             }
-            else if ($this->getGetParam('page') === 'accueilComptable')
-            {
-                $comptableControleur = new ComptableControleur();
-                $comptableControleur->accueil();
-            }
+            
             else if ($this->getGetParam('page') === 'creerNatureFraisAction')
             {
                 $administrateurControleur = new AdministrateurControleur();
@@ -325,6 +333,42 @@ class MainController extends BaseControleur
                 $administrateurControleur->suppressionNatureFraisAction();
             }
             
+    //Partie Comptabilité        
+            else if ($this->getGetParam('page') === 'accueilComptable')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->accueil();
+            }
+            else if ($this->getGetParam('page') === 'tarifKm')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->tarifKm();
+            }
+            else if ($this->getGetParam('page') === 'creerTarifAction')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->creerTarifAction();
+            }
+            else if ($this->getGetParam('page') === 'suppressionTarif')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->suppressionTarif();
+            }
+            else if ($this->getGetParam('page') === 'suppressionTarifAction')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->suppressionTarifAction();
+            }
+            else if ($this->getGetParam('page') === 'tableauBord')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->tableauBord();
+            }
+            else if ($this->getGetParam('page') === 'tableauNFAction')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->tableauNFAction();
+            }
             
         }
     }

@@ -9,6 +9,8 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=accueilComptable">Accueil</a> </li>
+                    <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=tableauBord">Tableau de bord</a> </li>
+                    <li> <a class="tab-links__item is-active" href="<?php echo $this->getServerParam('PHP_SELF') ?>?page=tarifKm">Gestion tarif Km</a> </li>
                     
                 </ul>
                 <form class="navbar-form navbar-right inline-form" method="post" name='deconnexion' action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=deconnexion">

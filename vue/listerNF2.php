@@ -6,6 +6,7 @@
             <tr>
                 <th>Note de frais</th>
                 <th>Etat</th>
+                <th>Total</th>
                 <th></th>
             </tr>
         </thead> 
@@ -43,7 +44,11 @@
                     </td>
 
                     <td data-title="Etat"> 
-                        <?php echo $nf->getId_etat()->getLibelle(); ?></td>
+                        <?php echo $nf->getId_etat()->getLibelle(); ?>
+                    </td>
+                    <td>
+                         <?php echo $nf->getTotal(); ?>
+                    </td>
                     <td> 
                        <?php if ($nf->getId_etat()->getId() != Etat::SOUMIS_ID) { ?>
                             <p data-placement="right" data-toggle="tooltip" 
