@@ -77,12 +77,42 @@ class ComptableControleur extends BaseControleur {
         }
         $tabNF = NoteDeFrais::getById($id);
         $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
+        $tabLigneOM = LigneOM::getByNFAll($tabNF->getId());
         $tabNatureFrais = NatureFrais::getAllListe();
         $tabCodeAnalytique = CodeAnalytique::getAllListe();
         include $this->pathVue . 'header.php';
         include $this->pathVue . 'menuComptable.php';
         include $this->pathVue . 'traitementNF.php';
         include $this->pathVue . 'footer.php';
+    }
+    public function traitementNFAction() {
+        //Recup les inputs
+        $idNF = $this->getPostParam('id_NF');
+        $rapport = $this->getPostParam('rapport');
+        $idCodeAnalytique = $this->getPostParam('code_analytique');
+        $affaire = $this->getPostParam('affaire');
+        $montant = $this->getPostParam('montant');
+        
+        if(!empty($idNF) AND 
+                !empty($rapport) AND 
+                !empty($idCodeAnalytique) AND
+                !empty($affaire) AND
+                !empty($montant))
+        { //les champs sont remplis
+            $NF = NoteDeFrais::getById($idNF);
+            $codeAnalytique = CodeAnalytique::getById($idCodeAnalytique);
+            $ligneOM = new LigneOM();
+            $ligneOM->setId_note_frais($NF);
+            $ligneOM->setId_code_analytique($codeAnalytique);
+            $ligneOM->setNumero_rapport($rapport);
+            $ligneOM->setAffaire($affaire);
+            $ligneOM->setMontant($montant);
+            $ligneOM->save();
+            $this->redirect("index.php?info=22&page=tableauNFAction");
+        } else { //Remplir tout les champs
+            $this->redirect("index.php?erreur=2&page=tableauNFAction");
+        }
+        
     }
 
 }

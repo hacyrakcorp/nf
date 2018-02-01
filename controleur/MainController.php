@@ -369,6 +369,11 @@ class MainController extends BaseControleur
                 $comptableControleur = new ComptableControleur();
                 $comptableControleur->tableauNFAction();
             }
+            else if ($this->getGetParam('page') === 'traitementNFAction')
+            {
+                $comptableControleur = new ComptableControleur();
+                $comptableControleur->traitementNFAction();
+            }
             
         }
     }

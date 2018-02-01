@@ -64,7 +64,7 @@ class BaseControleur {
             $this->infoMessage = 'Le tarif a été ajouté';
         } else if ($this->getGetParam('info') == 26) {
             $this->infoMessage = 'Le tarif a été supprimé';
-        }
+        } 
 
 
         //Liste des erreurs

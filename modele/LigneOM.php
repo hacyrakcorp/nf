@@ -4,13 +4,13 @@ class LigneOM {
 
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO ligne_ordre_mission (id, "
-            . "numero_rapport, affaire, montant"
+            . "numero_rapport, affaire, montant, "
             . "id_note_frais, id_code_analytique) VALUES (:id, :numero_rapport, "
             . ":affaire, :montant, :id_note_frais, :id_code_analytique)";
     protected static $sqlRead = "SELECT * FROM ligne_ordre_mission ";
     protected static $sqlUpdate = "UPDATE ligne_ordre_mission "
             . "SET numero_rapport = :numero_rapport, "
-            . "affaire = :affaire, montant = :montant"
+            . "affaire = :affaire, montant = :montant, "
             . "id_note_frais = :id_note_frais, "
             . "id_code_analytique = :id_code_analytique"
             . " WHERE id = :id";
@@ -156,7 +156,7 @@ class LigneOM {
                 $obj->setAffaire($item['affaire']);
                 $obj->setMontant($item['montant']);
                 $obj->setId_note_frais(NoteDeFrais::getById($item['id_note_frais']));
-                $obj->setId_code_analytique(CodeAnalytique::getById($item['code_analytique']));
+                $obj->setId_code_analytique(CodeAnalytique::getById($item['id_code_analytique']));
                 $tab[] = $obj;
             }
             return $tab;
