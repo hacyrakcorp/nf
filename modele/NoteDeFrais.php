@@ -16,14 +16,15 @@ class NoteDeFrais {
 //put your code here
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO note_frais (id, mois_annee, "
-            . "nb_justificatif, prix_km, mode_reglement, banque, avance, "
+            . "nb_justificatif, mode_reglement, numero_cheque, banque, avance, "
             . "net_a_payer, id_utilisateur, id_etat) VALUES (:id, :mois_annee,"
-            . " :nb_justificatif, :prix_km, :mode_reglement, :banque, :avance, "
+            . " :nb_justificatif, :mode_reglement, :numero_cheque, :banque, :avance, "
             . ":net_a_payer, :id_utilisateur, :id_etat)";
     protected static $sqlRead = "SELECT * FROM note_frais";
     protected static $sqlUpdate = "UPDATE note_frais SET mois_annee = :mois_annee, "
-            . "nb_justificatif = :nb_justificatif, prix_km = :prix_km, "
-            . "mode_reglement = :mode_reglement, banque = :banque, avance = :avance,"
+            . "nb_justificatif = :nb_justificatif, "
+            . "mode_reglement = :mode_reglement, numero_cheque = :numero_cheque,"
+            . " banque = :banque, avance = :avance,"
             . " net_a_payer = :net_a_payer, id_utilisateur = :id_utilisateur, "
             . "id_etat = :id_etat"
             . " WHERE id = :id";
@@ -45,14 +46,14 @@ class NoteDeFrais {
     private $nb_justificatif;
 
     /**
-     * @var float
-     */
-    private $prix_km;
-
-    /**
      * @var string
      */
     private $mode_reglement;
+    
+    /**
+     * @var string
+     */
+    private $numero_cheque;
 
     /**
      * @var string
@@ -83,7 +84,15 @@ class NoteDeFrais {
      * @var Etat
      */
     private $id_etat;
+    
+    function getNumero_cheque() {
+        return $this->numero_cheque;
+    }
 
+    function setNumero_cheque($numero_cheque) {
+        $this->numero_cheque = $numero_cheque;
+    }
+    
     public function getId() {
         return $this->id;
     }
@@ -96,9 +105,6 @@ class NoteDeFrais {
         return $this->nb_justificatif;
     }
 
-    public function getPrix_km() {
-        return $this->prix_km;
-    }
 
     public function getMode_reglement() {
         return $this->mode_reglement;
@@ -134,10 +140,6 @@ class NoteDeFrais {
 
     public function setNb_justificatif($nb_justificatif) {
         $this->nb_justificatif = $nb_justificatif;
-    }
-
-    public function setPrix_km($prix_km) {
-        $this->prix_km = $prix_km;
     }
 
     public function setMode_reglement($mode_reglement) {
@@ -183,11 +185,11 @@ class NoteDeFrais {
             $obj->setId($item['id']);
             $obj->setMois_annee($item['mois_annee']);
             $obj->setNb_justificatif($item['nb_justificatif']);
-            $obj->setPrix_km($item['prix_km']);
             $obj->setMode_reglement($item['mode_reglement']);
+            $obj->setNumero_cheque($item['numero_cheque']);
             $obj->setBanque($item['banque']);
             $obj->setAvance($item['avance']);
-            $obj->setNet_a_payer($item['$net_a_payer']);
+            $obj->setNet_a_payer($item['net_a_payer']);
             $obj->setId_utilisateur(Utilisateur::getById($item['id_utilisateur']));
             $obj->setId_etat(Etat::getById($item['id_etat']));
             $obj->totalLigne($item['id']);
@@ -211,8 +213,8 @@ class NoteDeFrais {
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
                 $obj->setNb_justificatif($item['nb_justificatif']);
-                $obj->setPrix_km($item['prix_km']);
                 $obj->setMode_reglement($item['mode_reglement']);
+                $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
                 $obj->setAvance($item['avance']);
                 $obj->setNet_a_payer($item['net_a_payer']);
@@ -242,8 +244,8 @@ class NoteDeFrais {
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
                 $obj->setNb_justificatif($item['nb_justificatif']);
-                $obj->setPrix_km($item['prix_km']);
                 $obj->setMode_reglement($item['mode_reglement']);
+                $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
                 $obj->setAvance($item['avance']);
                 $obj->setNet_a_payer($item['net_a_payer']);
@@ -274,8 +276,8 @@ class NoteDeFrais {
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
                 $obj->setNb_justificatif($item['nb_justificatif']);
-                $obj->setPrix_km($item['prix_km']);
                 $obj->setMode_reglement($item['mode_reglement']);
+                $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
                 $obj->setAvance($item['avance']);
                 $obj->setNet_a_payer($item['net_a_payer']);
@@ -305,8 +307,8 @@ class NoteDeFrais {
                 ':id' => $this->getId(),
                 ':mois_annee' => $this->getMois_annee(),
                 ':nb_justificatif' => $this->getNb_justificatif(),
-                ':prix_km' => $this->getPrix_km(),
                 ':mode_reglement' => $this->getMode_reglement(),
+                ':numero_cheque' => $this->getNumero_cheque(),
                 ':banque' => $this->getBanque(),
                 ':avance' => $this->getAvance(),
                 ':net_a_payer' => $this->getNet_a_payer(),
@@ -318,8 +320,8 @@ class NoteDeFrais {
                 ':id' => $this->getId(),
                 ':mois_annee' => $this->getMois_annee(),
                 ':nb_justificatif' => $this->getNb_justificatif(),
-                ':prix_km' => $this->getPrix_km(),
                 ':mode_reglement' => $this->getMode_reglement(),
+                ':numero_cheque' => $this->getNumero_cheque(),
                 ':banque' => $this->getBanque(),
                 ':avance' => $this->getAvance(),
                 ':net_a_payer' => $this->getNet_a_payer(),
@@ -363,5 +365,16 @@ class NoteDeFrais {
         $connexionInstance = Connexion::getInstance();
         $resultat = $connexionInstance->requeter($sql);
         $this->total = $resultat[0]['total'];
+    }
+    
+    public static function totalLigneOM($id){
+        $sql = "SELECT SUM(ligne_ordre_mission.montant) AS total "
+                . "FROM ligne_ordre_mission, note_frais "
+                . "WHERE note_frais.id = ligne_ordre_mission.id_note_frais "
+                . "AND note_frais.id=".$id;
+        
+        $connexionInstance = Connexion::getInstance();
+        $resultat = $connexionInstance->requeter($sql);
+        return $resultat[0];
     }
 }

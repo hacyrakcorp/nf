@@ -64,6 +64,10 @@ class BaseControleur {
             $this->infoMessage = 'Le tarif a été ajouté';
         } else if ($this->getGetParam('info') == 26) {
             $this->infoMessage = 'Le tarif a été supprimé';
+        } else if ($this->getGetParam('info') == 27) {
+            $this->infoMessage = 'Le règlement a été effectué';
+        } else if ($this->getGetParam('info') == 27) {
+            $this->infoMessage = 'L\'état a été modifié';
         } 
 
 

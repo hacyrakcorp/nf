@@ -14,6 +14,8 @@
 class Etat {
     const BROUILLON_ID = 1;
     const SOUMIS_ID = 2;
+    const ENCOURS_ID = 3;
+    const TRAITER_ID = 4;
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO etat (id, libelle) "
             . "VALUES (:id, :libelle)";

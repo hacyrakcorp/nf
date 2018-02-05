@@ -6,7 +6,84 @@
 </p>
 
 <!-- ------------------------------------------------------------------------ !-->
-<h2>Récapitulatif de la note de frais (Total <?php echo $tabNF->getTotal(); ?>)</h2>
+<h2>Récapitulatif de la note de frais</h2>
+<legend>Note de frais</legend>
+<div class="responsive-table-line">
+    <table class="table table-bordered table-condensed table-body-center 
+           table-striped w-width" >
+        <thead> 
+            <tr>
+                <th>Note de frais</th>
+                <th>Déclarant</th>
+                <th>Etat</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead> 
+        <tbody>
+            <tr> 
+        <input type="hidden" 
+               value="<?php echo $tabNF->getId(); ?>" 
+               name ="id" id="id">
+        <td data-title="Note de frais">
+            <?php echo $tabNF->getMois_annee(); ?>
+        </td>
+        <td data-title="Declarant">
+            <?php
+            echo $tabNF->getId_utilisateur()->getNom()
+            . " " .
+            $tabNF->getId_utilisateur()->getPrenom();
+            ?>
+        </td>
+        <td data-title="Etat"> 
+            <?php echo $tabNF->getId_etat()->getLibelle(); ?>
+        </td>
+        <td>
+            <?php echo $tabNF->getTotal(); ?>
+        </td>
+        <td> 
+            <p data-placement="right" 
+               data-toggle="tooltip" 
+               title="Modifier l'état" 
+               style="display:inline-block;">
+                <button type="button" 
+                        name = 'ModifierEtat' 
+                        class="btn btn-primary btn-xs"
+                        data-title="ModifierEtat" 
+                        data-toggle="modal" 
+                        data-target="#modal"
+                        onClick="getValeur('modifierEtat',
+                                    '<?php echo $tabNF->getId();?>',
+                                    '<?php echo $tabNF->getMois_annee(); ?>')"
+                        >
+                    <span class="glyphicon glyphicon-pencil">
+                    </span>
+                </button>
+            </p>
+        </td>
+        </tr>
+        </tbody>   
+    </table>  
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" 
+     role="dialog" 
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fen_modal">
+                    Fiche de frais du mois de 
+                    <span id="date_NF_titre"></span>
+                </h5>
+            </div>
+            <div class="modal-body" id = "modal_body">              
+                <!-- Charge le contenu de la page selon le bouton cliqué !-->
+            </div>
+        </div>
+    </div>
+</div>
+<legend>Lignes de la note de frais</legend>
 <?php
 if ($tabLigneNF != null) { //La NF contient des lignes
     ?>
@@ -111,7 +188,11 @@ if ($tabLigneNF != null) { //La NF contient des lignes
                     <label class="labelLeft" for="montant">Montant :</label>  
                 </td>
                 <td>
-                    <input type="number" min=0 id="montant" name="montant" required/>
+                    <input type="number" 
+                           min=0 
+                           step="0.01" 
+                           id="montant" 
+                           name="montant" required/>
                 </td>
                 <td style="padding-left: 25px;">
 
@@ -123,7 +204,8 @@ if ($tabLigneNF != null) { //La NF contient des lignes
         </table> 
     </form>
     <!-- ------------------------------------------------------------------------ !-->
-    <legend>Récapitulatif du traitement</legend>    
+    <legend>Récapitulatif du traitement 
+        (Total => <?php echo $totalOM['total']; ?>)</legend>    
     <?php
     if ($tabLigneOM != null) { //La NF contient des lignes
         ?>
@@ -182,56 +264,125 @@ if ($tabLigneNF != null) { //La NF contient des lignes
     ?>
     <!-- ------------------------------------------------------------------------ !-->
     <legend>Règlement</legend>
-    <table>
-        <tr>
-            <td>
-                <label>Mode de règlement :</label>
-            </td>
-            <td>
-                <select id='reglement' name='reglement' onchange="afficher()">
-                    <option value= 'Espece'>Espèce</option>
-                    <option value= 'Cheque'>Chèque</option>
-                </select>
-            </td>
-            <td><div id="numero"></div></td>
-            <td><div id="banque"></div></td>
-        </tr>
-        <tr>
-            <td>
-                <label class="labelLeft" for="regleLe">Réglé le :</label>
-            </td>
-            <td>
-                <input type="date" id="regleLe" name="regleLe" required/>
-            </td>
-            <td style="padding-left: 25px;">
-                <button type='submit'
-                        class="btn btn-success"
-                        >Enregistrer</button>
-            </td>
-    </table>
+    <?php if ($tabReglement == null) : ?>
+        <form method="Post"
+              action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=reglementAction">
+            <input type="hidden" id="id_NF" name='id_NF' value="<?php echo $id; ?>" />
+            <p>
+                <?php echo $totalOM['total']; ?>
+            </p>
+            <table>
+                <tr>
+                    <td>
+                        <label>Mode de règlement :</label>
+                    </td>
+                    <td>
+                        <select id='reglement' name='reglement' onchange="afficher()">
+                            <option value= 'Espece'>Espèce</option>
+                            <option value= 'Cheque'>Chèque</option>
+                        </select>
+                    </td>
+                    <td><div id="numero"></div></td>
+                    <td><div id="banque"></div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="labelLeft" for="regleLe">Réglé le :</label>
+                    </td>
+                    <td>
+                        <input type="date" id="regleLe" name="regleLe" required/>
+                    </td>
+                    <td style="padding-left: 25px;">
+                        <button type='submit'
+                                class="btn btn-success"
+                                >Enregistrer</button>
+                    </td>
+            </table>
+        </form>
+
+    <?php else : ?>
+        <div class="responsive-table-line">
+            <table class="table table-bordered table-condensed table-body-center 
+                   table-striped w-width" >
+                <thead> 
+                    <tr>
+                        <th> Reglement</th>
+                        <th> Date </th>
+                        <th> Mode </th>
+                        <?php if ($tabNF->getMode_reglement() == "Cheque"): ?>
+                            <th> Numero du cheque</th>
+                            <th> Banque</th>
+                        <?php endif; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> <?php echo $totalOM['total']; ?></td>
+                        <td> <?php echo $tabReglement->getDate_reglement(); ?></td>
+                        <td> <?php echo $tabNF->getMode_reglement(); ?></td>
+                        <?php if ($tabNF->getMode_reglement() == "Cheque"): ?>
+                            <td> <?php echo $tabNF->getNumero_cheque(); ?></td>
+                            <td> <?php echo $tabNF->getBanque(); ?></td> 
+                        <?php endif; ?>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
     </br>
     </br>
 </div>
 
 
 <script>
+    function getValeur(btn_click, id, date) {
+        document.getElementById("date_NF_titre").innerHTML = date;
+        $(document).ready(function () {
+            $('#modal_body').load('<?php echo $this->getServerParam('PHP_SELF') ?>?page=' + btn_click,
+                    {'id': id, 'date': date});
+        });
+    }
+    
     function afficher() {
-        alert(document.getElementById('reglement').value);
-        /*
-        //Ceci va te renvoyer la value de l'option sur laquelle tu as cliqué ce qui peut être utile pour la suite..
-        var value_option = liste.options[liste.selectedIndex].value;
-        //liste correpond au name de ma balise select 
-        //======
-        
-        //Creation d'un élément
-        var option = document.createElement('input');
-        //Instanciation du type d'élément : text...
-        option.type = ("text");
-        //Instanciation de la valeur de l'input text
-        option.value = value_option;
+        // Recup valeur de la combo reglement
+        var select_reglement = document.getElementById('reglement').value;
+        if (select_reglement == 'Cheque') {
+            var div_numero = document.createElement('div');
+            div_numero.id = "div_num";
+            var label_num = document.createElement('label');
+            label_num.for = "numero_cheque";
+            label_num.class = "labelLeft";
+            label_num.innerHTML = "Numéro : "
+            var numero = document.createElement('input');
+            numero.id = "numero_cheque";
+            numero.name = "numero_cheque";
+            numero.type = "text";
+            numero.required = "required";
+            // Fixe champs créer dans la div numero
+            document.getElementById('numero').append(div_numero);
+            document.getElementById('div_num').append(label_num);
+            document.getElementById('div_num').append(numero);
 
-        //On fixe ce champ input dans la div elements
-        document.getElementById('numero').appendChild(option);
-        */
+            var div_banque = document.createElement('div');
+            div_banque.id = "div_banque";
+            var label_banque = document.createElement('label');
+            label_banque.for = "label_banque";
+            label_banque.class = "labelLeft";
+            label_banque.innerHTML = "Banque : "
+            var banque = document.createElement('input');
+            banque.id = "input_banque";
+            banque.name = "input_banque";
+            banque.type = "text";
+            banque.required = "required";
+            // Fixe champs créer dans la div banque
+            document.getElementById('banque').append(div_banque);
+            document.getElementById('div_banque').append(label_banque);
+            document.getElementById('div_banque').append(banque);
+
+        } else {
+            // Supprime div lors du changement de valeur de la div
+            document.getElementById('div_num').remove();
+            document.getElementById('div_banque').remove();
+        }
     }
 </script>
