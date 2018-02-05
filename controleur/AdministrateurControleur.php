@@ -2,7 +2,9 @@
 
 class AdministrateurControleur extends BaseControleur {
 
-    public function accueil() { //Page acceuil Admin		
+    public function accueil() { //Page acceuil Admin
+        $id_utilisateur = $this->getSessionParam('id');
+        $utilisateur = Utilisateur::getById(intval($id_utilisateur));
         include $this->pathVue . 'header.php';
         include $this->pathVue . 'menuAdmin.php';
         include $this->pathVue . 'accueilAdmin.php';

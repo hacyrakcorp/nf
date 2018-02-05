@@ -66,7 +66,7 @@ class DeclarantControleur extends BaseControleur {
         }
     }
     
-    public function creerNFAction2() {
+    public function creerNFAction2() { //Création
         $champsDate = $this->getPostParam('date_NF');
         if (!empty($champsDate)) { //le champs mois_année est rempli
             $etatBrouillon = Etat::getById(Etat::BROUILLON_ID);
@@ -91,6 +91,15 @@ class DeclarantControleur extends BaseControleur {
                     $noteDeFrais->setMois_annee($champsDate);
                     $result = $noteDeFrais->save();
                     
+                    //recup la dernière note de frais
+                    $derniereNF = NoteDeFrais::getById($noteDeFrais->dernierId());
+                    $datetime = date("Y-m-d H:i:s");
+                    //Gestion de l'historique des NF
+                    $histo = new HistoNF();
+                    $histo->setDate_note_frais($datetime);
+                    $histo->setId_note_frais($derniereNF);
+                    $histo->save();
+                   
                     if ($result === false) {//Date supérieur à date du jour
                         $this->redirect('index.php?erreur=10&page=creerNF');
                     } else {//La NF est créer
@@ -108,7 +117,7 @@ class DeclarantControleur extends BaseControleur {
         $noteDeFrais = NoteDeFrais::getById($id);
         include $this->pathVue . 'modifierNF.php';
     }
-
+    
     public function modifierNFAction() {
         $champsDate = $this->getPostParam('date_NF');
         if (!empty($champsDate)) { //le champs mois_année est rempli
@@ -142,7 +151,7 @@ class DeclarantControleur extends BaseControleur {
             $this->redirect('index.php?erreur=2&page=listerNF');
         }
     }
-
+    
     public function suppressionNF() {
         $id = $this->getPostParam('id');
         $noteDeFrais = NoteDeFrais::getById($id);
@@ -185,22 +194,27 @@ class DeclarantControleur extends BaseControleur {
         $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
         include $this->pathVue . 'voirNF.php';
     }
-
-    public function ajoutNF() {
-        $id = $this->getPostParam('id');
+    
+    public function ajouterLigne() {
+        if (!empty($this->getPostParam('Ajouter')))
+        {//clique sur bouton ajouter lignes
+            $id = $this->getPostParam('Ajouter');
+            $this->setSessionParam('idNF', $id);
+        } else 
+        {//permet de revenir sur la page lors de la gestion de la ligne
+            $id = $this->getSessionParam('idNF');
+        }
         $tabNF = NoteDeFrais::getById($id);
         $tabLigneNF = LigneNF::getByNFAll($tabNF->getId());
         $tabNatureFrais = NatureFrais::getAllListe();
-        if ($tabLigneNF != null) {
-            foreach ($tabLigneNF as $ligne) {
-                $idLigne = $ligne->getId();
-                $totalLigne[] = LigneNF::totalLigne(intval($idLigne));   
-            }
-        }
-        include $this->pathVue . 'ajoutNF2.php';
+        
+        include $this->pathVue . 'header.php';
+        include $this->pathVue . 'menuDeclarant.php';
+        include $this->pathVue . 'ajouterLigne.php';
+        include $this->pathVue . 'footer.php';;
     }
-
-    public function ajoutNFAction() {
+    
+    public function ajouterLigneAction() {
         $tabNatureChoisie = $this->getPostParam('natureChoisie');
         //on vérifie que au moins une checkbox est coché.
         if (!empty($tabNatureChoisie)) {
@@ -227,11 +241,84 @@ class DeclarantControleur extends BaseControleur {
                 $valeurFrais->setValeur(doubleval($valeur));
                 $valeurFrais->setId_nature_frais($nature);
                 $valeurFrais->save();
-//TAF:Redirection vers la modale possible pour ajouter plusieurs lignes en une fois???
+                $this->redirect("index.php?info=22&page=ajouterLigne");
             }
         } else { // Aucune checkbox cochée
-            echo "<script>alert('Cocher au moins un frais.');</script>";
-            //TAF:Redirection vers la modale 
+            $this->redirect("index.php?erreur=33&page=ajouterLigne");
+
         }
     }
+    
+    public function suppressionLigne() {
+        $id = $this->getPostParam('id');
+        $ligne = LigneNF::getById($id);
+        include $this->pathVue . 'suppressionLigne.php';
+    }
+    
+    public function suppressionLigneAction() {
+        $id = $this->getPostParam('id');
+        if (!empty($id)) {
+            $ligne = LigneNF::getById($id);
+            $tabValeur = ValeurFrais::getByIdLigneFrais($ligne->getId());
+            foreach ($tabValeur as $uneValeur)
+            { //Suppression des valeurs
+                $uneValeur->delete();
+            }
+            $ligne->delete(); //Suppression de la ligne
+            $this->redirect('index.php?info=23&page=ajouterLigne');
+        } else {
+            $this->redirect('index.php?erreur=32&page=ajouterLigne');
+        }
+    }
+
+    public function modifierLigne() {
+        $tabNatureFrais = NatureFrais::getAllListe();
+        $id = $this->getPostParam('id');
+        $ligne = LigneNF::getById($id);
+        $tabValeur = ValeurFrais::getByIdLigneFrais($ligne->getId());
+        include $this->pathVue . 'modifierLigne.php';
+    }
+    
+    public function modifierLigneAction() {
+        $tabNatureChoisie = $this->getPostParam('natureChoisieM');
+        //on vérifie que au moins une checkbox est coché.
+        if (!empty($tabNatureChoisie)) {
+            //On récup les données pour la ligne de frais
+            $id_NF = $this->getPostParam('id_NF');
+            $id_ligne = $this->getPostParam('id_ligne');
+            $date = $this->getPostParam('date');
+            $objet = $this->getPostParam('object');
+            $lieu = $this->getPostParam('lieu');
+            // Modifie ligne de frais
+            $ligneFrais = new LigneNF();
+            $ligneFrais->setId(LigneNF::getById($id_ligne)->getId());
+            $ligneFrais->setDate_ligne($date);
+            $ligneFrais->setObject($objet);
+            $ligneFrais->setLieu($lieu);
+            $ligneFrais->setId_note_frais(NoteDeFrais::getById($id_NF));
+            $ligneFrais->save();
+            
+            $tabValeur = ValeurFrais::getByIdLigneFrais($ligneFrais->getId());
+            foreach ($tabValeur as $uneValeur)
+            { //Suppression des valeurs
+                $uneValeur->delete();
+            }
+            
+            // Parcours des checkbox et des valeurs associées.
+            foreach ($tabNatureChoisie as $idNatureChoisie) { 
+                $valeur = $this->getPostParam('valeurNatureM' . $idNatureChoisie);
+                $nature = NatureFrais::getById(intval($idNatureChoisie));
+                $valeurFrais = new ValeurFrais();
+                $valeurFrais->setId_ligne_frais($ligneFrais);
+                $valeurFrais->setValeur(doubleval($valeur));
+                $valeurFrais->setId_nature_frais($nature);
+                $valeurFrais->save();
+                $this->redirect("index.php?info=24&page=ajouterLigne");
+            }
+        } else { // Aucune checkbox cochée
+            $this->redirect("index.php?erreur=33&page=ajouterLigne");
+
+        }
+    }
+
 }

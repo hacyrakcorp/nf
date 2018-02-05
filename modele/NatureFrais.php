@@ -12,6 +12,8 @@ class NatureFrais {
             . "type_valeur = :type_valeur, unite = :unite,"
             . " WHERE id = :id";
     protected static $sqlDelete = "DELETE FROM nature_frais";
+    
+    const ID_KM = 6;
 
     /**
      * @var integer

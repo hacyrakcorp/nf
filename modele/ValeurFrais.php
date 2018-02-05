@@ -90,6 +90,28 @@ class ValeurFrais {
             return null;
         }
     }
+    
+    public static function getByIdLigneFrais($id_ligne_frais){
+        $connexionInstance = Connexion::getInstance();
+        $liste = $connexionInstance->requeter(
+                self::$sqlRead . ' WHERE id_ligne_frais = :id_ligne_frais', array(
+            ':id_ligne_frais' => $id_ligne_frais
+                )
+        );
+        if (count($liste) > 0) {
+            $tab = array();
+            foreach ($liste as $item) {
+                $obj = new ValeurFrais();
+                $obj->setId_nature_frais(NatureFrais::getById($item['id_nature_frais']));
+                $obj->setValeur($item['valeur']);
+                $obj->setId_ligne_frais(LigneNF::getById($item['id_ligne_frais']));
+                $tab[] = $obj;
+            }
+            return $tab;
+        } else {
+            return null;
+        }
+    }
 
     public function save() {
         /*if ($this->getId() == null) { // INSERT
@@ -110,10 +132,9 @@ class ValeurFrais {
     public function delete() {
         $connexionInstance = Connexion::getInstance();
         return $connexionInstance->executer(
-                        self::$sqlDelete . ' WHERE id_nature_frais = :id_nature_frais'
-                . 'AND id_ligne_frais = :id_ligne_frais', array(
-                    ':id_nature_frais' => $this->getId_nature_frais(),
-                    ':id_ligne_frais' => $this->getId_ligne_frais()
+                        self::$sqlDelete . 
+                ' WHERE id_ligne_frais = :id_ligne_frais', array(
+                ':id_ligne_frais' => $this->getId_ligne_frais()->getId()
                         )
         );
     }

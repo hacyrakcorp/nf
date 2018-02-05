@@ -54,7 +54,21 @@ class BaseControleur {
             $this->infoMessage = 'La nature du frais a été ajouté';
         } else if ($this->getGetParam('info') == 21) {
             $this->infoMessage = 'La nature du frais a été supprimé';
-        }
+        } else if ($this->getGetParam('info') == 22) {
+            $this->infoMessage = 'La ligne a été ajouté';
+        } else if ($this->getGetParam('info') == 23) {
+            $this->infoMessage = 'La ligne a été supprimé';
+        } else if ($this->getGetParam('info') == 24) {
+            $this->infoMessage = 'La ligne a été modifié';
+        } else if ($this->getGetParam('info') == 25) {
+            $this->infoMessage = 'Le tarif a été ajouté';
+        } else if ($this->getGetParam('info') == 26) {
+            $this->infoMessage = 'Le tarif a été supprimé';
+        } else if ($this->getGetParam('info') == 27) {
+            $this->infoMessage = 'Le règlement a été effectué';
+        } else if ($this->getGetParam('info') == 27) {
+            $this->infoMessage = 'L\'état a été modifié';
+        } 
 
 
         //Liste des erreurs
@@ -122,8 +136,18 @@ class BaseControleur {
             $this->erreurMessage = 'La nature du frais existe déjà';
         } else if ($this->getGetParam('erreur') == 30) {
             $this->erreurMessage = 'Erreur de suppression de la nature du frais';
+        } else if ($this->getGetParam('erreur') == 31) {
+            $this->erreurMessage = 'La ligne existe déjà';
+        } else if ($this->getGetParam('erreur') == 32) {
+            $this->erreurMessage = 'Erreur de suppression de la ligne de frais';
+        } else if ($this->getGetParam('erreur') == 33) {
+            $this->erreurMessage = 'Cocher au moins une valeur';
+        } else if ($this->getGetParam('erreur') == 34) {
+            $this->erreurMessage = 'Le tarif existe déjà';
+        } else if ($this->getGetParam('erreur') == 35) {
+            $this->erreurMessage = 'Erreur de suppression du tarif';
         }
-    }
+    } 
 
     public function redirect($lien) { //redirection
         header('location: ' . $this->pathWeb($lien));

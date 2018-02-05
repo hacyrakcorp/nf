@@ -45,6 +45,27 @@ body
     margin: auto;
 }
 
+#ligneNF
+{
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#divLigne
+{
+    margin-left:auto;
+    margin-right:auto;
+    width: 40%;
+}
+
+#buttonLigne
+{
+    width:100%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
 .natureFrais
 {
     width: 150px;

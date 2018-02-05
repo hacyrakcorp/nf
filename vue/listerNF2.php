@@ -1,10 +1,12 @@
 <div class="responsive-table-line">
+    <form method="post" name="ajouter_ligne" action="<?php echo $this->getServerParam('PHP_SELF') ?>?page=ajouterLigne" >
     <table class="table table-bordered table-condensed table-body-center 
            table-striped w-width" >
         <thead> 
             <tr>
                 <th>Note de frais</th>
                 <th>Etat</th>
+                <th>Total</th>
                 <th></th>
             </tr>
         </thead> 
@@ -13,7 +15,9 @@
             foreach($tabNF as $nf)
             { /* @var $nf NoteDeFrais */
                 ?>
+        
                 <tr> 
+                    <input type="hidden" value="<?php echo $nf->getId(); ?>" name ="id" id="id">
                     <td data-title="Note de frais">
                         <?php
                         echo $nf->getMois_annee();
@@ -40,7 +44,11 @@
                     </td>
 
                     <td data-title="Etat"> 
-                        <?php echo $nf->getId_etat()->getLibelle(); ?></td>
+                        <?php echo $nf->getId_etat()->getLibelle(); ?>
+                    </td>
+                    <td>
+                         <?php echo $nf->getTotal(); ?>
+                    </td>
                     <td> 
                        <?php if ($nf->getId_etat()->getId() != Etat::SOUMIS_ID) { ?>
                             <p data-placement="right" data-toggle="tooltip" 
@@ -58,6 +66,7 @@
                                     </span>
                                 </button>
                             </p>
+                            <!--
                             <p data-placement="right" data-toggle="tooltip" 
                                title="Ajouter des lignes" 
                                style="display:inline-block;">
@@ -67,13 +76,27 @@
                                         data-toggle="modal" 
                                         data-target="#fen_modal"
                                         onClick="getValeur('ajoutNF',
-                                                        '<?php echo $nf->getId(); ?>',
-                                                        '<?php echo $nf->getMois_annee(); ?>')">
+                                                        '<?php //echo $nf->getId(); ?>',
+                                                        '<?php //echo $nf->getMois_annee(); ?>')">
                                     <span class="glyphicon glyphicon-plus">  
                                     </span>
                                 </button>
                             </p>
-
+!-->
+                            
+                            <p data-placement="right" data-toggle="tooltip" 
+                               title="Ajouter des lignes" 
+                               style="display:inline-block;">
+                                
+                                <button type="submit" name='Ajouter' 
+                                        class="btn btn-warning btn-xs"
+                                        value="<?php echo $nf->getId(); ?>"
+                                       >
+                                    <span class="glyphicon glyphicon-plus">  
+                                    </span>
+                                </button>  
+                            </p>
+                            
                             <p data-placement="right" data-toggle="tooltip" 
                                title="Supprimer" 
                                style="display:inline-block;">
@@ -120,7 +143,9 @@
             <?php }
             ?>	
         </tbody>
+        
     </table>
+    </form>
 </div>
 
 <!--Fenetre Modal!-->
