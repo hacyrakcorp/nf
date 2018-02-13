@@ -16,13 +16,12 @@ class NoteDeFrais {
 //put your code here
     // Design Pattern CRUD
     protected static $sqlCreate = "INSERT INTO note_frais (id, mois_annee, "
-            . "nb_justificatif, mode_reglement, numero_cheque, banque, avance, "
+            . "mode_reglement, numero_cheque, banque, avance, "
             . "net_a_payer, id_utilisateur, id_etat) VALUES (:id, :mois_annee,"
-            . " :nb_justificatif, :mode_reglement, :numero_cheque, :banque, :avance, "
+            . " :mode_reglement, :numero_cheque, :banque, :avance, "
             . ":net_a_payer, :id_utilisateur, :id_etat)";
     protected static $sqlRead = "SELECT * FROM note_frais";
     protected static $sqlUpdate = "UPDATE note_frais SET mois_annee = :mois_annee, "
-            . "nb_justificatif = :nb_justificatif, "
             . "mode_reglement = :mode_reglement, numero_cheque = :numero_cheque,"
             . " banque = :banque, avance = :avance,"
             . " net_a_payer = :net_a_payer, id_utilisateur = :id_utilisateur, "
@@ -39,11 +38,6 @@ class NoteDeFrais {
      * @var string
      */
     private $mois_annee;
-
-    /**
-     * @var integer
-     */
-    private $nb_justificatif;
 
     /**
      * @var string
@@ -101,11 +95,6 @@ class NoteDeFrais {
         return $this->mois_annee;
     }
 
-    public function getNb_justificatif() {
-        return $this->nb_justificatif;
-    }
-
-
     public function getMode_reglement() {
         return $this->mode_reglement;
     }
@@ -136,10 +125,6 @@ class NoteDeFrais {
 
     public function setMois_annee($mois_annee) {
         $this->mois_annee = $mois_annee;
-    }
-
-    public function setNb_justificatif($nb_justificatif) {
-        $this->nb_justificatif = $nb_justificatif;
     }
 
     public function setMode_reglement($mode_reglement) {
@@ -184,7 +169,6 @@ class NoteDeFrais {
             $obj = new NoteDeFrais();
             $obj->setId($item['id']);
             $obj->setMois_annee($item['mois_annee']);
-            $obj->setNb_justificatif($item['nb_justificatif']);
             $obj->setMode_reglement($item['mode_reglement']);
             $obj->setNumero_cheque($item['numero_cheque']);
             $obj->setBanque($item['banque']);
@@ -212,7 +196,6 @@ class NoteDeFrais {
                 $obj = new NoteDeFrais();
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
-                $obj->setNb_justificatif($item['nb_justificatif']);
                 $obj->setMode_reglement($item['mode_reglement']);
                 $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
@@ -243,7 +226,6 @@ class NoteDeFrais {
                 $obj = new NoteDeFrais();
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
-                $obj->setNb_justificatif($item['nb_justificatif']);
                 $obj->setMode_reglement($item['mode_reglement']);
                 $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
@@ -275,7 +257,6 @@ class NoteDeFrais {
                 $obj = new NoteDeFrais();
                 $obj->setId($item['id']);
                 $obj->setMois_annee($item['mois_annee']);
-                $obj->setNb_justificatif($item['nb_justificatif']);
                 $obj->setMode_reglement($item['mode_reglement']);
                 $obj->setNumero_cheque($item['numero_cheque']);
                 $obj->setBanque($item['banque']);
@@ -306,7 +287,6 @@ class NoteDeFrais {
             $parametre = array(
                 ':id' => $this->getId(),
                 ':mois_annee' => $this->getMois_annee(),
-                ':nb_justificatif' => $this->getNb_justificatif(),
                 ':mode_reglement' => $this->getMode_reglement(),
                 ':numero_cheque' => $this->getNumero_cheque(),
                 ':banque' => $this->getBanque(),
@@ -319,7 +299,6 @@ class NoteDeFrais {
             $parametre = array(
                 ':id' => $this->getId(),
                 ':mois_annee' => $this->getMois_annee(),
-                ':nb_justificatif' => $this->getNb_justificatif(),
                 ':mode_reglement' => $this->getMode_reglement(),
                 ':numero_cheque' => $this->getNumero_cheque(),
                 ':banque' => $this->getBanque(),
